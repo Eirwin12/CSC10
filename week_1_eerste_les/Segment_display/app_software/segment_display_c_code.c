@@ -72,5 +72,3 @@ int main(void) {
             *hexOutput = hex_to_7_seg(count);
         ; // main program simply idles
 }
-
-

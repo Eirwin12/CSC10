@@ -1,65 +1,58 @@
 Info: Starting: Create HDL design files for synthesis
-Info: qsys-generate C:\Users\mitch\Documents\GitHub\CSC10\week_1_eerste_les\Segment_display\nois_system.qsys --synthesis=VHDL --output-directory=C:\Users\mitch\Documents\GitHub\CSC10\week_1_eerste_les\Segment_display\nois_system\synthesis --family="Cyclone V" --part=5CSEMA5F31C6
+Info: qsys-generate C:\CSC10\week_1_eerste_les\Segment_display\nois_system.qsys --synthesis=VHDL --output-directory=C:\CSC10\week_1_eerste_les\Segment_display\nois_system\synthesis --family="Cyclone V" --part=5CSEMA5F31C6
 Progress: Loading Segment_display/nois_system.qsys
 Progress: Reading input file
 Progress: Adding Interval_timer_Segment [altera_avalon_timer 18.1]
 Progress: Parameterizing module Interval_timer_Segment
-Progress: Adding PIO_IN_Segment [altera_avalon_pio 18.1]
-Progress: Parameterizing module PIO_IN_Segment
-Progress: Adding PIO_OUT_Segment [altera_avalon_pio 18.1]
-Progress: Parameterizing module PIO_OUT_Segment
 Progress: Adding clk_0 [clock_source 18.1]
 Progress: Parameterizing module clk_0
 Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 18.1]
 Progress: Parameterizing module jtag_uart_0
+Progress: Adding left_3_hex [altera_avalon_pio 18.1]
+Progress: Parameterizing module left_3_hex
 Progress: Adding nios2_qsys_0 [altera_nios2_qsys 16.1]
 Progress: Parameterizing module nios2_qsys_0
 Progress: Adding onchip_memory2_0 [altera_avalon_onchip_memory2 18.1]
 Progress: Parameterizing module onchip_memory2_0
+Progress: Adding right_3_hex [altera_avalon_pio 18.1]
+Progress: Parameterizing module right_3_hex
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
 Progress: Done reading input file
-Info: nois_system.PIO_IN_Segment: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: nois_system.jtag_uart_0: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
 Warning: nois_system.nios2_qsys_0: Nios II Classic cores are no longer recommended for new projects
-Warning: nois_system.PIO_IN_Segment: PIO_IN_Segment.external_connection must be exported, or connected to a matching conduit.
-Warning: nois_system.PIO_OUT_Segment: PIO_OUT_Segment.external_connection must be exported, or connected to a matching conduit.
 Info: nois_system: Generating nois_system "nois_system" for QUARTUS_SYNTH
 Info: Interval_timer_Segment: Starting RTL generation for module 'nois_system_Interval_timer_Segment'
-Info: Interval_timer_Segment:   Generation command is [exec C:/intelFPGA_lite/18.1/quartus/bin64//perl/bin/perl.exe -I C:/intelFPGA_lite/18.1/quartus/bin64//perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=nois_system_Interval_timer_Segment --dir=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0002_Interval_timer_Segment_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0002_Interval_timer_Segment_gen//nois_system_Interval_timer_Segment_component_configuration.pl  --do_build_sim=0  ]
+Info: Interval_timer_Segment:   Generation command is [exec C:/intelFPGA_lite/18.1/quartus/bin64//perl/bin/perl.exe -I C:/intelFPGA_lite/18.1/quartus/bin64//perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=nois_system_Interval_timer_Segment --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0002_Interval_timer_Segment_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0002_Interval_timer_Segment_gen//nois_system_Interval_timer_Segment_component_configuration.pl  --do_build_sim=0  ]
 Info: Interval_timer_Segment: Done RTL generation for module 'nois_system_Interval_timer_Segment'
 Info: Interval_timer_Segment: "nois_system" instantiated altera_avalon_timer "Interval_timer_Segment"
-Info: PIO_IN_Segment: Starting RTL generation for module 'nois_system_PIO_IN_Segment'
-Info: PIO_IN_Segment:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nois_system_PIO_IN_Segment --dir=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0003_PIO_IN_Segment_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0003_PIO_IN_Segment_gen//nois_system_PIO_IN_Segment_component_configuration.pl  --do_build_sim=0  ]
-Info: PIO_IN_Segment: Done RTL generation for module 'nois_system_PIO_IN_Segment'
-Info: PIO_IN_Segment: "nois_system" instantiated altera_avalon_pio "PIO_IN_Segment"
-Info: PIO_OUT_Segment: Starting RTL generation for module 'nois_system_PIO_OUT_Segment'
-Info: PIO_OUT_Segment:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nois_system_PIO_OUT_Segment --dir=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0004_PIO_OUT_Segment_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0004_PIO_OUT_Segment_gen//nois_system_PIO_OUT_Segment_component_configuration.pl  --do_build_sim=0  ]
-Info: PIO_OUT_Segment: Done RTL generation for module 'nois_system_PIO_OUT_Segment'
-Info: PIO_OUT_Segment: "nois_system" instantiated altera_avalon_pio "PIO_OUT_Segment"
 Info: jtag_uart_0: Starting RTL generation for module 'nois_system_jtag_uart_0'
-Info: jtag_uart_0:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=nois_system_jtag_uart_0 --dir=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0005_jtag_uart_0_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0005_jtag_uart_0_gen//nois_system_jtag_uart_0_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart_0:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=nois_system_jtag_uart_0 --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0003_jtag_uart_0_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0003_jtag_uart_0_gen//nois_system_jtag_uart_0_component_configuration.pl  --do_build_sim=0  ]
 Info: jtag_uart_0: Done RTL generation for module 'nois_system_jtag_uart_0'
 Info: jtag_uart_0: "nois_system" instantiated altera_avalon_jtag_uart "jtag_uart_0"
+Info: left_3_hex: Starting RTL generation for module 'nois_system_left_3_hex'
+Info: left_3_hex:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nois_system_left_3_hex --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0004_left_3_hex_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0004_left_3_hex_gen//nois_system_left_3_hex_component_configuration.pl  --do_build_sim=0  ]
+Info: left_3_hex: Done RTL generation for module 'nois_system_left_3_hex'
+Info: left_3_hex: "nois_system" instantiated altera_avalon_pio "left_3_hex"
 Info: nios2_qsys_0: Starting RTL generation for module 'nois_system_nios2_qsys_0'
-Info: nios2_qsys_0:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/eperlcmd.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2 -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=nois_system_nios2_qsys_0 --dir=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0006_nios2_qsys_0_gen/ --quartus_bindir=C:/intelfpga_lite/18.1/quartus/bin64 --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0006_nios2_qsys_0_gen//nois_system_nios2_qsys_0_processor_configuration.pl  --do_build_sim=0  ]
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*) Starting Nios II generation
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   Checking for plaintext license.
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   Couldn't query license setup in Quartus directory C:/intelfpga_lite/18.1/quartus/bin64
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   Defaulting to contents of LM_LICENSE_FILE environment variable
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   LM_LICENSE_FILE environment variable is empty
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   Plaintext license not found.
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   No license required to generate encrypted Nios II/e.
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   Elaborating CPU configuration settings
-Info: nios2_qsys_0: # 2025.11.14 11:04:51 (*)   Creating all objects for CPU
-Info: nios2_qsys_0: # 2025.11.14 11:04:52 (*)   Generating RTL from CPU objects
-Info: nios2_qsys_0: # 2025.11.14 11:04:52 (*)   Creating plain-text RTL
-Info: nios2_qsys_0: # 2025.11.14 11:04:53 (*) Done Nios II generation
+Info: nios2_qsys_0:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/eperlcmd.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2 -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=nois_system_nios2_qsys_0 --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0005_nios2_qsys_0_gen/ --quartus_bindir=C:/intelfpga_lite/18.1/quartus/bin64 --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0005_nios2_qsys_0_gen//nois_system_nios2_qsys_0_processor_configuration.pl  --do_build_sim=0  ]
+Info: nios2_qsys_0: # 2025.11.14 14:22:33 (*) Starting Nios II generation
+Info: nios2_qsys_0: # 2025.11.14 14:22:33 (*)   Checking for plaintext license.
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   Couldn't query license setup in Quartus directory C:/intelfpga_lite/18.1/quartus/bin64
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   Defaulting to contents of LM_LICENSE_FILE environment variable
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   LM_LICENSE_FILE environment variable is empty
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   Plaintext license not found.
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   No license required to generate encrypted Nios II/e.
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   Elaborating CPU configuration settings
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   Creating all objects for CPU
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   Generating RTL from CPU objects
+Info: nios2_qsys_0: # 2025.11.14 14:22:34 (*)   Creating plain-text RTL
+Info: nios2_qsys_0: # 2025.11.14 14:22:35 (*) Done Nios II generation
 Info: nios2_qsys_0: Done RTL generation for module 'nois_system_nios2_qsys_0'
 Info: nios2_qsys_0: "nois_system" instantiated altera_nios2_qsys "nios2_qsys_0"
 Info: onchip_memory2_0: Starting RTL generation for module 'nois_system_onchip_memory2_0'
-Info: onchip_memory2_0:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=nois_system_onchip_memory2_0 --dir=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0007_onchip_memory2_0_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0406_3782838764693248974.dir/0007_onchip_memory2_0_gen//nois_system_onchip_memory2_0_component_configuration.pl  --do_build_sim=0  ]
+Info: onchip_memory2_0:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=nois_system_onchip_memory2_0 --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0006_onchip_memory2_0_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0406_6140807457540433154.dir/0006_onchip_memory2_0_gen//nois_system_onchip_memory2_0_component_configuration.pl  --do_build_sim=0  ]
 Info: onchip_memory2_0: Done RTL generation for module 'nois_system_onchip_memory2_0'
 Info: onchip_memory2_0: "nois_system" instantiated altera_avalon_onchip_memory2 "onchip_memory2_0"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
@@ -84,14 +77,14 @@ Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "c
 Info: cmd_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_001"
 Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
 Info: cmd_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_001"
-Info: Reusing file C:/Users/mitch/Documents/GitHub/CSC10/week_1_eerste_les/Segment_display/nois_system/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: Reusing file C:/CSC10/week_1_eerste_les/Segment_display/nois_system/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
 Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
-Info: Reusing file C:/Users/mitch/Documents/GitHub/CSC10/week_1_eerste_les/Segment_display/nois_system/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: Reusing file C:/CSC10/week_1_eerste_les/Segment_display/nois_system/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: rsp_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux_001"
-Info: Reusing file C:/Users/mitch/Documents/GitHub/CSC10/week_1_eerste_les/Segment_display/nois_system/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: Reusing file C:/CSC10/week_1_eerste_les/Segment_display/nois_system/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
-Info: nois_system: Done "nois_system" with 28 modules, 44 files
+Info: nois_system: Done "nois_system" with 27 modules, 43 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis

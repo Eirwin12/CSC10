@@ -23,54 +23,24 @@ ARCHITECTURE lights_rtl OF lights IS
 		PORT (
 			clk_clk: IN STD_LOGIC;
 			reset_reset_n : IN STD_LOGIC;
-			pio_in_segment_external_connection_export  : in  std_logic_vector(3 downto 0) := (others => '0'); --  pio_in_segment_external_connection.export
-			pio_out_segment_external_connection_export : out std_logic_vector(6 downto 0) 
+			left_3_hex_export  : out  std_logic_vector(20 downto 0); --  pio_in_segment_external_connection.export
+			right_3_hex_export : out std_logic_vector(20 downto 0) 
 				);
 	END COMPONENT;
+	signal hex5_3: std_logic_vector(20 downto 0);
+	signal hex2_0: std_logic_vector(20 downto 0);
 BEGIN
-NiosII_HEX0 : nois_system
+NiosII_HEX5_3 : nois_system
 PORT MAP(
 		clk_clk => CLOCK_50,
 		reset_reset_n => '1',
-		pio_in_segment_external_connection_export => OPEN,
-		pio_out_segment_external_connection_export => HEX0
+		left_3_hex_export => hex5_3,
+		right_3_hex_export => hex2_0
 			);
-			
-NiosII_HEX1 : nois_system
-PORT MAP(
-		clk_clk => CLOCK_50,
-		reset_reset_n => '1',
-		pio_in_segment_external_connection_export => OPEN,
-		pio_out_segment_external_connection_export => HEX1
-			);
-NiosII_HEX2 : nois_system
-PORT MAP(
-		clk_clk => CLOCK_50,
-		reset_reset_n => '1',
-		pio_in_segment_external_connection_export => OPEN,
-		pio_out_segment_external_connection_export => HEX2
-			);
-NiosII_HEX3 : nois_system
-PORT MAP(
-		clk_clk => CLOCK_50,
-		reset_reset_n => '1',
-		pio_in_segment_external_connection_export => OPEN,
-		pio_out_segment_external_connection_export => HEX3
-			);
-			
-NiosII_HEX4 : nois_system
-PORT MAP(
-		clk_clk => CLOCK_50,
-		reset_reset_n => '1',
-		pio_in_segment_external_connection_export => OPEN,
-		pio_out_segment_external_connection_export => HEX4
-			);
-			
-NiosII_HEX5 : nois_system
-PORT MAP(
-		clk_clk => CLOCK_50,
-		reset_reset_n => '1',
-		pio_in_segment_external_connection_export => OPEN,
-		pio_out_segment_external_connection_export => HEX5
-			);
+		hex5 <= hex5_3(20 downto 14);
+		hex4 <= hex5_3(13 downto 7);
+		hex3 <= hex5_3(6 downto 0);
+		hex2 <= hex2_0(20 downto 14);
+		hex1 <= hex2_0(13 downto 7);
+		hex0 <= hex2_0(6 downto 0);
 END lights_rtl;
