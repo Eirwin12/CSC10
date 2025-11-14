@@ -28,7 +28,7 @@ OCFLAGS		:= -O srec
 
 # Files
 HDRS		:=
-SRCS		:= ../../../../../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/exception_handler.c ../../../../../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/interrupt_example.c ../../../../../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/interval_timer_ISR.c segment_display_c_code.c amp/lib/src/niosII_jtag_uart.c
+SRCS		:= ../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/exception_handler.c ../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/interrupt_example.c ../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/interval_timer_ISR.c segment_display_c_code.c amp/lib/src/niosII_jtag_uart.c
 OBJS		:= $(patsubst %, %.o, $(SRCS))
 
 # Targets

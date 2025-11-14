@@ -1,13 +1,14 @@
 #include "address_map_nios2.h"
 #include "globals.h" // defines global values
 #include "nios2_ctrl_reg_macros.h"
+#include <stdbool.h>
 
 /* the global variables are written by interrupt service routines; we have to
  * declare
  * these as volatile to avoid the compiler caching their values in registers */
-volatile int pattern      = 0x0000000F; // pattern for shifting
-volatile int shift_dir    = LEFT;       // direction to shift the pattern
-volatile int shift_enable = ENABLE; // enable/disable shifting of the pattern
+volatile int count      = 0;     //count
+volatile bool flag      = false; //flag for if count value has past or not
+#define hexOutput (volatile char*)  0x010; //adres of the output file
 
 /*******************************************************************************
  * This program demonstrates use of interrupts. It
@@ -63,9 +64,12 @@ int main(void) {
     NIOS2_WRITE_IENABLE(0x3);
 
     NIOS2_WRITE_STATUS(1); // enable Nios II interrupts
-
+	int hex_val;
     while (1)
-    
+    	if (flag)
+        {
+        	flag = false;
+            *hexOutput = hex_to_7_seg(count);
         ; // main program simply idles
 }
 
