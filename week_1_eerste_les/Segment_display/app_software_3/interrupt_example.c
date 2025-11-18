@@ -71,9 +71,9 @@ int main(void) {
         {
         	flag = 0;
             int output;
-            output = hex_to_7_seg(counter_int & 0xf) + hex_to_7_seg((counter_int>>4) & 0xf)<<8 + hex_to_7_seg((counter_int>>8) &0xf);
+            output = hex_to_7_seg(counter_int & 0xf) + (hex_to_7_seg((counter_int>>4) & 0xf)<<8) + (hex_to_7_seg((counter_int>>8) &0xf));
             *right_hex_ptr = output;
-            output = hex_to_7_seg((counter_int>>12) &0xf) + hex_to_7_seg((counter_int>>16) &0xf)<<8 + hex_to_7_seg((counter_int>>20) &0xf)<<8;
+            output = hex_to_7_seg((counter_int>>12) &0xf) + (hex_to_7_seg((counter_int>>16) &0xf)<<8) + (hex_to_7_seg((counter_int>>20) &0xf)<<8);
             *left_hex_ptr = output;
         }
     }
