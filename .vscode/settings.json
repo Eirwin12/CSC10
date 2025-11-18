@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "*.tex": "latex",
+        "*.py": "python",
+        "*.md": "markdown",
+        "*.rs": "rust",
+        "*.html": "html",
+        "*.js": "javascript",
+        "*.css": "css",
+        "system.h": "c",
+        "alt_types.h": "c",
+        "alt_irq.h": "c",
+        "alt_iic_isr_register.h": "c",
+        "altera_avalon_timer_regs.h": "c",
+        "altera_avalon_timer.h": "c"
+    }
+}
