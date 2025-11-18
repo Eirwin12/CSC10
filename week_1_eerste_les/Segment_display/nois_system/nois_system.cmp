@@ -1,0 +1,9 @@
+	component nois_system is
+		port (
+			clk_clk                              : in  std_logic                     := 'X'; -- clk
+			hex3_hex0_external_connection_export : out std_logic_vector(31 downto 0);        -- export
+			hex5_hex4_external_connection_export : out std_logic_vector(15 downto 0);        -- export
+			reset_reset_n                        : in  std_logic                     := 'X'  -- reset_n
+		);
+	end component nois_system;
+
