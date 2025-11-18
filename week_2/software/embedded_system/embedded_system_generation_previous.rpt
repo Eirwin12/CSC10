@@ -22,6 +22,7 @@ Progress: Validating
 Progress: Done reading input file
 Info: embedded_system.jtag_uart_0: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
 Warning: embedded_system.nios2_qsys_0: Nios II Classic cores are no longer recommended for new projects
+Warning: embedded_system.reg32_avalon_interface_0: reg32_avalon_interface_0.conduit_end must be exported, or connected to a matching conduit.
 Info: embedded_system: Generating embedded_system "embedded_system" for QUARTUS_SYNTH
 Warning: Translator hex_to_7_segment_decoder_0_avalon_slave_0_translator failed to match interface hex_to_7_segment_decoder_0.avalon_slave_0
 Info: embedded_system: Done "embedded_system" with 1 modules, 0 files
