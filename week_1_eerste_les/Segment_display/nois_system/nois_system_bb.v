@@ -1,12 +1,12 @@
 
 module nois_system (
 	clk_clk,
-	left_3_hex_export,
-	right_3_hex_export,
+	hex3_hex0_external_connection_export,
+	hex5_hex4_external_connection_export,
 	reset_reset_n);	
 
 	input		clk_clk;
-	output	[20:0]	left_3_hex_export;
-	output	[20:0]	right_3_hex_export;
+	output	[31:0]	hex3_hex0_external_connection_export;
+	output	[15:0]	hex5_hex4_external_connection_export;
 	input		reset_reset_n;
 endmodule

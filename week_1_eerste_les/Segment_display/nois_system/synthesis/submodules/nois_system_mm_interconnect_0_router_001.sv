@@ -47,7 +47,7 @@ module nois_system_mm_interconnect_0_router_001_default_decode
      parameter DEFAULT_CHANNEL = 1,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
-               DEFAULT_DESTID = 4 
+               DEFAULT_DESTID = 5 
    )
   (output [76 - 74 : 0] default_destination_id,
    output [6-1 : 0] default_wr_channel,
@@ -192,13 +192,13 @@ module nois_system_mm_interconnect_0_router_001
     // ( 0x0 .. 0x1000 )
     if ( {address[RG:PAD0],{PAD0{1'b0}}} == 13'h0   ) begin
             src_channel = 6'b10;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 4;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 5;
     end
 
     // ( 0x1800 .. 0x2000 )
     if ( {address[RG:PAD1],{PAD1{1'b0}}} == 13'h1800   ) begin
             src_channel = 6'b01;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 3;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 4;
     end
 
 end

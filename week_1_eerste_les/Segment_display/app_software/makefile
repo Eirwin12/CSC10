@@ -18,7 +18,7 @@ RM		:= rm -f
 # Flags
 USERCCFLAGS	:= -g -O1 -ffunction-sections -fverbose-asm -fno-inline -mno-cache-volatile
 ARCHASFLAGS	:= --gstabs -I "C:/intelFPGA_lite/18.1/nios2eds/components/altera_nios2/sdk/inc/"
-ARCHCCFLAGS	:= -mhw-mul -mno-hw-div -I "C:/intelFPGA_lite/18.1/nios2eds/components/altera_nios2/HAL/inc/" -DSYSTEM_BUS_WIDTH=32 -DALT_SINGLE_THREADED -D_JTAG_UART_BASE=8320u
+ARCHCCFLAGS	:= -mhw-mul -mno-hw-div -I "C:/intelFPGA_lite/18.1/nios2eds/components/altera_nios2/HAL/inc/" -DSYSTEM_BUS_WIDTH=32 -DALT_SINGLE_THREADED -D_JTAG_UART_BASE=8256u
 ARCHLDFLAGS	:= --defsym nasys_stack_top=0x1000 --defsym nasys_program_mem=0x200 --defsym nasys_data_mem=0x200 --section-start .exceptions=0x20 --section-start .reset=0x0 --section-start .reset=0x0 --section-start .exceptions=0x20
 ARCHLDSCRIPT	:= --script="C:/intelFPGA_lite/18.1/University_Program/Monitor_Program/build/nios_cpp_build.ld"
 ASFLAGS		:= $(ARCHASFLAGS)
@@ -27,18 +27,18 @@ LDFLAGS		:= $(patsubst %, -Wl$(DEFINE_COMMA)%, $(ARCHLDFLAGS)) $(patsubst %, -Wl
 OCFLAGS		:= -O srec
 
 # Files
-HDRS		:=
-SRCS		:= ../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/exception_handler.c ../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/interrupt_example.c ../../../../intelFPGA_lite/18.1/University_Program/Computer_Systems/sample_programs/nios2/c/interrupt_example/interval_timer_ISR.c segment_display_c_code.c amp/lib/src/niosII_jtag_uart.c
+HDRS		:= header/globals.h header/nios2_ctrl_reg_macros.h
+SRCS		:= main.c header/exception_handler.c
 OBJS		:= $(patsubst %, %.o, $(SRCS))
 
 # Targets
-COMPILE: exception_handler.srec
+COMPILE: main.srec
 
-exception_handler.srec: exception_handler.elf
+main.srec: main.elf
 	$(RM) $@
 	$(OC) $(OCFLAGS) $< $@
 
-exception_handler.elf: $(OBJS)
+main.elf: $(OBJS)
 	$(RM) $@
 	$(CC) $(LDFLAGS) $(OBJS) -o $@
 
@@ -51,5 +51,5 @@ exception_handler.elf: $(OBJS)
 	$(AS) $(ASFLAGS) $< -o $@
 
 CLEAN: 
-	$(RM) exception_handler.srec exception_handler.elf $(OBJS)
+	$(RM) main.srec main.elf $(OBJS)
 
