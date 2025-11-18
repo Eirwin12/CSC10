@@ -129,13 +129,9 @@ void the_exception(void)
 void interrupt_handler(void) {
     int ipending;
     NIOS2_READ_IPENDING(ipending);
-    if (ipending & 0x1) // interval timer is interrupt level 0
+    if (ipending & 0x2) // interval timer is interrupt level 0
     {
         interval_timer_ISR();
-    }
-    if (ipending & 0x2) // pushbuttons are interrupt level 1
-    {
-        pushbutton_ISR();
     }
     // else, ignore the interrupt
     return;
