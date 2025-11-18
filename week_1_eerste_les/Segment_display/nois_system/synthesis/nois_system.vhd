@@ -8,14 +8,40 @@ use IEEE.numeric_std.all;
 
 entity nois_system is
 	port (
-		clk_clk            : in  std_logic                     := '0'; --         clk.clk
-		left_3_hex_export  : out std_logic_vector(20 downto 0);        --  left_3_hex.export
-		reset_reset_n      : in  std_logic                     := '0'; --       reset.reset_n
-		right_3_hex_export : out std_logic_vector(20 downto 0)         -- right_3_hex.export
+		clk_clk                              : in  std_logic                     := '0'; --                           clk.clk
+		hex3_hex0_external_connection_export : out std_logic_vector(31 downto 0);        -- hex3_hex0_external_connection.export
+		hex5_hex4_external_connection_export : out std_logic_vector(15 downto 0);        -- hex5_hex4_external_connection.export
+		reset_reset_n                        : in  std_logic                     := '0'  --                         reset.reset_n
 	);
 end entity nois_system;
 
 architecture rtl of nois_system is
+	component nois_system_HEX_display_HEX3_HEX0 is
+		port (
+			clk        : in  std_logic                     := 'X';             -- clk
+			reset_n    : in  std_logic                     := 'X';             -- reset_n
+			address    : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
+			write_n    : in  std_logic                     := 'X';             -- write_n
+			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			chipselect : in  std_logic                     := 'X';             -- chipselect
+			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
+			out_port   : out std_logic_vector(31 downto 0)                     -- export
+		);
+	end component nois_system_HEX_display_HEX3_HEX0;
+
+	component nois_system_HEX_display_HEX5_HEX4 is
+		port (
+			clk        : in  std_logic                     := 'X';             -- clk
+			reset_n    : in  std_logic                     := 'X';             -- reset_n
+			address    : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
+			write_n    : in  std_logic                     := 'X';             -- write_n
+			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			chipselect : in  std_logic                     := 'X';             -- chipselect
+			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
+			out_port   : out std_logic_vector(15 downto 0)                     -- export
+		);
+	end component nois_system_HEX_display_HEX5_HEX4;
+
 	component nois_system_Interval_timer_Segment is
 		port (
 			clk        : in  std_logic                     := 'X';             -- clk
@@ -43,19 +69,6 @@ architecture rtl of nois_system is
 			av_irq         : out std_logic                                         -- irq
 		);
 	end component nois_system_jtag_uart_0;
-
-	component nois_system_left_3_hex is
-		port (
-			clk        : in  std_logic                     := 'X';             -- clk
-			reset_n    : in  std_logic                     := 'X';             -- reset_n
-			address    : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
-			write_n    : in  std_logic                     := 'X';             -- write_n
-			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
-			chipselect : in  std_logic                     := 'X';             -- chipselect
-			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
-			out_port   : out std_logic_vector(20 downto 0)                     -- export
-		);
-	end component nois_system_left_3_hex;
 
 	component nois_system_nios2_qsys_0 is
 		port (
@@ -106,58 +119,58 @@ architecture rtl of nois_system is
 
 	component nois_system_mm_interconnect_0 is
 		port (
-			clk_0_clk_clk                                    : in  std_logic                     := 'X';             -- clk
-			nios2_qsys_0_reset_n_reset_bridge_in_reset_reset : in  std_logic                     := 'X';             -- reset
-			right_3_hex_reset_reset_bridge_in_reset_reset    : in  std_logic                     := 'X';             -- reset
-			nios2_qsys_0_data_master_address                 : in  std_logic_vector(13 downto 0) := (others => 'X'); -- address
-			nios2_qsys_0_data_master_waitrequest             : out std_logic;                                        -- waitrequest
-			nios2_qsys_0_data_master_byteenable              : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
-			nios2_qsys_0_data_master_read                    : in  std_logic                     := 'X';             -- read
-			nios2_qsys_0_data_master_readdata                : out std_logic_vector(31 downto 0);                    -- readdata
-			nios2_qsys_0_data_master_write                   : in  std_logic                     := 'X';             -- write
-			nios2_qsys_0_data_master_writedata               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
-			nios2_qsys_0_data_master_debugaccess             : in  std_logic                     := 'X';             -- debugaccess
-			nios2_qsys_0_instruction_master_address          : in  std_logic_vector(12 downto 0) := (others => 'X'); -- address
-			nios2_qsys_0_instruction_master_waitrequest      : out std_logic;                                        -- waitrequest
-			nios2_qsys_0_instruction_master_read             : in  std_logic                     := 'X';             -- read
-			nios2_qsys_0_instruction_master_readdata         : out std_logic_vector(31 downto 0);                    -- readdata
-			Interval_timer_Segment_s1_address                : out std_logic_vector(2 downto 0);                     -- address
-			Interval_timer_Segment_s1_write                  : out std_logic;                                        -- write
-			Interval_timer_Segment_s1_readdata               : in  std_logic_vector(15 downto 0) := (others => 'X'); -- readdata
-			Interval_timer_Segment_s1_writedata              : out std_logic_vector(15 downto 0);                    -- writedata
-			Interval_timer_Segment_s1_chipselect             : out std_logic;                                        -- chipselect
-			jtag_uart_0_avalon_jtag_slave_address            : out std_logic_vector(0 downto 0);                     -- address
-			jtag_uart_0_avalon_jtag_slave_write              : out std_logic;                                        -- write
-			jtag_uart_0_avalon_jtag_slave_read               : out std_logic;                                        -- read
-			jtag_uart_0_avalon_jtag_slave_readdata           : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			jtag_uart_0_avalon_jtag_slave_writedata          : out std_logic_vector(31 downto 0);                    -- writedata
-			jtag_uart_0_avalon_jtag_slave_waitrequest        : in  std_logic                     := 'X';             -- waitrequest
-			jtag_uart_0_avalon_jtag_slave_chipselect         : out std_logic;                                        -- chipselect
-			left_3_hex_s1_address                            : out std_logic_vector(1 downto 0);                     -- address
-			left_3_hex_s1_write                              : out std_logic;                                        -- write
-			left_3_hex_s1_readdata                           : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			left_3_hex_s1_writedata                          : out std_logic_vector(31 downto 0);                    -- writedata
-			left_3_hex_s1_chipselect                         : out std_logic;                                        -- chipselect
-			nios2_qsys_0_jtag_debug_module_address           : out std_logic_vector(8 downto 0);                     -- address
-			nios2_qsys_0_jtag_debug_module_write             : out std_logic;                                        -- write
-			nios2_qsys_0_jtag_debug_module_read              : out std_logic;                                        -- read
-			nios2_qsys_0_jtag_debug_module_readdata          : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			nios2_qsys_0_jtag_debug_module_writedata         : out std_logic_vector(31 downto 0);                    -- writedata
-			nios2_qsys_0_jtag_debug_module_byteenable        : out std_logic_vector(3 downto 0);                     -- byteenable
-			nios2_qsys_0_jtag_debug_module_waitrequest       : in  std_logic                     := 'X';             -- waitrequest
-			nios2_qsys_0_jtag_debug_module_debugaccess       : out std_logic;                                        -- debugaccess
-			onchip_memory2_0_s1_address                      : out std_logic_vector(9 downto 0);                     -- address
-			onchip_memory2_0_s1_write                        : out std_logic;                                        -- write
-			onchip_memory2_0_s1_readdata                     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			onchip_memory2_0_s1_writedata                    : out std_logic_vector(31 downto 0);                    -- writedata
-			onchip_memory2_0_s1_byteenable                   : out std_logic_vector(3 downto 0);                     -- byteenable
-			onchip_memory2_0_s1_chipselect                   : out std_logic;                                        -- chipselect
-			onchip_memory2_0_s1_clken                        : out std_logic;                                        -- clken
-			right_3_hex_s1_address                           : out std_logic_vector(1 downto 0);                     -- address
-			right_3_hex_s1_write                             : out std_logic;                                        -- write
-			right_3_hex_s1_readdata                          : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			right_3_hex_s1_writedata                         : out std_logic_vector(31 downto 0);                    -- writedata
-			right_3_hex_s1_chipselect                        : out std_logic                                         -- chipselect
+			clk_0_clk_clk                                           : in  std_logic                     := 'X';             -- clk
+			HEX_display_HEX3_HEX0_reset_reset_bridge_in_reset_reset : in  std_logic                     := 'X';             -- reset
+			nios2_qsys_0_reset_n_reset_bridge_in_reset_reset        : in  std_logic                     := 'X';             -- reset
+			nios2_qsys_0_data_master_address                        : in  std_logic_vector(13 downto 0) := (others => 'X'); -- address
+			nios2_qsys_0_data_master_waitrequest                    : out std_logic;                                        -- waitrequest
+			nios2_qsys_0_data_master_byteenable                     : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			nios2_qsys_0_data_master_read                           : in  std_logic                     := 'X';             -- read
+			nios2_qsys_0_data_master_readdata                       : out std_logic_vector(31 downto 0);                    -- readdata
+			nios2_qsys_0_data_master_write                          : in  std_logic                     := 'X';             -- write
+			nios2_qsys_0_data_master_writedata                      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			nios2_qsys_0_data_master_debugaccess                    : in  std_logic                     := 'X';             -- debugaccess
+			nios2_qsys_0_instruction_master_address                 : in  std_logic_vector(12 downto 0) := (others => 'X'); -- address
+			nios2_qsys_0_instruction_master_waitrequest             : out std_logic;                                        -- waitrequest
+			nios2_qsys_0_instruction_master_read                    : in  std_logic                     := 'X';             -- read
+			nios2_qsys_0_instruction_master_readdata                : out std_logic_vector(31 downto 0);                    -- readdata
+			HEX_display_HEX3_HEX0_s1_address                        : out std_logic_vector(1 downto 0);                     -- address
+			HEX_display_HEX3_HEX0_s1_write                          : out std_logic;                                        -- write
+			HEX_display_HEX3_HEX0_s1_readdata                       : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			HEX_display_HEX3_HEX0_s1_writedata                      : out std_logic_vector(31 downto 0);                    -- writedata
+			HEX_display_HEX3_HEX0_s1_chipselect                     : out std_logic;                                        -- chipselect
+			HEX_display_HEX5_HEX4_s1_address                        : out std_logic_vector(1 downto 0);                     -- address
+			HEX_display_HEX5_HEX4_s1_write                          : out std_logic;                                        -- write
+			HEX_display_HEX5_HEX4_s1_readdata                       : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			HEX_display_HEX5_HEX4_s1_writedata                      : out std_logic_vector(31 downto 0);                    -- writedata
+			HEX_display_HEX5_HEX4_s1_chipselect                     : out std_logic;                                        -- chipselect
+			Interval_timer_Segment_s1_address                       : out std_logic_vector(2 downto 0);                     -- address
+			Interval_timer_Segment_s1_write                         : out std_logic;                                        -- write
+			Interval_timer_Segment_s1_readdata                      : in  std_logic_vector(15 downto 0) := (others => 'X'); -- readdata
+			Interval_timer_Segment_s1_writedata                     : out std_logic_vector(15 downto 0);                    -- writedata
+			Interval_timer_Segment_s1_chipselect                    : out std_logic;                                        -- chipselect
+			jtag_uart_0_avalon_jtag_slave_address                   : out std_logic_vector(0 downto 0);                     -- address
+			jtag_uart_0_avalon_jtag_slave_write                     : out std_logic;                                        -- write
+			jtag_uart_0_avalon_jtag_slave_read                      : out std_logic;                                        -- read
+			jtag_uart_0_avalon_jtag_slave_readdata                  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			jtag_uart_0_avalon_jtag_slave_writedata                 : out std_logic_vector(31 downto 0);                    -- writedata
+			jtag_uart_0_avalon_jtag_slave_waitrequest               : in  std_logic                     := 'X';             -- waitrequest
+			jtag_uart_0_avalon_jtag_slave_chipselect                : out std_logic;                                        -- chipselect
+			nios2_qsys_0_jtag_debug_module_address                  : out std_logic_vector(8 downto 0);                     -- address
+			nios2_qsys_0_jtag_debug_module_write                    : out std_logic;                                        -- write
+			nios2_qsys_0_jtag_debug_module_read                     : out std_logic;                                        -- read
+			nios2_qsys_0_jtag_debug_module_readdata                 : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			nios2_qsys_0_jtag_debug_module_writedata                : out std_logic_vector(31 downto 0);                    -- writedata
+			nios2_qsys_0_jtag_debug_module_byteenable               : out std_logic_vector(3 downto 0);                     -- byteenable
+			nios2_qsys_0_jtag_debug_module_waitrequest              : in  std_logic                     := 'X';             -- waitrequest
+			nios2_qsys_0_jtag_debug_module_debugaccess              : out std_logic;                                        -- debugaccess
+			onchip_memory2_0_s1_address                             : out std_logic_vector(9 downto 0);                     -- address
+			onchip_memory2_0_s1_write                               : out std_logic;                                        -- write
+			onchip_memory2_0_s1_readdata                            : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			onchip_memory2_0_s1_writedata                           : out std_logic_vector(31 downto 0);                    -- writedata
+			onchip_memory2_0_s1_byteenable                          : out std_logic_vector(3 downto 0);                     -- byteenable
+			onchip_memory2_0_s1_chipselect                          : out std_logic;                                        -- chipselect
+			onchip_memory2_0_s1_clken                               : out std_logic                                         -- clken
 		);
 	end component nois_system_mm_interconnect_0;
 
@@ -337,38 +350,62 @@ architecture rtl of nois_system is
 	signal mm_interconnect_0_onchip_memory2_0_s1_write                     : std_logic;                     -- mm_interconnect_0:onchip_memory2_0_s1_write -> onchip_memory2_0:write
 	signal mm_interconnect_0_onchip_memory2_0_s1_writedata                 : std_logic_vector(31 downto 0); -- mm_interconnect_0:onchip_memory2_0_s1_writedata -> onchip_memory2_0:writedata
 	signal mm_interconnect_0_onchip_memory2_0_s1_clken                     : std_logic;                     -- mm_interconnect_0:onchip_memory2_0_s1_clken -> onchip_memory2_0:clken
-	signal mm_interconnect_0_right_3_hex_s1_chipselect                     : std_logic;                     -- mm_interconnect_0:right_3_hex_s1_chipselect -> right_3_hex:chipselect
-	signal mm_interconnect_0_right_3_hex_s1_readdata                       : std_logic_vector(31 downto 0); -- right_3_hex:readdata -> mm_interconnect_0:right_3_hex_s1_readdata
-	signal mm_interconnect_0_right_3_hex_s1_address                        : std_logic_vector(1 downto 0);  -- mm_interconnect_0:right_3_hex_s1_address -> right_3_hex:address
-	signal mm_interconnect_0_right_3_hex_s1_write                          : std_logic;                     -- mm_interconnect_0:right_3_hex_s1_write -> mm_interconnect_0_right_3_hex_s1_write:in
-	signal mm_interconnect_0_right_3_hex_s1_writedata                      : std_logic_vector(31 downto 0); -- mm_interconnect_0:right_3_hex_s1_writedata -> right_3_hex:writedata
-	signal mm_interconnect_0_left_3_hex_s1_chipselect                      : std_logic;                     -- mm_interconnect_0:left_3_hex_s1_chipselect -> left_3_hex:chipselect
-	signal mm_interconnect_0_left_3_hex_s1_readdata                        : std_logic_vector(31 downto 0); -- left_3_hex:readdata -> mm_interconnect_0:left_3_hex_s1_readdata
-	signal mm_interconnect_0_left_3_hex_s1_address                         : std_logic_vector(1 downto 0);  -- mm_interconnect_0:left_3_hex_s1_address -> left_3_hex:address
-	signal mm_interconnect_0_left_3_hex_s1_write                           : std_logic;                     -- mm_interconnect_0:left_3_hex_s1_write -> mm_interconnect_0_left_3_hex_s1_write:in
-	signal mm_interconnect_0_left_3_hex_s1_writedata                       : std_logic_vector(31 downto 0); -- mm_interconnect_0:left_3_hex_s1_writedata -> left_3_hex:writedata
+	signal mm_interconnect_0_hex_display_hex3_hex0_s1_chipselect           : std_logic;                     -- mm_interconnect_0:HEX_display_HEX3_HEX0_s1_chipselect -> HEX_display_HEX3_HEX0:chipselect
+	signal mm_interconnect_0_hex_display_hex3_hex0_s1_readdata             : std_logic_vector(31 downto 0); -- HEX_display_HEX3_HEX0:readdata -> mm_interconnect_0:HEX_display_HEX3_HEX0_s1_readdata
+	signal mm_interconnect_0_hex_display_hex3_hex0_s1_address              : std_logic_vector(1 downto 0);  -- mm_interconnect_0:HEX_display_HEX3_HEX0_s1_address -> HEX_display_HEX3_HEX0:address
+	signal mm_interconnect_0_hex_display_hex3_hex0_s1_write                : std_logic;                     -- mm_interconnect_0:HEX_display_HEX3_HEX0_s1_write -> mm_interconnect_0_hex_display_hex3_hex0_s1_write:in
+	signal mm_interconnect_0_hex_display_hex3_hex0_s1_writedata            : std_logic_vector(31 downto 0); -- mm_interconnect_0:HEX_display_HEX3_HEX0_s1_writedata -> HEX_display_HEX3_HEX0:writedata
 	signal mm_interconnect_0_interval_timer_segment_s1_chipselect          : std_logic;                     -- mm_interconnect_0:Interval_timer_Segment_s1_chipselect -> Interval_timer_Segment:chipselect
 	signal mm_interconnect_0_interval_timer_segment_s1_readdata            : std_logic_vector(15 downto 0); -- Interval_timer_Segment:readdata -> mm_interconnect_0:Interval_timer_Segment_s1_readdata
 	signal mm_interconnect_0_interval_timer_segment_s1_address             : std_logic_vector(2 downto 0);  -- mm_interconnect_0:Interval_timer_Segment_s1_address -> Interval_timer_Segment:address
 	signal mm_interconnect_0_interval_timer_segment_s1_write               : std_logic;                     -- mm_interconnect_0:Interval_timer_Segment_s1_write -> mm_interconnect_0_interval_timer_segment_s1_write:in
 	signal mm_interconnect_0_interval_timer_segment_s1_writedata           : std_logic_vector(15 downto 0); -- mm_interconnect_0:Interval_timer_Segment_s1_writedata -> Interval_timer_Segment:writedata
+	signal mm_interconnect_0_hex_display_hex5_hex4_s1_chipselect           : std_logic;                     -- mm_interconnect_0:HEX_display_HEX5_HEX4_s1_chipselect -> HEX_display_HEX5_HEX4:chipselect
+	signal mm_interconnect_0_hex_display_hex5_hex4_s1_readdata             : std_logic_vector(31 downto 0); -- HEX_display_HEX5_HEX4:readdata -> mm_interconnect_0:HEX_display_HEX5_HEX4_s1_readdata
+	signal mm_interconnect_0_hex_display_hex5_hex4_s1_address              : std_logic_vector(1 downto 0);  -- mm_interconnect_0:HEX_display_HEX5_HEX4_s1_address -> HEX_display_HEX5_HEX4:address
+	signal mm_interconnect_0_hex_display_hex5_hex4_s1_write                : std_logic;                     -- mm_interconnect_0:HEX_display_HEX5_HEX4_s1_write -> mm_interconnect_0_hex_display_hex5_hex4_s1_write:in
+	signal mm_interconnect_0_hex_display_hex5_hex4_s1_writedata            : std_logic_vector(31 downto 0); -- mm_interconnect_0:HEX_display_HEX5_HEX4_s1_writedata -> HEX_display_HEX5_HEX4:writedata
 	signal irq_mapper_receiver0_irq                                        : std_logic;                     -- jtag_uart_0:av_irq -> irq_mapper:receiver0_irq
 	signal irq_mapper_receiver1_irq                                        : std_logic;                     -- Interval_timer_Segment:irq -> irq_mapper:receiver1_irq
 	signal nios2_qsys_0_d_irq_irq                                          : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> nios2_qsys_0:d_irq
-	signal rst_controller_reset_out_reset                                  : std_logic;                     -- rst_controller:reset_out -> [mm_interconnect_0:right_3_hex_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in]
+	signal rst_controller_reset_out_reset                                  : std_logic;                     -- rst_controller:reset_out -> [mm_interconnect_0:HEX_display_HEX3_HEX0_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in]
 	signal rst_controller_001_reset_out_reset                              : std_logic;                     -- rst_controller_001:reset_out -> [irq_mapper:reset, mm_interconnect_0:nios2_qsys_0_reset_n_reset_bridge_in_reset_reset, onchip_memory2_0:reset, rst_controller_001_reset_out_reset:in, rst_translator:in_reset]
 	signal rst_controller_001_reset_out_reset_req                          : std_logic;                     -- rst_controller_001:reset_req -> [nios2_qsys_0:reset_req, onchip_memory2_0:reset_req, rst_translator:reset_req_in]
 	signal nios2_qsys_0_jtag_debug_module_reset_reset                      : std_logic;                     -- nios2_qsys_0:jtag_debug_module_resetrequest -> rst_controller_001:reset_in1
 	signal reset_reset_n_ports_inv                                         : std_logic;                     -- reset_reset_n:inv -> [rst_controller:reset_in0, rst_controller_001:reset_in0]
 	signal mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_read_ports_inv  : std_logic;                     -- mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_read:inv -> jtag_uart_0:av_read_n
 	signal mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write_ports_inv : std_logic;                     -- mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write:inv -> jtag_uart_0:av_write_n
-	signal mm_interconnect_0_right_3_hex_s1_write_ports_inv                : std_logic;                     -- mm_interconnect_0_right_3_hex_s1_write:inv -> right_3_hex:write_n
-	signal mm_interconnect_0_left_3_hex_s1_write_ports_inv                 : std_logic;                     -- mm_interconnect_0_left_3_hex_s1_write:inv -> left_3_hex:write_n
+	signal mm_interconnect_0_hex_display_hex3_hex0_s1_write_ports_inv      : std_logic;                     -- mm_interconnect_0_hex_display_hex3_hex0_s1_write:inv -> HEX_display_HEX3_HEX0:write_n
 	signal mm_interconnect_0_interval_timer_segment_s1_write_ports_inv     : std_logic;                     -- mm_interconnect_0_interval_timer_segment_s1_write:inv -> Interval_timer_Segment:write_n
-	signal rst_controller_reset_out_reset_ports_inv                        : std_logic;                     -- rst_controller_reset_out_reset:inv -> [Interval_timer_Segment:reset_n, left_3_hex:reset_n, right_3_hex:reset_n]
+	signal mm_interconnect_0_hex_display_hex5_hex4_s1_write_ports_inv      : std_logic;                     -- mm_interconnect_0_hex_display_hex5_hex4_s1_write:inv -> HEX_display_HEX5_HEX4:write_n
+	signal rst_controller_reset_out_reset_ports_inv                        : std_logic;                     -- rst_controller_reset_out_reset:inv -> [HEX_display_HEX3_HEX0:reset_n, HEX_display_HEX5_HEX4:reset_n, Interval_timer_Segment:reset_n]
 	signal rst_controller_001_reset_out_reset_ports_inv                    : std_logic;                     -- rst_controller_001_reset_out_reset:inv -> [jtag_uart_0:rst_n, nios2_qsys_0:reset_n]
 
 begin
+
+	hex_display_hex3_hex0 : component nois_system_HEX_display_HEX3_HEX0
+		port map (
+			clk        => clk_clk,                                                    --                 clk.clk
+			reset_n    => rst_controller_reset_out_reset_ports_inv,                   --               reset.reset_n
+			address    => mm_interconnect_0_hex_display_hex3_hex0_s1_address,         --                  s1.address
+			write_n    => mm_interconnect_0_hex_display_hex3_hex0_s1_write_ports_inv, --                    .write_n
+			writedata  => mm_interconnect_0_hex_display_hex3_hex0_s1_writedata,       --                    .writedata
+			chipselect => mm_interconnect_0_hex_display_hex3_hex0_s1_chipselect,      --                    .chipselect
+			readdata   => mm_interconnect_0_hex_display_hex3_hex0_s1_readdata,        --                    .readdata
+			out_port   => hex3_hex0_external_connection_export                        -- external_connection.export
+		);
+
+	hex_display_hex5_hex4 : component nois_system_HEX_display_HEX5_HEX4
+		port map (
+			clk        => clk_clk,                                                    --                 clk.clk
+			reset_n    => rst_controller_reset_out_reset_ports_inv,                   --               reset.reset_n
+			address    => mm_interconnect_0_hex_display_hex5_hex4_s1_address,         --                  s1.address
+			write_n    => mm_interconnect_0_hex_display_hex5_hex4_s1_write_ports_inv, --                    .write_n
+			writedata  => mm_interconnect_0_hex_display_hex5_hex4_s1_writedata,       --                    .writedata
+			chipselect => mm_interconnect_0_hex_display_hex5_hex4_s1_chipselect,      --                    .chipselect
+			readdata   => mm_interconnect_0_hex_display_hex5_hex4_s1_readdata,        --                    .readdata
+			out_port   => hex5_hex4_external_connection_export                        -- external_connection.export
+		);
 
 	interval_timer_segment : component nois_system_Interval_timer_Segment
 		port map (
@@ -394,18 +431,6 @@ begin
 			av_writedata   => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_writedata,       --                  .writedata
 			av_waitrequest => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_waitrequest,     --                  .waitrequest
 			av_irq         => irq_mapper_receiver0_irq                                         --               irq.irq
-		);
-
-	left_3_hex : component nois_system_left_3_hex
-		port map (
-			clk        => clk_clk,                                         --                 clk.clk
-			reset_n    => rst_controller_reset_out_reset_ports_inv,        --               reset.reset_n
-			address    => mm_interconnect_0_left_3_hex_s1_address,         --                  s1.address
-			write_n    => mm_interconnect_0_left_3_hex_s1_write_ports_inv, --                    .write_n
-			writedata  => mm_interconnect_0_left_3_hex_s1_writedata,       --                    .writedata
-			chipselect => mm_interconnect_0_left_3_hex_s1_chipselect,      --                    .chipselect
-			readdata   => mm_interconnect_0_left_3_hex_s1_readdata,        --                    .readdata
-			out_port   => left_3_hex_export                                -- external_connection.export
 		);
 
 	nios2_qsys_0 : component nois_system_nios2_qsys_0
@@ -453,72 +478,60 @@ begin
 			freeze     => '0'                                               -- (terminated)
 		);
 
-	right_3_hex : component nois_system_left_3_hex
-		port map (
-			clk        => clk_clk,                                          --                 clk.clk
-			reset_n    => rst_controller_reset_out_reset_ports_inv,         --               reset.reset_n
-			address    => mm_interconnect_0_right_3_hex_s1_address,         --                  s1.address
-			write_n    => mm_interconnect_0_right_3_hex_s1_write_ports_inv, --                    .write_n
-			writedata  => mm_interconnect_0_right_3_hex_s1_writedata,       --                    .writedata
-			chipselect => mm_interconnect_0_right_3_hex_s1_chipselect,      --                    .chipselect
-			readdata   => mm_interconnect_0_right_3_hex_s1_readdata,        --                    .readdata
-			out_port   => right_3_hex_export                                -- external_connection.export
-		);
-
 	mm_interconnect_0 : component nois_system_mm_interconnect_0
 		port map (
-			clk_0_clk_clk                                    => clk_clk,                                                      --                                  clk_0_clk.clk
-			nios2_qsys_0_reset_n_reset_bridge_in_reset_reset => rst_controller_001_reset_out_reset,                           -- nios2_qsys_0_reset_n_reset_bridge_in_reset.reset
-			right_3_hex_reset_reset_bridge_in_reset_reset    => rst_controller_reset_out_reset,                               --    right_3_hex_reset_reset_bridge_in_reset.reset
-			nios2_qsys_0_data_master_address                 => nios2_qsys_0_data_master_address,                             --                   nios2_qsys_0_data_master.address
-			nios2_qsys_0_data_master_waitrequest             => nios2_qsys_0_data_master_waitrequest,                         --                                           .waitrequest
-			nios2_qsys_0_data_master_byteenable              => nios2_qsys_0_data_master_byteenable,                          --                                           .byteenable
-			nios2_qsys_0_data_master_read                    => nios2_qsys_0_data_master_read,                                --                                           .read
-			nios2_qsys_0_data_master_readdata                => nios2_qsys_0_data_master_readdata,                            --                                           .readdata
-			nios2_qsys_0_data_master_write                   => nios2_qsys_0_data_master_write,                               --                                           .write
-			nios2_qsys_0_data_master_writedata               => nios2_qsys_0_data_master_writedata,                           --                                           .writedata
-			nios2_qsys_0_data_master_debugaccess             => nios2_qsys_0_data_master_debugaccess,                         --                                           .debugaccess
-			nios2_qsys_0_instruction_master_address          => nios2_qsys_0_instruction_master_address,                      --            nios2_qsys_0_instruction_master.address
-			nios2_qsys_0_instruction_master_waitrequest      => nios2_qsys_0_instruction_master_waitrequest,                  --                                           .waitrequest
-			nios2_qsys_0_instruction_master_read             => nios2_qsys_0_instruction_master_read,                         --                                           .read
-			nios2_qsys_0_instruction_master_readdata         => nios2_qsys_0_instruction_master_readdata,                     --                                           .readdata
-			Interval_timer_Segment_s1_address                => mm_interconnect_0_interval_timer_segment_s1_address,          --                  Interval_timer_Segment_s1.address
-			Interval_timer_Segment_s1_write                  => mm_interconnect_0_interval_timer_segment_s1_write,            --                                           .write
-			Interval_timer_Segment_s1_readdata               => mm_interconnect_0_interval_timer_segment_s1_readdata,         --                                           .readdata
-			Interval_timer_Segment_s1_writedata              => mm_interconnect_0_interval_timer_segment_s1_writedata,        --                                           .writedata
-			Interval_timer_Segment_s1_chipselect             => mm_interconnect_0_interval_timer_segment_s1_chipselect,       --                                           .chipselect
-			jtag_uart_0_avalon_jtag_slave_address            => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_address,      --              jtag_uart_0_avalon_jtag_slave.address
-			jtag_uart_0_avalon_jtag_slave_write              => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write,        --                                           .write
-			jtag_uart_0_avalon_jtag_slave_read               => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_read,         --                                           .read
-			jtag_uart_0_avalon_jtag_slave_readdata           => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_readdata,     --                                           .readdata
-			jtag_uart_0_avalon_jtag_slave_writedata          => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_writedata,    --                                           .writedata
-			jtag_uart_0_avalon_jtag_slave_waitrequest        => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_waitrequest,  --                                           .waitrequest
-			jtag_uart_0_avalon_jtag_slave_chipselect         => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_chipselect,   --                                           .chipselect
-			left_3_hex_s1_address                            => mm_interconnect_0_left_3_hex_s1_address,                      --                              left_3_hex_s1.address
-			left_3_hex_s1_write                              => mm_interconnect_0_left_3_hex_s1_write,                        --                                           .write
-			left_3_hex_s1_readdata                           => mm_interconnect_0_left_3_hex_s1_readdata,                     --                                           .readdata
-			left_3_hex_s1_writedata                          => mm_interconnect_0_left_3_hex_s1_writedata,                    --                                           .writedata
-			left_3_hex_s1_chipselect                         => mm_interconnect_0_left_3_hex_s1_chipselect,                   --                                           .chipselect
-			nios2_qsys_0_jtag_debug_module_address           => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_address,     --             nios2_qsys_0_jtag_debug_module.address
-			nios2_qsys_0_jtag_debug_module_write             => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_write,       --                                           .write
-			nios2_qsys_0_jtag_debug_module_read              => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_read,        --                                           .read
-			nios2_qsys_0_jtag_debug_module_readdata          => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_readdata,    --                                           .readdata
-			nios2_qsys_0_jtag_debug_module_writedata         => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_writedata,   --                                           .writedata
-			nios2_qsys_0_jtag_debug_module_byteenable        => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_byteenable,  --                                           .byteenable
-			nios2_qsys_0_jtag_debug_module_waitrequest       => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_waitrequest, --                                           .waitrequest
-			nios2_qsys_0_jtag_debug_module_debugaccess       => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_debugaccess, --                                           .debugaccess
-			onchip_memory2_0_s1_address                      => mm_interconnect_0_onchip_memory2_0_s1_address,                --                        onchip_memory2_0_s1.address
-			onchip_memory2_0_s1_write                        => mm_interconnect_0_onchip_memory2_0_s1_write,                  --                                           .write
-			onchip_memory2_0_s1_readdata                     => mm_interconnect_0_onchip_memory2_0_s1_readdata,               --                                           .readdata
-			onchip_memory2_0_s1_writedata                    => mm_interconnect_0_onchip_memory2_0_s1_writedata,              --                                           .writedata
-			onchip_memory2_0_s1_byteenable                   => mm_interconnect_0_onchip_memory2_0_s1_byteenable,             --                                           .byteenable
-			onchip_memory2_0_s1_chipselect                   => mm_interconnect_0_onchip_memory2_0_s1_chipselect,             --                                           .chipselect
-			onchip_memory2_0_s1_clken                        => mm_interconnect_0_onchip_memory2_0_s1_clken,                  --                                           .clken
-			right_3_hex_s1_address                           => mm_interconnect_0_right_3_hex_s1_address,                     --                             right_3_hex_s1.address
-			right_3_hex_s1_write                             => mm_interconnect_0_right_3_hex_s1_write,                       --                                           .write
-			right_3_hex_s1_readdata                          => mm_interconnect_0_right_3_hex_s1_readdata,                    --                                           .readdata
-			right_3_hex_s1_writedata                         => mm_interconnect_0_right_3_hex_s1_writedata,                   --                                           .writedata
-			right_3_hex_s1_chipselect                        => mm_interconnect_0_right_3_hex_s1_chipselect                   --                                           .chipselect
+			clk_0_clk_clk                                           => clk_clk,                                                      --                                         clk_0_clk.clk
+			HEX_display_HEX3_HEX0_reset_reset_bridge_in_reset_reset => rst_controller_reset_out_reset,                               -- HEX_display_HEX3_HEX0_reset_reset_bridge_in_reset.reset
+			nios2_qsys_0_reset_n_reset_bridge_in_reset_reset        => rst_controller_001_reset_out_reset,                           --        nios2_qsys_0_reset_n_reset_bridge_in_reset.reset
+			nios2_qsys_0_data_master_address                        => nios2_qsys_0_data_master_address,                             --                          nios2_qsys_0_data_master.address
+			nios2_qsys_0_data_master_waitrequest                    => nios2_qsys_0_data_master_waitrequest,                         --                                                  .waitrequest
+			nios2_qsys_0_data_master_byteenable                     => nios2_qsys_0_data_master_byteenable,                          --                                                  .byteenable
+			nios2_qsys_0_data_master_read                           => nios2_qsys_0_data_master_read,                                --                                                  .read
+			nios2_qsys_0_data_master_readdata                       => nios2_qsys_0_data_master_readdata,                            --                                                  .readdata
+			nios2_qsys_0_data_master_write                          => nios2_qsys_0_data_master_write,                               --                                                  .write
+			nios2_qsys_0_data_master_writedata                      => nios2_qsys_0_data_master_writedata,                           --                                                  .writedata
+			nios2_qsys_0_data_master_debugaccess                    => nios2_qsys_0_data_master_debugaccess,                         --                                                  .debugaccess
+			nios2_qsys_0_instruction_master_address                 => nios2_qsys_0_instruction_master_address,                      --                   nios2_qsys_0_instruction_master.address
+			nios2_qsys_0_instruction_master_waitrequest             => nios2_qsys_0_instruction_master_waitrequest,                  --                                                  .waitrequest
+			nios2_qsys_0_instruction_master_read                    => nios2_qsys_0_instruction_master_read,                         --                                                  .read
+			nios2_qsys_0_instruction_master_readdata                => nios2_qsys_0_instruction_master_readdata,                     --                                                  .readdata
+			HEX_display_HEX3_HEX0_s1_address                        => mm_interconnect_0_hex_display_hex3_hex0_s1_address,           --                          HEX_display_HEX3_HEX0_s1.address
+			HEX_display_HEX3_HEX0_s1_write                          => mm_interconnect_0_hex_display_hex3_hex0_s1_write,             --                                                  .write
+			HEX_display_HEX3_HEX0_s1_readdata                       => mm_interconnect_0_hex_display_hex3_hex0_s1_readdata,          --                                                  .readdata
+			HEX_display_HEX3_HEX0_s1_writedata                      => mm_interconnect_0_hex_display_hex3_hex0_s1_writedata,         --                                                  .writedata
+			HEX_display_HEX3_HEX0_s1_chipselect                     => mm_interconnect_0_hex_display_hex3_hex0_s1_chipselect,        --                                                  .chipselect
+			HEX_display_HEX5_HEX4_s1_address                        => mm_interconnect_0_hex_display_hex5_hex4_s1_address,           --                          HEX_display_HEX5_HEX4_s1.address
+			HEX_display_HEX5_HEX4_s1_write                          => mm_interconnect_0_hex_display_hex5_hex4_s1_write,             --                                                  .write
+			HEX_display_HEX5_HEX4_s1_readdata                       => mm_interconnect_0_hex_display_hex5_hex4_s1_readdata,          --                                                  .readdata
+			HEX_display_HEX5_HEX4_s1_writedata                      => mm_interconnect_0_hex_display_hex5_hex4_s1_writedata,         --                                                  .writedata
+			HEX_display_HEX5_HEX4_s1_chipselect                     => mm_interconnect_0_hex_display_hex5_hex4_s1_chipselect,        --                                                  .chipselect
+			Interval_timer_Segment_s1_address                       => mm_interconnect_0_interval_timer_segment_s1_address,          --                         Interval_timer_Segment_s1.address
+			Interval_timer_Segment_s1_write                         => mm_interconnect_0_interval_timer_segment_s1_write,            --                                                  .write
+			Interval_timer_Segment_s1_readdata                      => mm_interconnect_0_interval_timer_segment_s1_readdata,         --                                                  .readdata
+			Interval_timer_Segment_s1_writedata                     => mm_interconnect_0_interval_timer_segment_s1_writedata,        --                                                  .writedata
+			Interval_timer_Segment_s1_chipselect                    => mm_interconnect_0_interval_timer_segment_s1_chipselect,       --                                                  .chipselect
+			jtag_uart_0_avalon_jtag_slave_address                   => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_address,      --                     jtag_uart_0_avalon_jtag_slave.address
+			jtag_uart_0_avalon_jtag_slave_write                     => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write,        --                                                  .write
+			jtag_uart_0_avalon_jtag_slave_read                      => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_read,         --                                                  .read
+			jtag_uart_0_avalon_jtag_slave_readdata                  => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_readdata,     --                                                  .readdata
+			jtag_uart_0_avalon_jtag_slave_writedata                 => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_writedata,    --                                                  .writedata
+			jtag_uart_0_avalon_jtag_slave_waitrequest               => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_waitrequest,  --                                                  .waitrequest
+			jtag_uart_0_avalon_jtag_slave_chipselect                => mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_chipselect,   --                                                  .chipselect
+			nios2_qsys_0_jtag_debug_module_address                  => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_address,     --                    nios2_qsys_0_jtag_debug_module.address
+			nios2_qsys_0_jtag_debug_module_write                    => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_write,       --                                                  .write
+			nios2_qsys_0_jtag_debug_module_read                     => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_read,        --                                                  .read
+			nios2_qsys_0_jtag_debug_module_readdata                 => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_readdata,    --                                                  .readdata
+			nios2_qsys_0_jtag_debug_module_writedata                => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_writedata,   --                                                  .writedata
+			nios2_qsys_0_jtag_debug_module_byteenable               => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_byteenable,  --                                                  .byteenable
+			nios2_qsys_0_jtag_debug_module_waitrequest              => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_waitrequest, --                                                  .waitrequest
+			nios2_qsys_0_jtag_debug_module_debugaccess              => mm_interconnect_0_nios2_qsys_0_jtag_debug_module_debugaccess, --                                                  .debugaccess
+			onchip_memory2_0_s1_address                             => mm_interconnect_0_onchip_memory2_0_s1_address,                --                               onchip_memory2_0_s1.address
+			onchip_memory2_0_s1_write                               => mm_interconnect_0_onchip_memory2_0_s1_write,                  --                                                  .write
+			onchip_memory2_0_s1_readdata                            => mm_interconnect_0_onchip_memory2_0_s1_readdata,               --                                                  .readdata
+			onchip_memory2_0_s1_writedata                           => mm_interconnect_0_onchip_memory2_0_s1_writedata,              --                                                  .writedata
+			onchip_memory2_0_s1_byteenable                          => mm_interconnect_0_onchip_memory2_0_s1_byteenable,             --                                                  .byteenable
+			onchip_memory2_0_s1_chipselect                          => mm_interconnect_0_onchip_memory2_0_s1_chipselect,             --                                                  .chipselect
+			onchip_memory2_0_s1_clken                               => mm_interconnect_0_onchip_memory2_0_s1_clken                   --                                                  .clken
 		);
 
 	irq_mapper : component nois_system_irq_mapper
@@ -666,11 +679,11 @@ begin
 
 	mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write_ports_inv <= not mm_interconnect_0_jtag_uart_0_avalon_jtag_slave_write;
 
-	mm_interconnect_0_right_3_hex_s1_write_ports_inv <= not mm_interconnect_0_right_3_hex_s1_write;
-
-	mm_interconnect_0_left_3_hex_s1_write_ports_inv <= not mm_interconnect_0_left_3_hex_s1_write;
+	mm_interconnect_0_hex_display_hex3_hex0_s1_write_ports_inv <= not mm_interconnect_0_hex_display_hex3_hex0_s1_write;
 
 	mm_interconnect_0_interval_timer_segment_s1_write_ports_inv <= not mm_interconnect_0_interval_timer_segment_s1_write;
+
+	mm_interconnect_0_hex_display_hex5_hex4_s1_write_ports_inv <= not mm_interconnect_0_hex_display_hex5_hex4_s1_write;
 
 	rst_controller_reset_out_reset_ports_inv <= not rst_controller_reset_out_reset;
 

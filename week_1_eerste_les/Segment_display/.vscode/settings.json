@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "*.tex": "latex",
+        "*.py": "python",
+        "*.md": "markdown",
+        "*.rs": "rust",
+        "*.html": "html",
+        "*.js": "javascript",
+        "*.css": "css",
+        "altera_avalon_timer_regs.h": "c"
+    }
+}

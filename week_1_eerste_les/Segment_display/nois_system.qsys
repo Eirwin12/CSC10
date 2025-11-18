@@ -9,7 +9,23 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element Interval_timer_Segment
+   element HEX_display_HEX3_HEX0
+   {
+      datum _sortIndex
+      {
+         value = "4";
+         type = "int";
+      }
+   }
+   element HEX_display_HEX3_HEX0.s1
+   {
+      datum baseAddress
+      {
+         value = "8240";
+         type = "String";
+      }
+   }
+   element HEX_display_HEX5_HEX4
    {
       datum _sortIndex
       {
@@ -17,11 +33,27 @@
          type = "int";
       }
    }
-   element Interval_timer_Segment.s1
+   element HEX_display_HEX5_HEX4.s1
    {
       datum baseAddress
       {
          value = "8224";
+         type = "String";
+      }
+   }
+   element Interval_timer_Segment
+   {
+      datum _sortIndex
+      {
+         value = "5";
+         type = "int";
+      }
+   }
+   element Interval_timer_Segment.s1
+   {
+      datum baseAddress
+      {
+         value = "8192";
          type = "String";
       }
    }
@@ -45,23 +77,7 @@
    {
       datum baseAddress
       {
-         value = "8320";
-         type = "String";
-      }
-   }
-   element left_3_hex
-   {
-      datum _sortIndex
-      {
-         value = "4";
-         type = "int";
-      }
-   }
-   element left_3_hex.s1
-   {
-      datum baseAddress
-      {
-         value = "8288";
+         value = "8256";
          type = "String";
       }
    }
@@ -102,22 +118,6 @@
          type = "String";
       }
    }
-   element right_3_hex
-   {
-      datum _sortIndex
-      {
-         value = "5";
-         type = "int";
-      }
-   }
-   element right_3_hex.s1
-   {
-      datum baseAddress
-      {
-         value = "8304";
-         type = "String";
-      }
-   }
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
@@ -141,16 +141,52 @@
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface
-   name="left_3_hex"
-   internal="left_3_hex.external_connection"
+   name="hex3_hex0_external_connection"
+   internal="HEX_display_HEX3_HEX0.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="hex5_hex4_external_connection"
+   internal="HEX_display_HEX5_HEX4.external_connection"
    type="conduit"
    dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
- <interface
-   name="right_3_hex"
-   internal="right_3_hex.external_connection"
-   type="conduit"
-   dir="end" />
+ <module
+   name="HEX_display_HEX3_HEX0"
+   kind="altera_avalon_pio"
+   version="18.1"
+   enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Output" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="32" />
+ </module>
+ <module
+   name="HEX_display_HEX5_HEX4"
+   kind="altera_avalon_pio"
+   version="18.1"
+   enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Output" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="16" />
+ </module>
  <module
    name="Interval_timer_Segment"
    kind="altera_avalon_timer"
@@ -192,20 +228,6 @@
   <parameter name="writeBufferDepth" value="64" />
   <parameter name="writeIRQThreshold" value="8" />
  </module>
- <module name="left_3_hex" kind="altera_avalon_pio" version="18.1" enabled="1">
-  <parameter name="bitClearingEdgeCapReg" value="false" />
-  <parameter name="bitModifyingOutReg" value="false" />
-  <parameter name="captureEdge" value="false" />
-  <parameter name="clockRate" value="50000000" />
-  <parameter name="direction" value="Output" />
-  <parameter name="edgeType" value="RISING" />
-  <parameter name="generateIRQ" value="false" />
-  <parameter name="irqType" value="LEVEL" />
-  <parameter name="resetValue" value="0" />
-  <parameter name="simDoTestBenchWiring" value="false" />
-  <parameter name="simDrivenValue" value="0" />
-  <parameter name="width" value="21" />
- </module>
  <module
    name="nios2_qsys_0"
    kind="altera_nios2_qsys"
@@ -220,7 +242,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="14" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x1800' end='0x2000' /><slave name='Interval_timer_Segment.s1' start='0x2020' end='0x2040' /><slave name='left_3_hex.s1' start='0x2060' end='0x2070' /><slave name='right_3_hex.s1' start='0x2070' end='0x2080' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x2080' end='0x2088' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x1800' end='0x2000' /><slave name='Interval_timer_Segment.s1' start='0x2000' end='0x2020' /><slave name='HEX_display_HEX5_HEX4.s1' start='0x2020' end='0x2030' /><slave name='HEX_display_HEX3_HEX0.s1' start='0x2030' end='0x2040' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x2040' end='0x2048' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -369,31 +391,13 @@
   <parameter name="useShallowMemBlocks" value="false" />
   <parameter name="writable" value="true" />
  </module>
- <module
-   name="right_3_hex"
-   kind="altera_avalon_pio"
-   version="18.1"
-   enabled="1">
-  <parameter name="bitClearingEdgeCapReg" value="false" />
-  <parameter name="bitModifyingOutReg" value="false" />
-  <parameter name="captureEdge" value="false" />
-  <parameter name="clockRate" value="50000000" />
-  <parameter name="direction" value="Output" />
-  <parameter name="edgeType" value="RISING" />
-  <parameter name="generateIRQ" value="false" />
-  <parameter name="irqType" value="LEVEL" />
-  <parameter name="resetValue" value="0" />
-  <parameter name="simDoTestBenchWiring" value="false" />
-  <parameter name="simDrivenValue" value="0" />
-  <parameter name="width" value="21" />
- </module>
  <connection
    kind="avalon"
    version="18.1"
    start="nios2_qsys_0.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x2080" />
+  <parameter name="baseAddress" value="0x2040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -418,18 +422,9 @@
    kind="avalon"
    version="18.1"
    start="nios2_qsys_0.data_master"
-   end="right_3_hex.s1">
+   end="HEX_display_HEX3_HEX0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x2070" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.1"
-   start="nios2_qsys_0.data_master"
-   end="left_3_hex.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x2060" />
+  <parameter name="baseAddress" value="0x2030" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -437,6 +432,15 @@
    version="18.1"
    start="nios2_qsys_0.data_master"
    end="Interval_timer_Segment.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x2000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="nios2_qsys_0.data_master"
+   end="HEX_display_HEX5_HEX4.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x2020" />
   <parameter name="defaultConnection" value="false" />
@@ -461,13 +465,21 @@
  </connection>
  <connection kind="clock" version="18.1" start="clk_0.clk" end="nios2_qsys_0.clk" />
  <connection kind="clock" version="18.1" start="clk_0.clk" end="jtag_uart_0.clk" />
- <connection kind="clock" version="18.1" start="clk_0.clk" end="right_3_hex.clk" />
- <connection kind="clock" version="18.1" start="clk_0.clk" end="left_3_hex.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk_0.clk"
+   end="HEX_display_HEX3_HEX0.clk" />
  <connection
    kind="clock"
    version="18.1"
    start="clk_0.clk"
    end="Interval_timer_Segment.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk_0.clk"
+   end="HEX_display_HEX5_HEX4.clk" />
  <connection
    kind="clock"
    version="18.1"
@@ -496,17 +508,17 @@
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
-   end="left_3_hex.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="right_3_hex.reset" />
+   end="HEX_display_HEX3_HEX0.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
    end="Interval_timer_Segment.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="HEX_display_HEX5_HEX4.reset" />
  <connection
    kind="reset"
    version="18.1"

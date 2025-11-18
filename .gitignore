@@ -53,3 +53,10 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# files van quartus
+.qsys_edit/
+output_files/
+db/
+incremental_db/
+*.bak
