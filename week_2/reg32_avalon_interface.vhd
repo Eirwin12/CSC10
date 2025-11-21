@@ -21,23 +21,6 @@ architecture rtl of reg32_avalon_interface is
 					)return std_logic_vector is
 		variable output: std_logic_vector(6 downto 0);
 	begin
---		output := "0000001" when number = "0000" else
---			 "1001111" when number = "0001" else
---			 "0010010" when number = "0010" else
---			 "0000110" when number = "0011" else
---			 "1001100" when number = "0100" else
---			 "0100100" when number = "0101" else
---			 "0100000" when number = "0110" else
---			 "0001111" when number = "0111" else
---			 "0000000" when number = "1000" else
---			 "0001100" when number = "1001" else
---			 "0001000" when number = "1010" else
---			 "1100000" when number = "1011" else
---			 "0110001" when number = "1100" else
---			 "1000010" when number = "1101" else
---			 "0110000" when number = "1110" else
---			 "0111000" when number = "1111" else
---			 "1111111";
 		case number is
 			WHEN "0000" => output := "0000001";
 			WHEN "0001" => output := "1001111";
@@ -72,11 +55,11 @@ begin
 				elsif write then
 					if byteenable(0) then
 						regs(0)(6 downto 0) <= hex_to_7_seg(writedata(3 downto 0));
-						regs(0)(14 downto 8) <= hex_to_7_seg(writedata(7 downto 4));
+						regs(0)(13 downto 7) <= hex_to_7_seg(writedata(7 downto 4));
 					end if;
 					if byteenable(1) then
-						regs(0)(22 downto 16) <= hex_to_7_seg(writedata(11 downto 8));
-						regs(0)(30 downto 24) <= hex_to_7_seg(writedata(15 downto 12));
+						regs(0)(20 downto 14) <= hex_to_7_seg(writedata(11 downto 8));
+						regs(0)(27 downto 21) <= hex_to_7_seg(writedata(15 downto 12));
 					end if;
 --					if byteenable(2) then
 --						regs(0)(23 downto 16) <= writedata(23 downto 16);
