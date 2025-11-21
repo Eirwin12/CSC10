@@ -4,10 +4,10 @@ USE ieee.std_logic_1164.all;
 ENTITY bst_7_segment IS
 	PORT ( CLOCK_50 : IN STD_LOGIC;
 	KEY : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-	HEX0 : OUT STD_LOGIC_VECTOR(0 TO 6);
-	HEX1 : OUT STD_LOGIC_VECTOR(0 TO 6);
-	HEX2 : OUT STD_LOGIC_VECTOR(0 TO 6);
-	HEX3 : OUT STD_LOGIC_VECTOR(0 TO 6));
+	HEX0 : OUT STD_LOGIC_VECTOR(6 downto 0);
+	HEX1 : OUT STD_LOGIC_VECTOR(6 downto 0);
+	HEX2 : OUT STD_LOGIC_VECTOR(6 downto 0);
+	HEX3 : OUT STD_LOGIC_VECTOR(6 downto 0));
 	END bst_7_segment;
 
 ARCHITECTURE Structure OF bst_7_segment IS
@@ -32,5 +32,10 @@ BEGIN
 	to_hex_readdata(13 downto 7) => HEX1,
 	to_hex_readdata(20 downto 14) => HEX2,
 	to_hex_readdata(27 downto 21) => HEX3);
+--	to_hex_readdata => to_hex;
 	
+--	h0: hex7seg PORT MAP (to_HEX(3 DOWNTO 0), HEX0);
+--	h1: hex7seg PORT MAP (to_HEX(7 DOWNTO 4), HEX1);
+--	h2: hex7seg PORT MAP (to_HEX(11 DOWNTO 8), HEX2);
+--	h3: hex7seg PORT MAP (to_HEX(15 DOWNTO 12), HEX3);
 END Structure;

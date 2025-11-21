@@ -42,6 +42,7 @@ architecture rtl of reg32_avalon_interface is
 		END CASE;
 		return output;
 	end function;
+	signal seven_seg_display: std_logic_vector(31 downto 0);
 begin
 	process(clock, resetn)
 	begin
@@ -55,22 +56,27 @@ begin
 					readdata <= regs(0);
 				elsif write then
 					if byteenable(0) then
-						regs(0)(6 downto 0) <= hex_to_7_seg(writedata(3 downto 0));
-						regs(0)(13 downto 7) <= hex_to_7_seg(writedata(7 downto 4));
+						regs(0)(7 downto 0) <= writedata(7 downto 0);
 					end if;
 					if byteenable(1) then
-						regs(0)(20 downto 14) <= hex_to_7_seg(writedata(11 downto 8));
-						regs(0)(27 downto 21) <= hex_to_7_seg(writedata(15 downto 12));
+						regs(0)(15 downto 8) <= writedata(15 downto 8);
 					end if;
---					if byteenable(2) then
---						regs(0)(23 downto 16) <= writedata(23 downto 16);
---					end if;
---					if byteenable(3) then
---						regs(0)(31 downto 24) <= writedata(31 downto 24);
---					end if;
+					if byteenable(2) then
+						regs(0)(23 downto 16) <= writedata(23 downto 16);
+					end if;
+					if byteenable(3) then
+						regs(0)(31 downto 24) <= writedata(31 downto 24);
+					end if;
 				end if;
 			end if;
 		end if;
 	end process;
-	Q_export <= regs(0);
+	process(regs)
+	begin
+		seven_seg_display(6 downto 0) <= hex_to_7_seg(regs(0)(3 downto 0));
+		seven_seg_display(13 downto 7) <= hex_to_7_seg(regs(0)(7 downto 4));
+		seven_seg_display(20 downto 14) <= hex_to_7_seg(regs(0)(11 downto 8));
+		seven_seg_display(27 downto 21) <= hex_to_7_seg(regs(0)(15 downto 12));
+	end process;
+	Q_export <= seven_seg_display;
 end architecture rtl;
