@@ -23,11 +23,15 @@ BEGIN
 	U0: embedded_system PORT MAP (
 	clk_clk => CLOCK_50,
 	reset_reset_n => KEY(0),
-	to_hex_readdata => open,
-	to_display_1_readdata(6 downto 0) => hex0,
-	to_display_1_readdata(13 downto 7) => hex1,
-	to_display_1_readdata(20 downto 14) => hex2,
-	to_display_1_readdata(27 downto 21) => hex3,
-	to_display_1_readdata(55 downto 28) => open);
+	to_hex_readdata(6 downto 0) => hex0,
+	to_hex_readdata(13 downto 7) => hex1,
+	to_hex_readdata(20 downto 14) => hex2,
+	to_hex_readdata(27 downto 21) => hex3,
+	to_display_1_readdata => open);
+--	to_display_1_readdata(6 downto 0) => hex0,
+--	to_display_1_readdata(13 downto 7) => hex1,
+--	to_display_1_readdata(20 downto 14) => hex2,
+--	to_display_1_readdata(27 downto 21) => hex3,
+--	to_display_1_readdata(55 downto 28) => open);
 
 END Structure;
