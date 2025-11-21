@@ -40,7 +40,7 @@ ARCHITECTURE Behavior OF hex7seg IS
 		END CASE;
 		return output;
 	end function;
-
+	signal reg_display: STD_LOGIC_VECTOR(55 downto 0);
 BEGIN
 	--    - 0 -
 	-- 5 |     | 1

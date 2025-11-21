@@ -17,19 +17,11 @@
          type = "int";
       }
    }
-   element hex_to_7_segment_decoder_0
+   element embedded_system
    {
-      datum _sortIndex
+      datum _originalDeviceFamily
       {
-         value = "6";
-         type = "int";
-      }
-   }
-   element hex_to_7_segment_decoder_0.avalon_slave_0
-   {
-      datum baseAddress
-      {
-         value = "135208";
+         value = "Cyclone V";
          type = "String";
       }
    }
@@ -93,17 +85,12 @@
          value = "5";
          type = "int";
       }
-      datum sopceditor_expanded
-      {
-         value = "1";
-         type = "boolean";
-      }
    }
    element reg32_avalon_interface_0.avalon_slave_0
    {
       datum baseAddress
       {
-         value = "135212";
+         value = "135208";
          type = "String";
       }
    }
@@ -137,7 +124,7 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="" />
+ <parameter name="projectName" value="7_segment_bst.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
@@ -146,11 +133,6 @@
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
- <interface
-   name="to_display_1"
-   internal="hex_to_7_segment_decoder_0.conduit_end"
-   type="conduit"
-   dir="end" />
  <interface
    name="to_hex"
    internal="reg32_avalon_interface_0.conduit_end"
@@ -162,11 +144,6 @@
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
- <module
-   name="hex_to_7_segment_decoder_0"
-   kind="hex_to_7_segment_decoder"
-   version="1.0"
-   enabled="1" />
  <module
    name="jtag_uart_0"
    kind="altera_avalon_jtag_uart"
@@ -200,7 +177,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="18" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x20000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x20800' end='0x21000' /><slave name='timer_0.s1' start='0x21000' end='0x21020' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x21020' end='0x21028' /><slave name='hex_to_7_segment_decoder_0.avalon_slave_0' start='0x21028' end='0x2102C' /><slave name='reg32_avalon_interface_0.avalon_slave_0' start='0x2102C' end='0x21030' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x20000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x20800' end='0x21000' /><slave name='timer_0.s1' start='0x21000' end='0x21020' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x21020' end='0x21028' /><slave name='reg32_avalon_interface_0.avalon_slave_0' start='0x21028' end='0x2102C' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -381,15 +358,6 @@
    start="nios2_qsys_0.data_master"
    end="reg32_avalon_interface_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0002102c" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.1"
-   start="nios2_qsys_0.data_master"
-   end="hex_to_7_segment_decoder_0.avalon_slave_0">
-  <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00021028" />
   <parameter name="defaultConnection" value="false" />
  </connection>
@@ -452,11 +420,6 @@
    start="clk_0.clk"
    end="reg32_avalon_interface_0.clock_sink" />
  <connection
-   kind="clock"
-   version="18.1"
-   start="clk_0.clk"
-   end="hex_to_7_segment_decoder_0.clock_sink" />
- <connection
    kind="interrupt"
    version="18.1"
    start="nios2_qsys_0.d_irq"
@@ -475,11 +438,6 @@
    version="18.1"
    start="clk_0.clk_reset"
    end="reg32_avalon_interface_0.clock_reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="hex_to_7_segment_decoder_0.clock_reset" />
  <connection
    kind="reset"
    version="18.1"
