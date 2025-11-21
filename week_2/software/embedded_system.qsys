@@ -29,7 +29,7 @@
    {
       datum baseAddress
       {
-         value = "135212";
+         value = "135208";
          type = "String";
       }
    }
@@ -103,7 +103,7 @@
    {
       datum baseAddress
       {
-         value = "135208";
+         value = "135212";
          type = "String";
       }
    }
@@ -147,7 +147,7 @@
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <interface
-   name="to_7seg"
+   name="to_display_1"
    internal="hex_to_7_segment_decoder_0.conduit_end"
    type="conduit"
    dir="end" />
@@ -200,7 +200,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="18" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x20000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x20800' end='0x21000' /><slave name='timer_0.s1' start='0x21000' end='0x21020' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x21020' end='0x21028' /><slave name='reg32_avalon_interface_0.avalon_slave_0' start='0x21028' end='0x2102C' /><slave name='hex_to_7_segment_decoder_0.avalon_slave_0' start='0x2102C' end='0x2102D' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x20000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x20800' end='0x21000' /><slave name='timer_0.s1' start='0x21000' end='0x21020' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x21020' end='0x21028' /><slave name='hex_to_7_segment_decoder_0.avalon_slave_0' start='0x21028' end='0x2102C' /><slave name='reg32_avalon_interface_0.avalon_slave_0' start='0x2102C' end='0x21030' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -381,7 +381,7 @@
    start="nios2_qsys_0.data_master"
    end="reg32_avalon_interface_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00021028" />
+  <parameter name="baseAddress" value="0x0002102c" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -390,7 +390,7 @@
    start="nios2_qsys_0.data_master"
    end="hex_to_7_segment_decoder_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0002102c" />
+  <parameter name="baseAddress" value="0x00021028" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -479,6 +479,11 @@
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
+   end="hex_to_7_segment_decoder_0.clock_reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
    end="jtag_uart_0.reset" />
  <connection
    kind="reset"
@@ -495,11 +500,6 @@
    version="18.1"
    start="clk_0.clk_reset"
    end="nios2_qsys_0.reset_n" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="hex_to_7_segment_decoder_0.reset_sink" />
  <connection
    kind="reset"
    version="18.1"

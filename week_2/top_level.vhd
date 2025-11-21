@@ -4,34 +4,30 @@ USE ieee.std_logic_1164.all;
 ENTITY bst_7_segment IS
 	PORT ( CLOCK_50 : IN STD_LOGIC;
 	KEY : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-	HEX0 : OUT STD_LOGIC_VECTOR(0 TO 6);
-	HEX1 : OUT STD_LOGIC_VECTOR(0 TO 6);
-	HEX2 : OUT STD_LOGIC_VECTOR(0 TO 6);
-	HEX3 : OUT STD_LOGIC_VECTOR(0 TO 6));
+	HEX0 : OUT STD_LOGIC_VECTOR(6 downto 0);
+	HEX1 : OUT STD_LOGIC_VECTOR(6 downto 0);
+	HEX2 : OUT STD_LOGIC_VECTOR(6 downto 0);
+	HEX3 : OUT STD_LOGIC_VECTOR(6 downto 0));
 	END bst_7_segment;
 
 ARCHITECTURE Structure OF bst_7_segment IS
-	SIGNAL to_HEX : STD_LOGIC_VECTOR(31 DOWNTO 0);
 	COMPONENT embedded_system IS
 	PORT ( 
-		clk_clk : IN STD_LOGIC;
-		reset_reset_n : IN STD_LOGIC;
-		to_hex_readdata: OUT STD_LOGIC_VECTOR (31 DOWNTO 0) );
+		clk_clk             : in  std_logic                     := '0'; --        clk.clk
+		reset_reset_n       : in  std_logic                     := '0'; --      reset.reset_n
+		to_display_1_readdata : out std_logic_vector(55 downto 0);        -- to_display.readdata
+		to_hex_readdata     : out std_logic_vector(31 downto 0));         --     to_hex.readdata
 	END COMPONENT embedded_system;
-	
-	COMPONENT hex7seg IS
-	PORT ( hex : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-		display : OUT STD_LOGIC_VECTOR(0 TO 6) );
-	END COMPONENT hex7seg;
 BEGIN
 
 	U0: embedded_system PORT MAP (
 	clk_clk => CLOCK_50,
 	reset_reset_n => KEY(0),
-	to_hex_readdata => to_HEX );
-	
-	h0: hex7seg PORT MAP (to_HEX(3 DOWNTO 0), HEX0);
-	h1: hex7seg PORT MAP (to_HEX(7 DOWNTO 4), HEX1);
-	h2: hex7seg PORT MAP (to_HEX(11 DOWNTO 8), HEX2);
-	h3: hex7seg PORT MAP (to_HEX(15 DOWNTO 12), HEX3);
+	to_hex_readdata => open,
+	to_display_1_readdata(6 downto 0) => hex0,
+	to_display_1_readdata(13 downto 7) => hex1,
+	to_display_1_readdata(20 downto 14) => hex2,
+	to_display_1_readdata(27 downto 21) => hex3,
+	to_display_1_readdata(55 downto 28) => open);
+
 END Structure;

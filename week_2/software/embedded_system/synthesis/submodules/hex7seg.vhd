@@ -29,7 +29,7 @@ BEGIN
 			if chipselect = '1' then
 				if write = '1' then
 					if byteenable(0) then
-						case writedata	(3 downto 0) is
+						case writedata(3 downto 0) is
 							WHEN "0000" => reg_display(6 downto 0) <= "0000001";
 							WHEN "0001" => reg_display(6 downto 0) <= "1001111";
 							WHEN "0010" => reg_display(6 downto 0) <= "0010010";
