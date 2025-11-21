@@ -19,19 +19,18 @@ ARCHITECTURE Structure OF bst_7_segment IS
 		to_hex_readdata: OUT STD_LOGIC_VECTOR (31 DOWNTO 0) );
 	END COMPONENT embedded_system;
 	
-	COMPONENT hex7seg IS
-	PORT ( hex : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-		display : OUT STD_LOGIC_VECTOR(0 TO 6) );
-	END COMPONENT hex7seg;
+--	COMPONENT hex7seg IS
+--	PORT ( hex : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+--		display : OUT STD_LOGIC_VECTOR(0 TO 6) );
+--	END COMPONENT hex7seg;
 BEGIN
 
 	U0: embedded_system PORT MAP (
 	clk_clk => CLOCK_50,
 	reset_reset_n => KEY(0),
-	to_hex_readdata => to_HEX );
+	to_hex_readdata(6 downto 0) => HEX0,
+	to_hex_readdata(13 downto 7) => HEX1,
+	to_hex_readdata(20 downto 14) => HEX2,
+	to_hex_readdata(27 downto 21) => HEX3);
 	
-	h0: hex7seg PORT MAP (to_HEX(3 DOWNTO 0), HEX0);
-	h1: hex7seg PORT MAP (to_HEX(7 DOWNTO 4), HEX1);
-	h2: hex7seg PORT MAP (to_HEX(11 DOWNTO 8), HEX2);
-	h3: hex7seg PORT MAP (to_HEX(15 DOWNTO 12), HEX3);
 END Structure;
