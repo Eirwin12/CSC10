@@ -139,10 +139,10 @@ ACDS_VERSION := 18.1
 # Define path to the application ELF. 
 # It may be used by the makefile fragments so is defined before including them. 
 # 
-ELF := count_binary.elf
+ELF := count_6_hex.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := count_binary.c
+C_SRCS := hello_world.c
 CXX_SRCS :=
 ASM_SRCS :=
 
@@ -177,7 +177,7 @@ CRT0 :=
 SYS_LIB :=
 
 # Define path to the root of the BSP.
-BSP_ROOT_DIR := ../count_binary_bsp/
+BSP_ROOT_DIR := ../count_6_hex_bsp/
 
 # List of application specific include directories, library directories and library names
 APP_INCLUDE_DIRS :=
@@ -188,7 +188,7 @@ APP_LIBRARY_NAMES :=
 BUILD_PRE_PROCESS :=
 BUILD_POST_PROCESS :=
 
-QUARTUS_PROJECT_DIR := ../
+QUARTUS_PROJECT_DIR := ../../
 
 
 #END GENERATED

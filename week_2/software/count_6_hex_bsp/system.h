@@ -2,9 +2,9 @@
  * system.h - SOPC Builder system and BSP software package information
  *
  * Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'embedded_system'
- * SOPC Builder design path: ../embedded_system.sopcinfo
+ * SOPC Builder design path: ../../embedded_system.sopcinfo
  *
- * Generated: Tue Nov 25 14:41:39 CET 2025
+ * Generated: Tue Nov 25 17:06:53 CET 2025
  */
 
 /*
@@ -127,7 +127,7 @@
 #define __ALTERA_AVALON_ONCHIP_MEMORY2
 #define __ALTERA_AVALON_TIMER
 #define __ALTERA_NIOS2_QSYS
-#define __REG32_AVALON_INTERFACE
+#define __REG32_AVALON_INTERFACE_V2
 
 
 /*
@@ -224,17 +224,31 @@
 
 
 /*
- * reg32_avalon_interface_0 configuration
+ * reg32_avalon_interface_v2_0_avalon_slave_0 configuration
  *
  */
 
-#define ALT_MODULE_CLASS_reg32_avalon_interface_0 reg32_avalon_interface
-#define REG32_AVALON_INTERFACE_0_BASE 0x21028
-#define REG32_AVALON_INTERFACE_0_IRQ -1
-#define REG32_AVALON_INTERFACE_0_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define REG32_AVALON_INTERFACE_0_NAME "/dev/reg32_avalon_interface_0"
-#define REG32_AVALON_INTERFACE_0_SPAN 4
-#define REG32_AVALON_INTERFACE_0_TYPE "reg32_avalon_interface"
+#define ALT_MODULE_CLASS_reg32_avalon_interface_v2_0_avalon_slave_0 reg32_avalon_interface_v2
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_0_BASE 0x21028
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_0_IRQ -1
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_0_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_0_NAME "/dev/reg32_avalon_interface_v2_0_avalon_slave_0"
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_0_SPAN 4
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_0_TYPE "reg32_avalon_interface_v2"
+
+
+/*
+ * reg32_avalon_interface_v2_0_avalon_slave_1 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_reg32_avalon_interface_v2_0_avalon_slave_1 reg32_avalon_interface_v2
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_1_BASE 0x2102c
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_1_IRQ -1
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_1_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_1_NAME "/dev/reg32_avalon_interface_v2_0_avalon_slave_1"
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_1_SPAN 4
+#define REG32_AVALON_INTERFACE_V2_0_AVALON_SLAVE_1_TYPE "reg32_avalon_interface_v2"
 
 
 /*

@@ -2,9 +2,9 @@
  * linker.h - Linker script mapping information
  *
  * Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'embedded_system'
- * SOPC Builder design path: ../embedded_system.sopcinfo
+ * SOPC Builder design path: ../../embedded_system.sopcinfo
  *
- * Generated: Tue Nov 25 14:41:39 CET 2025
+ * Generated: Tue Nov 25 17:06:53 CET 2025
  */
 
 /*

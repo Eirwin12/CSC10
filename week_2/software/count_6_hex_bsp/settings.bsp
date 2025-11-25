@@ -2,11 +2,11 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>25-nov-2025 14:41:39</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1764078099162</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\CSC10\week_2\count_binary_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>25-nov-2025 17:06:53</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1764086813647</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\CSC10\week_2\software\count_6_hex_bsp</BspGeneratedLocation>
         <BspSettingsFile>.\settings.bsp</BspSettingsFile>
-        <SopcDesignFile>..\embedded_system.sopcinfo</SopcDesignFile>
+        <SopcDesignFile>..\..\embedded_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2_qsys_0</Cpu>
         <SchemaVersion>1.9</SchemaVersion>
@@ -917,8 +917,14 @@
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>reg32_avalon_interface_0</slaveDescriptor>
+                <slaveDescriptor>reg32_avalon_interface_v2_0_avalon_slave_0</slaveDescriptor>
                 <addressRange>0x00021028 - 0x0002102B</addressRange>
+                <addressSpan>4</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>reg32_avalon_interface_v2_0_avalon_slave_1</slaveDescriptor>
+                <addressRange>0x0002102C - 0x0002102F</addressRange>
                 <addressSpan>4</addressSpan>
                 <attributes/>
         </MemoryMap>
