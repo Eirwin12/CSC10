@@ -9,12 +9,17 @@ entity reg32_avalon_interface is
 		readdata : out std_logic_vector(31 downto 0);
 		writedata : in std_logic_vector(31 downto 0);
 		byteenable : in std_logic_vector(3 downto 0);
-		Q_export : out std_logic_vector(31 downto 0)
+		Q_export : out std_logic_vector(31 downto 0);
+		read_2, write_2, chipselect_2 : in std_logic;
+		readdata_2 : out std_logic_vector(31 downto 0);
+		writedata_2 : in std_logic_vector(31 downto 0);
+		byteenable_2 : in std_logic_vector(3 downto 0);
+		Q_export_2 : out std_logic_vector(31 downto 0)
 	);
 end reg32_avalon_interface;
 
 architecture rtl of reg32_avalon_interface is
-	type registers is array (0 to 0) of std_logic_vector(31 downto 0);
+	type registers is array (0 to 1) of std_logic_vector(31 downto 0);
 	signal regs: registers;
 	
 	function hex_to_7_seg(
@@ -42,7 +47,7 @@ architecture rtl of reg32_avalon_interface is
 		END CASE;
 		return output;
 	end function;
-	signal seven_seg_display: std_logic_vector(31 downto 0);
+	signal seven_seg_display: registers;
 begin
 	process(clock, resetn)
 	begin
@@ -53,7 +58,7 @@ begin
 		elsif rising_edge(clock) then
 			if chipselect then
 				if read then
-					readdata <= regs(0);
+					readdata_2 <= regs(1);
 				elsif write then
 					if byteenable(0) then
 						regs(0)(7 downto 0) <= writedata(7 downto 0);
@@ -69,14 +74,41 @@ begin
 					end if;
 				end if;
 			end if;
+			
+			if chipselect_2 then
+				if read_2 then
+					readdata_2 <= regs(1);
+				elsif write_2 then
+					if byteenable_2(0) then
+						regs(1)(7 downto 0) <= writedata_2(7 downto 0);
+					end if;
+					if byteenable_2(1) then
+						regs(1)(15 downto 8) <= writedata_2(15 downto 8);
+					end if;
+					if byteenable_2(2) then
+						regs(1)(23 downto 16) <= writedata_2(23 downto 16);
+					end if;
+					if byteenable_2(3) then
+						regs(1)(31 downto 24) <= writedata_2(31 downto 24);
+					end if;
+				end if;
+			end if;
 		end if;
 	end process;
+
 	process(regs)
 	begin
-		seven_seg_display(6 downto 0) <= hex_to_7_seg(regs(0)(3 downto 0));
-		seven_seg_display(13 downto 7) <= hex_to_7_seg(regs(0)(7 downto 4));
-		seven_seg_display(20 downto 14) <= hex_to_7_seg(regs(0)(11 downto 8));
-		seven_seg_display(27 downto 21) <= hex_to_7_seg(regs(0)(15 downto 12));
+		seven_seg_display(0)(6 downto 0) <= hex_to_7_seg(regs(0)(3 downto 0));
+		seven_seg_display(0)(13 downto 7) <= hex_to_7_seg(regs(0)(7 downto 4));
+		seven_seg_display(0)(20 downto 14) <= hex_to_7_seg(regs(0)(11 downto 8));
+		seven_seg_display(0)(27 downto 21) <= hex_to_7_seg(regs(0)(15 downto 12));
+		
+		
+		seven_seg_display(1)(6 downto 0) <= hex_to_7_seg(regs(1)(3 downto 0));
+		seven_seg_display(1)(13 downto 7) <= hex_to_7_seg(regs(1)(7 downto 4));
+		seven_seg_display(1)(20 downto 14) <= hex_to_7_seg(regs(1)(11 downto 8));
+		seven_seg_display(1)(27 downto 21) <= hex_to_7_seg(regs(1)(15 downto 12));
 	end process;
-	Q_export <= seven_seg_display;
+	Q_export   <= seven_seg_display(0);
+	Q_export_2 <= seven_seg_display(1);
 end architecture rtl;
