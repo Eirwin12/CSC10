@@ -2,10 +2,10 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>28-nov-2025 10:35:49</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1764322549090</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>28-nov-2025 12:10:07</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1764328207606</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\CSC10\week_2\software\microcOSII_counter_bsp</BspGeneratedLocation>
-        <BspSettingsFile>.\settings.bsp</BspSettingsFile>
+        <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\embedded_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2_qsys_0</Cpu>

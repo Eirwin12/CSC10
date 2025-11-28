@@ -30,7 +30,7 @@
 
 #include <stdio.h>
 #include "includes.h"
-
+#include "altera_avalon_jtag_uart.h"
 /* Definition of Task Stacks */
 #define   TASK_STACKSIZE       2048
 OS_STK    task1_stk[TASK_STACKSIZE];
@@ -90,19 +90,27 @@ void countTask2(void* pdata)
 	}
 }
 
+typedef struct {
+	TOESTAND_EN *toestand;
+	altera_avalon_jtag_uart_state uartTag;
+}uartData;
+extern int altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp,
+  char* buffer, int space, int flags);
+
 void UARTTask(void* pdata)
 {
-	TOESTAND_EN *toestand = (TOESTAND_EN*)pdata;
+	uartData data = *(uartData*)pdata;
 	while(1)
 	{
-		char input;
-		if(input == '0')
+		char input[1];
+		altera_avalon_jtag_uart_read(&data.uartTag, input, 1, 0);
+		if(input[0] == '0')
 		{
-			*toestand = stilstaan;
+			*data.toestand= stilstaan;
 		}
-		if(input == '1')
+		if(input[0] == '1')
 		{
-			*toestand = lopen;
+			*data.toestand = lopen;
 		}
 	}
 }
@@ -146,8 +154,11 @@ int main(void)
                   NULL,
                   0);
 
+  altera_avalon_jtag_uart_state uartTag = {JTAG_UART_0_BASE};
+  altera_avalon_jtag_uart_init(&uartTag, JTAG_UART_0_IRQ_INTERRUPT_CONTROLLER_ID, JTAG_UART_0_IRQ);
+  uartData taskData = {&toestand, uartTag};
   OSTaskCreateExt(UARTTask,
-		  	  	  &toestand,
+		  	  	  &taskData,
                   (void *)&task3_stk[TASK_STACKSIZE-1],
                   TASK3_PRIORITY,
                   TASK3_PRIORITY,
