@@ -58,7 +58,7 @@ begin
 		elsif rising_edge(clock) then
 			if chipselect then
 				if read then
-					readdata_2 <= regs(1);
+					readdata <= regs(0);
 				elsif write then
 					if byteenable(0) then
 						regs(0)(7 downto 0) <= writedata(7 downto 0);

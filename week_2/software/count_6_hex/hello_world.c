@@ -10,7 +10,7 @@ volatile alt_8 flag      = 0; //flag for if count value has past or not
 
 #define TIMER_STATUS 0x0
 
-alt_isr_func timer_isr(void) {
+void timer_isr(void) {
     volatile int * timer_status = (int *)(TIMER_0_BASE + TIMER_STATUS);
 
     // Clear the timer interrupt by writing 0 to TO bit
@@ -50,9 +50,7 @@ int main(void) {
         {
         	flag = 0;
             *lsb = count & 0xFFFF;
-            *msb = (count>>8) & 0xFF;
+            *msb = (count>>16) & 0xFF;
         ; // main program simply idles
         }
 }
-
-//void isr(void)
