@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>28-nov-2025 12:10:07</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1764328207606</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>28-nov-2025 14:15:07</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1764335707283</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\CSC10\week_2\software\microcOSII_counter_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\embedded_system.sopcinfo</SopcDesignFile>
@@ -1740,31 +1740,31 @@
         </Setting>
         <MemoryMap>
                 <slaveDescriptor>onchip_memory2_0</slaveDescriptor>
-                <addressRange>0x00000000 - 0x0001F3FF</addressRange>
-                <addressSpan>128000</addressSpan>
+                <addressRange>0x00000000 - 0x00037A9F</addressRange>
+                <addressSpan>228000</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>timer_0</slaveDescriptor>
-                <addressRange>0x00021000 - 0x0002101F</addressRange>
+                <addressRange>0x00041000 - 0x0004101F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>jtag_uart_0</slaveDescriptor>
-                <addressRange>0x00021020 - 0x00021027</addressRange>
+                <addressRange>0x00041020 - 0x00041027</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>reg32_avalon_interface_v2_0_avalon_slave_0</slaveDescriptor>
-                <addressRange>0x00021028 - 0x0002102B</addressRange>
+                <slaveDescriptor>reg32_avalon_interface_v2_0_avalon_slave_1</slaveDescriptor>
+                <addressRange>0x00041028 - 0x0004102B</addressRange>
                 <addressSpan>4</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>reg32_avalon_interface_v2_0_avalon_slave_1</slaveDescriptor>
-                <addressRange>0x0002102C - 0x0002102F</addressRange>
+                <slaveDescriptor>reg32_avalon_interface_v2_0_avalon_slave_0</slaveDescriptor>
+                <addressRange>0x0004102C - 0x0004102F</addressRange>
                 <addressSpan>4</addressSpan>
                 <attributes/>
         </MemoryMap>

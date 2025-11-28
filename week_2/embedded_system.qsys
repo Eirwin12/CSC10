@@ -45,7 +45,7 @@
    {
       datum baseAddress
       {
-         value = "135200";
+         value = "266272";
          type = "String";
       }
    }
@@ -61,7 +61,7 @@
    {
       datum baseAddress
       {
-         value = "133120";
+         value = "264192";
          type = "String";
       }
    }
@@ -98,7 +98,7 @@
    {
       datum baseAddress
       {
-         value = "135208";
+         value = "266284";
          type = "String";
       }
    }
@@ -106,7 +106,7 @@
    {
       datum baseAddress
       {
-         value = "135212";
+         value = "266280";
          type = "String";
       }
    }
@@ -122,7 +122,7 @@
    {
       datum baseAddress
       {
-         value = "135168";
+         value = "266240";
          type = "String";
       }
    }
@@ -197,8 +197,8 @@
   <parameter name="cpuID_stored" value="0" />
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
-  <parameter name="dataAddrWidth" value="18" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1F400' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x20800' end='0x21000' /><slave name='timer_0.s1' start='0x21000' end='0x21020' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x21020' end='0x21028' /><slave name='reg32_avalon_interface_v2_0.avalon_slave_0' start='0x21028' end='0x2102C' /><slave name='reg32_avalon_interface_v2_0.avalon_slave_1' start='0x2102C' end='0x21030' /></address-map>]]></parameter>
+  <parameter name="dataAddrWidth" value="19" />
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x37AA0' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x40800' end='0x41000' /><slave name='timer_0.s1' start='0x41000' end='0x41020' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x41020' end='0x41028' /><slave name='reg32_avalon_interface_v2_0.avalon_slave_1' start='0x41028' end='0x4102C' /><slave name='reg32_avalon_interface_v2_0.avalon_slave_0' start='0x4102C' end='0x41030' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -224,8 +224,8 @@
   <parameter name="icache_size" value="4096" />
   <parameter name="icache_tagramBlockType" value="Automatic" />
   <parameter name="impl" value="Tiny" />
-  <parameter name="instAddrWidth" value="18" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1F400' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x20800' end='0x21000' /></address-map>]]></parameter>
+  <parameter name="instAddrWidth" value="19" />
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x37AA0' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x40800' end='0x41000' /></address-map>]]></parameter>
   <parameter name="internalIrqMaskSystemInfo" value="3" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
@@ -335,7 +335,7 @@
   <parameter name="initMemContent" value="true" />
   <parameter name="initializationFileName" value="onchip_mem.hex" />
   <parameter name="instanceID" value="NONE" />
-  <parameter name="memorySize" value="128000" />
+  <parameter name="memorySize" value="228000" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
   <parameter name="resetrequest_enabled" value="true" />
   <parameter name="simAllowMRAMContentsFile" value="false" />
@@ -370,7 +370,7 @@
    start="nios2_qsys_0.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00021020" />
+  <parameter name="baseAddress" value="0x00041020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -379,7 +379,7 @@
    start="nios2_qsys_0.data_master"
    end="reg32_avalon_interface_v2_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00021028" />
+  <parameter name="baseAddress" value="0x0004102c" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -388,7 +388,7 @@
    start="nios2_qsys_0.data_master"
    end="reg32_avalon_interface_v2_0.avalon_slave_1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0002102c" />
+  <parameter name="baseAddress" value="0x00041028" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -397,7 +397,7 @@
    start="nios2_qsys_0.data_master"
    end="nios2_qsys_0.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020800" />
+  <parameter name="baseAddress" value="0x00040800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -415,7 +415,7 @@
    start="nios2_qsys_0.data_master"
    end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00021000" />
+  <parameter name="baseAddress" value="0x00041000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -424,7 +424,7 @@
    start="nios2_qsys_0.instruction_master"
    end="nios2_qsys_0.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020800" />
+  <parameter name="baseAddress" value="0x00040800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection

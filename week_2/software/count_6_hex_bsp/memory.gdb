@@ -3,7 +3,7 @@
 # Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'embedded_system'
 # SOPC Builder design path: ../../embedded_system.sopcinfo
 #
-# Generated: Tue Nov 25 17:06:53 CET 2025
+# Generated: Fri Nov 28 14:27:43 CET 2025
 
 # DO NOT MODIFY THIS FILE
 #
@@ -47,4 +47,4 @@
 # by allowing GDB to cache memory contents on the host.
 
 # onchip_memory2_0
-memory 0x0 0x1f400 cache
+memory 0x0 0x37aa0 cache
