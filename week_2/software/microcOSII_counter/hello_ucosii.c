@@ -39,9 +39,9 @@ OS_STK    task3_stk[TASK_STACKSIZE];
 
 /* Definition of Task Priorities */
 
-#define TASK1_PRIORITY      3
+#define TASK1_PRIORITY      1
 #define TASK2_PRIORITY      2
-#define TASK3_PRIORITY		1
+#define TASK3_PRIORITY		3
 
 //a enum to keep track of all states
 typedef enum {
@@ -94,36 +94,28 @@ typedef struct {
 	TOESTAND_EN *toestand;
 	altera_avalon_jtag_uart_state uartTag;
 }uartData;
-extern int altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp,
-  char* buffer, int space, int flags);
-extern int altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp,
-  const char * ptr, int count, int flags);
 
 void UARTTask(void* pdata)
 {
 	uartData *data = (uartData*)pdata;
+	char input;
 	while(1)
 	{
-		char input;
-		if(altera_avalon_jtag_uart_read(&data->uartTag, &input, 2, 0)==0)
-		{
-			printf("kan uart niet goed lezen\n");
-		}
-		char bericht[20];
-		sprintf(bericht, "gelezen: %c\n", input);
-		altera_avalon_jtag_uart_write(&data->uartTag, bericht, sizeof(bericht)/sizeof(bericht[0]), 0);
 		input = getchar();
-		sprintf(bericht, "gelezen: %c\n", input);
-		altera_avalon_jtag_uart_write(&data->uartTag, bericht, sizeof(bericht)/sizeof(bericht[0]), 0);
-		if(input == '0')
+		if(input == '\r' || (input == '\n'))
 		{
-			*data->toestand= stilstaan;
+			continue;
 		}
-		if(input == '1')
+		if(*data->toestand == stilstaan && input == '1')
 		{
+			printf("toestand verandert naar lopen\n");
 			*data->toestand = lopen;
 		}
-		OSTimeDlyHMSM(0, 0, 0, 30);
+		else if(*data->toestand == lopen && input == '0')
+		{
+			printf("toestand verandert naar stilstaan\n");
+			*data->toestand = stilstaan;
+		}
 	}
 }
 
