@@ -14,11 +14,6 @@
 module hps_systeem_hps_0_fpga_interfaces(
 // h2f_reset
   output wire [1 - 1 : 0 ] h2f_rst_n
-// h2f_mpu_events
- ,input wire [1 - 1 : 0 ] h2f_mpu_eventi
- ,output wire [1 - 1 : 0 ] h2f_mpu_evento
- ,output wire [2 - 1 : 0 ] h2f_mpu_standbywfe
- ,output wire [2 - 1 : 0 ] h2f_mpu_standbywfi
 // h2f_lw_axi_clock
  ,input wire [1 - 1 : 0 ] h2f_lw_axi_clk
 // h2f_lw_axi_master
@@ -80,22 +75,6 @@ cyclonev_hps_interface_clocks_resets clocks_resets(
   })
 ,.f2h_cold_rst_req_n({
     1'b1 // 0:0
-  })
-);
-
-
-cyclonev_hps_interface_mpu_event_standby mpu_events(
- .eventi({
-    h2f_mpu_eventi[0:0] // 0:0
-  })
-,.standbywfi({
-    h2f_mpu_standbywfi[1:0] // 1:0
-  })
-,.evento({
-    h2f_mpu_evento[0:0] // 0:0
-  })
-,.standbywfe({
-    h2f_mpu_standbywfe[1:0] // 1:0
   })
 );
 

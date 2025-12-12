@@ -9,8 +9,8 @@ use IEEE.numeric_std.all;
 entity hps_systeem is
 	port (
 		clk_clk                        : in    std_logic                     := '0';             --      clk.clk
-		hps_io_hps_io_gpio_inst_GPIO63 : inout std_logic                     := '0';             --   hps_io.hps_io_gpio_inst_GPIO63
-		hps_io_hps_io_gpio_inst_GPIO64 : inout std_logic                     := '0';             --         .hps_io_gpio_inst_GPIO64
+		hps_io_hps_io_gpio_inst_GPIO53 : inout std_logic                     := '0';             --   hps_io.hps_io_gpio_inst_GPIO53
+		hps_io_hps_io_gpio_inst_GPIO54 : inout std_logic                     := '0';             --         .hps_io_gpio_inst_GPIO54
 		leds_export                    : out   std_logic_vector(7 downto 0);                     --     leds.export
 		memory_mem_a                   : out   std_logic_vector(12 downto 0);                    --   memory.mem_a
 		memory_mem_ba                  : out   std_logic_vector(2 downto 0);                     --         .mem_ba
@@ -67,10 +67,6 @@ architecture rtl of hps_systeem is
 			S2F_Width : integer := 2
 		);
 		port (
-			h2f_mpu_eventi          : in    std_logic                     := 'X';             -- eventi
-			h2f_mpu_evento          : out   std_logic;                                        -- evento
-			h2f_mpu_standbywfe      : out   std_logic_vector(1 downto 0);                     -- standbywfe
-			h2f_mpu_standbywfi      : out   std_logic_vector(1 downto 0);                     -- standbywfi
 			mem_a                   : out   std_logic_vector(12 downto 0);                    -- mem_a
 			mem_ba                  : out   std_logic_vector(2 downto 0);                     -- mem_ba
 			mem_ck                  : out   std_logic;                                        -- mem_ck
@@ -87,8 +83,8 @@ architecture rtl of hps_systeem is
 			mem_odt                 : out   std_logic;                                        -- mem_odt
 			mem_dm                  : out   std_logic;                                        -- mem_dm
 			oct_rzqin               : in    std_logic                     := 'X';             -- oct_rzqin
-			hps_io_gpio_inst_GPIO63 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO63
-			hps_io_gpio_inst_GPIO64 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO64
+			hps_io_gpio_inst_GPIO53 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO53
+			hps_io_gpio_inst_GPIO54 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO54
 			h2f_rst_n               : out   std_logic;                                        -- reset_n
 			h2f_lw_axi_clk          : in    std_logic                     := 'X';             -- clk
 			h2f_lw_AWID             : out   std_logic_vector(11 downto 0);                    -- awid
@@ -360,10 +356,6 @@ begin
 			S2F_Width => 0
 		)
 		port map (
-			h2f_mpu_eventi          => open,                            --    h2f_mpu_events.eventi
-			h2f_mpu_evento          => open,                            --                  .evento
-			h2f_mpu_standbywfe      => open,                            --                  .standbywfe
-			h2f_mpu_standbywfi      => open,                            --                  .standbywfi
 			mem_a                   => memory_mem_a,                    --            memory.mem_a
 			mem_ba                  => memory_mem_ba,                   --                  .mem_ba
 			mem_ck                  => memory_mem_ck,                   --                  .mem_ck
@@ -380,8 +372,8 @@ begin
 			mem_odt                 => memory_mem_odt,                  --                  .mem_odt
 			mem_dm                  => memory_mem_dm,                   --                  .mem_dm
 			oct_rzqin               => memory_oct_rzqin,                --                  .oct_rzqin
-			hps_io_gpio_inst_GPIO63 => hps_io_hps_io_gpio_inst_GPIO63,  --            hps_io.hps_io_gpio_inst_GPIO63
-			hps_io_gpio_inst_GPIO64 => hps_io_hps_io_gpio_inst_GPIO64,  --                  .hps_io_gpio_inst_GPIO64
+			hps_io_gpio_inst_GPIO53 => hps_io_hps_io_gpio_inst_GPIO53,  --            hps_io.hps_io_gpio_inst_GPIO53
+			hps_io_gpio_inst_GPIO54 => hps_io_hps_io_gpio_inst_GPIO54,  --                  .hps_io_gpio_inst_GPIO54
 			h2f_rst_n               => hps_0_h2f_reset_reset,           --         h2f_reset.reset_n
 			h2f_lw_axi_clk          => clk_clk,                         --  h2f_lw_axi_clock.clk
 			h2f_lw_AWID             => hps_0_h2f_lw_axi_master_awid,    -- h2f_lw_axi_master.awid

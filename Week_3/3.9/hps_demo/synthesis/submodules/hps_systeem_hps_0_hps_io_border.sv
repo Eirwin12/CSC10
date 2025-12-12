@@ -30,32 +30,32 @@ module hps_systeem_hps_0_hps_io_border(
  ,output wire [1 - 1 : 0 ] mem_dm
  ,input wire [1 - 1 : 0 ] oct_rzqin
 // hps_io
- ,inout wire [1 - 1 : 0 ] hps_io_gpio_inst_GPIO63
- ,inout wire [1 - 1 : 0 ] hps_io_gpio_inst_GPIO64
+ ,inout wire [1 - 1 : 0 ] hps_io_gpio_inst_GPIO53
+ ,inout wire [1 - 1 : 0 ] hps_io_gpio_inst_GPIO54
 );
 
-assign hps_io_gpio_inst_GPIO63 = intermediate[1] ? intermediate[0] : 'z;
-assign hps_io_gpio_inst_GPIO64 = intermediate[3] ? intermediate[2] : 'z;
+assign hps_io_gpio_inst_GPIO53 = intermediate[1] ? intermediate[0] : 'z;
+assign hps_io_gpio_inst_GPIO54 = intermediate[3] ? intermediate[2] : 'z;
 
 wire [4 - 1 : 0] intermediate;
 
-wire [15 - 1 : 0] floating;
+wire [72 - 1 : 0] floating;
 
 cyclonev_hps_peripheral_gpio gpio_inst(
- .GPIO2_PORTA_I({
-    hps_io_gpio_inst_GPIO64[0:0] // 6:6
-   ,hps_io_gpio_inst_GPIO63[0:0] // 5:5
-   ,floating[4:0] // 4:0
+ .GPIO1_PORTA_I({
+    hps_io_gpio_inst_GPIO54[0:0] // 25:25
+   ,hps_io_gpio_inst_GPIO53[0:0] // 24:24
+   ,floating[23:0] // 23:0
   })
-,.GPIO2_PORTA_O({
-    intermediate[2:2] // 6:6
-   ,intermediate[0:0] // 5:5
-   ,floating[9:5] // 4:0
+,.GPIO1_PORTA_OE({
+    intermediate[3:3] // 25:25
+   ,intermediate[1:1] // 24:24
+   ,floating[47:24] // 23:0
   })
-,.GPIO2_PORTA_OE({
-    intermediate[3:3] // 6:6
-   ,intermediate[1:1] // 5:5
-   ,floating[14:10] // 4:0
+,.GPIO1_PORTA_O({
+    intermediate[2:2] // 25:25
+   ,intermediate[0:0] // 24:24
+   ,floating[71:48] // 23:0
   })
 );
 

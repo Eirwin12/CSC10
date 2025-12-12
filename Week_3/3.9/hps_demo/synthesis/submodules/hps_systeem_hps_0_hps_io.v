@@ -23,8 +23,8 @@ module hps_systeem_hps_0_hps_io (
 		output wire        mem_odt,                 //       .mem_odt
 		output wire        mem_dm,                  //       .mem_dm
 		input  wire        oct_rzqin,               //       .oct_rzqin
-		inout  wire        hps_io_gpio_inst_GPIO63, // hps_io.hps_io_gpio_inst_GPIO63
-		inout  wire        hps_io_gpio_inst_GPIO64  //       .hps_io_gpio_inst_GPIO64
+		inout  wire        hps_io_gpio_inst_GPIO53, // hps_io.hps_io_gpio_inst_GPIO53
+		inout  wire        hps_io_gpio_inst_GPIO54  //       .hps_io_gpio_inst_GPIO54
 	);
 
 	hps_systeem_hps_0_hps_io_border border (
@@ -44,8 +44,8 @@ module hps_systeem_hps_0_hps_io (
 		.mem_odt                 (mem_odt),                 //       .mem_odt
 		.mem_dm                  (mem_dm),                  //       .mem_dm
 		.oct_rzqin               (oct_rzqin),               //       .oct_rzqin
-		.hps_io_gpio_inst_GPIO63 (hps_io_gpio_inst_GPIO63), // hps_io.hps_io_gpio_inst_GPIO63
-		.hps_io_gpio_inst_GPIO64 (hps_io_gpio_inst_GPIO64)  //       .hps_io_gpio_inst_GPIO64
+		.hps_io_gpio_inst_GPIO53 (hps_io_gpio_inst_GPIO53), // hps_io.hps_io_gpio_inst_GPIO53
+		.hps_io_gpio_inst_GPIO54 (hps_io_gpio_inst_GPIO54)  //       .hps_io_gpio_inst_GPIO54
 	);
 
 endmodule

@@ -44,8 +44,6 @@ set_global_assignment -name PROJECT_CREATION_TIME_DATE "10:58:33  DECEMBER 05, 2
 set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name BOARD "DE1-SoC Board"
-set_global_assignment -name QIP_FILE hps_demo/synthesis/hps_systeem.qip
-set_global_assignment -name VHDL_FILE hps_demo.vhd
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
@@ -1014,4 +1012,6 @@ set_global_assignment -name USE_DLL_FREQUENCY_FOR_DQS_DELAY_CHAIN ON
 set_global_assignment -name UNIPHY_SEQUENCER_DQS_CONFIG_ENABLE ON
 set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
 set_global_assignment -name ECO_REGENERATE_REPORT ON
+set_global_assignment -name QIP_FILE hps_demo/synthesis/hps_systeem.qip
+set_global_assignment -name VHDL_FILE hps_demo.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

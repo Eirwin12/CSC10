@@ -1,7 +1,9 @@
 
 module hps_systeem (
 	clk_clk,
-	reset_reset_n,
+	hps_io_hps_io_gpio_inst_GPIO53,
+	hps_io_hps_io_gpio_inst_GPIO54,
+	leds_export,
 	memory_mem_a,
 	memory_mem_ba,
 	memory_mem_ck,
@@ -18,13 +20,13 @@ module hps_systeem (
 	memory_mem_odt,
 	memory_mem_dm,
 	memory_oct_rzqin,
-	hps_io_hps_io_gpio_inst_GPIO63,
-	hps_io_hps_io_gpio_inst_GPIO64,
-	leds_export,
+	reset_reset_n,
 	switches_export);	
 
 	input		clk_clk;
-	input		reset_reset_n;
+	inout		hps_io_hps_io_gpio_inst_GPIO53;
+	inout		hps_io_hps_io_gpio_inst_GPIO54;
+	output	[7:0]	leds_export;
 	output	[12:0]	memory_mem_a;
 	output	[2:0]	memory_mem_ba;
 	output		memory_mem_ck;
@@ -41,8 +43,6 @@ module hps_systeem (
 	output		memory_mem_odt;
 	output		memory_mem_dm;
 	input		memory_oct_rzqin;
-	inout		hps_io_hps_io_gpio_inst_GPIO63;
-	inout		hps_io_hps_io_gpio_inst_GPIO64;
-	output	[7:0]	leds_export;
+	input		reset_reset_n;
 	input	[7:0]	switches_export;
 endmodule

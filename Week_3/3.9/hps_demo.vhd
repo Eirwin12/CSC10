@@ -5,8 +5,8 @@ use ieee.numeric_std.all;
 entity hps_demo is
 	port (
 		      clock_50                       : in    std_logic                     := 'X';             -- clk
-            hps_io_hps_io_gpio_inst_GPIO63 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO63
-            hps_io_hps_io_gpio_inst_GPIO64 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO64
+            hps_io_hps_io_gpio_inst_GPIO53 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO63
+            hps_io_hps_io_gpio_inst_GPIO54 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO64
             ledr                    		 : out   std_logic_vector(7 downto 0);                     -- export
             memory_mem_a                   : out   std_logic_vector(12 downto 0);                    -- mem_a
             memory_mem_ba                  : out   std_logic_vector(2 downto 0);                     -- mem_ba
@@ -34,8 +34,8 @@ architecture hps of hps_demo is
     component hps_systeem is
         port (
             clk_clk                        : in    std_logic                     := 'X';             -- clk
-            hps_io_hps_io_gpio_inst_GPIO63 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO63
-            hps_io_hps_io_gpio_inst_GPIO64 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO64
+            hps_io_hps_io_gpio_inst_GPIO53 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO63
+            hps_io_hps_io_gpio_inst_GPIO54 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO64
             leds_export                    : out   std_logic_vector(7 downto 0);                     -- export
             memory_mem_a                   : out   std_logic_vector(12 downto 0);                    -- mem_a
             memory_mem_ba                  : out   std_logic_vector(2 downto 0);                     -- mem_ba
@@ -61,8 +61,8 @@ begin
     u0 : component hps_systeem
         port map (
             clk_clk                        => clock_50,                       --      clk.clk
-            hps_io_hps_io_gpio_inst_GPIO63 => hps_io_hps_io_gpio_inst_GPIO63, --   hps_io.hps_io_gpio_inst_GPIO63
-            hps_io_hps_io_gpio_inst_GPIO64 => hps_io_hps_io_gpio_inst_GPIO64, --         .hps_io_gpio_inst_GPIO64
+            hps_io_hps_io_gpio_inst_GPIO53 => hps_io_hps_io_gpio_inst_GPIO53, --   hps_io.hps_io_gpio_inst_GPIO63
+            hps_io_hps_io_gpio_inst_GPIO54 => hps_io_hps_io_gpio_inst_GPIO54, --         .hps_io_gpio_inst_GPIO64
             leds_export                    => ledr			,                    --     leds.export
             memory_mem_a                   => memory_mem_a,                   --   memory.mem_a
             memory_mem_ba                  => memory_mem_ba,                  --         .mem_ba

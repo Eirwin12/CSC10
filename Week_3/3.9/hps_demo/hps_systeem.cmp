@@ -1,8 +1,8 @@
 	component hps_systeem is
 		port (
 			clk_clk                        : in    std_logic                     := 'X';             -- clk
-			hps_io_hps_io_gpio_inst_GPIO63 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO63
-			hps_io_hps_io_gpio_inst_GPIO64 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO64
+			hps_io_hps_io_gpio_inst_GPIO53 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO53
+			hps_io_hps_io_gpio_inst_GPIO54 : inout std_logic                     := 'X';             -- hps_io_gpio_inst_GPIO54
 			leds_export                    : out   std_logic_vector(7 downto 0);                     -- export
 			memory_mem_a                   : out   std_logic_vector(12 downto 0);                    -- mem_a
 			memory_mem_ba                  : out   std_logic_vector(2 downto 0);                     -- mem_ba
