@@ -18,27 +18,27 @@ Info: hps_systeem.PIO_switch: PIO inputs are not hardwired in test bench. Undefi
 Info: hps_systeem.hps_0: HPS Main PLL counter settings: n = 0  m = 73
 Info: hps_systeem.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
 Warning: hps_systeem.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: hps_systeem.hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
 Warning: hps_systeem.hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
-Warning: hps_systeem.hps_0: ODT is disabled. Enabling ODT (Mode Register 1) may improve signal integrity
 Info: hps_systeem: Generating hps_systeem "hps_systeem" for QUARTUS_SYNTH
 Warning: hps_0.f2h_irq0: Cannot connect clock for irq_mapper.sender
 Warning: hps_0.f2h_irq0: Cannot connect reset for irq_mapper.sender
 Warning: hps_0.f2h_irq1: Cannot connect clock for irq_mapper_001.sender
 Warning: hps_0.f2h_irq1: Cannot connect reset for irq_mapper_001.sender
 Info: PIO_led: Starting RTL generation for module 'hps_systeem_PIO_led'
-Info: PIO_led:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=hps_systeem_PIO_led --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_8087143177099496960.dir/0002_PIO_led_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_8087143177099496960.dir/0002_PIO_led_gen//hps_systeem_PIO_led_component_configuration.pl  --do_build_sim=0  ]
+Info: PIO_led:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=hps_systeem_PIO_led --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_5992151933917381118.dir/0002_PIO_led_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_5992151933917381118.dir/0002_PIO_led_gen//hps_systeem_PIO_led_component_configuration.pl  --do_build_sim=0  ]
 Info: PIO_led: Done RTL generation for module 'hps_systeem_PIO_led'
 Info: PIO_led: "hps_systeem" instantiated altera_avalon_pio "PIO_led"
 Info: PIO_switch: Starting RTL generation for module 'hps_systeem_PIO_switch'
-Info: PIO_switch:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=hps_systeem_PIO_switch --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_8087143177099496960.dir/0003_PIO_switch_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_8087143177099496960.dir/0003_PIO_switch_gen//hps_systeem_PIO_switch_component_configuration.pl  --do_build_sim=0  ]
+Info: PIO_switch:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=hps_systeem_PIO_switch --dir=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_5992151933917381118.dir/0003_PIO_switch_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/E0FFA~1.LI/AppData/Local/Temp/alt0434_5992151933917381118.dir/0003_PIO_switch_gen//hps_systeem_PIO_switch_component_configuration.pl  --do_build_sim=0  ]
 Info: PIO_switch: Done RTL generation for module 'hps_systeem_PIO_switch'
 Info: PIO_switch: "hps_systeem" instantiated altera_avalon_pio "PIO_switch"
 Info: hps_0: "Running  for module: hps_0"
 Info: hps_0: HPS Main PLL counter settings: n = 0  m = 73
 Info: hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
 Warning: hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
 Warning: hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
-Warning: hps_0: ODT is disabled. Enabling ODT (Mode Register 1) may improve signal integrity
 Info: hps_0: "hps_systeem" instantiated altera_hps "hps_0"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
