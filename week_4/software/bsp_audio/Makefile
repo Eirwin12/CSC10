@@ -144,6 +144,7 @@ ELF := bsp_audio.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS += hello_world.c
 C_SRCS += filter.c
+C_SRCS += second_filter.c
 CXX_SRCS :=
 ASM_SRCS :=
 

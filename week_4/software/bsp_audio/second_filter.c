@@ -1,12 +1,12 @@
 /*
- * filter.c
+ * second_filter.c
  *
  *  Created on: 19 dec. 2025
  *      Author: E. Li
  */
 
-#include "hamming_filter.h"
-short int FIRFilter(short int sample)
+#include "better_filter.h"
+short int secondFirFilter(short int sample)
 {
 	static short int buffer [N+1] = {0}; // buffer for input samples
 	// read audio buffer
@@ -21,9 +21,10 @@ short int FIRFilter(short int sample)
 	// Shift old samples to the back of the buffer
 	for (size_t i = N; i >= 1; i --)
 	{
-		buffer [i] = buffer [i -1];
+		buffer [i] = buffer [i-1];
 	}
 	// write audio buffer
 	return output;
 
 }
+

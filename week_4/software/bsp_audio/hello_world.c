@@ -3,7 +3,13 @@
 #include <sys/alt_stdio.h>
 #include <stdlib.h>
 #include <system.h>
-#include "filter.h"
+
+//#define TEST_BETTER_FILTER
+#ifndef TEST_BETTER_FILTER
+#include "hamming_filter.h"
+#else
+#include "better_filter.h"
+#endif
 
 int main(void) {
     alt_up_audio_dev *audio_dev = alt_up_audio_open_dev("/dev/audio_0");
@@ -24,7 +30,7 @@ int main(void) {
         	unsigned int r_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_RIGHT);
             IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, abs((short)r_buf)>>5); // light up the leds
             // write audio buffer
-            int output = FIRFilter(r_buf);
+            int output = secondFirFilter(r_buf);
         	alt_up_audio_write_fifo_head(audio_dev ,(( output>>14)+1)>>1 , ALT_UP_AUDIO_RIGHT );
         }
         int fifospace_left = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_LEFT);
