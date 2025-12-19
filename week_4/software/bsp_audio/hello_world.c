@@ -42,7 +42,7 @@ int main(void) {
     }
     while(alt_up_av_config_read_ready(audio_video_config) == 0);
     if(alt_up_av_config_write_audio_cfg_register(audio_video_config, AUDIO_CONFIG_0_BASE+12, samplingControl) != 0) {
-    	alt_printf("Error: couldn't write address to config");
+    	alt_printf("Error: couldn't write data to config");
     	return -1;
     }
     *(int *)(AUDIO_CONFIG_0_BASE+12) = samplingControl;
