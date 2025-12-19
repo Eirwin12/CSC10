@@ -1,5 +1,6 @@
 #include <altera_up_avalon_audio.h>
 #include <altera_up_avalon_audio_and_video_config.h>
+#include <altera_avalon_performance_counter.h>
 #include <altera_avalon_pio_regs.h>
 #include <sys/alt_stdio.h>
 #include <alt_types.h>
@@ -14,6 +15,7 @@
 #endif
 
 int main(void) {
+	PERF_RESET(AUDIO_0_BASE);
     alt_up_audio_dev *audio_dev = alt_up_audio_open_dev("/dev/audio_0");
     if (audio_dev == NULL) {
         alt_printf("Error: could not open audio device\n");
@@ -49,10 +51,14 @@ int main(void) {
 
     do {
         int fifospace_right = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_RIGHT);
-        if (fifospace_right > 0) { // check if data is available
-        	sample_count++;
+        if (fifospace_right > 0) { // check if data is
+        	sample_count++;available
+
+        	PERF_START_MEASURING(AUDIO_0_BASE);
         	// read audio buffer
         	unsigned int r_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_RIGHT);
+        	PERF_STOP_MEASURING(AUDIO_0_BASE);
+
             IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, abs((short)r_buf)>>5); // light up the leds
             // write audio buffer
             int output = secondFirFilter(r_buf);
@@ -61,8 +67,11 @@ int main(void) {
         int fifospace_left = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_LEFT);
         if (fifospace_left > 0) { // check if data is available
         	unsigned int l_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_LEFT);
+        	PERF_START_MEASURING(AUDIO_0_BASE);
     	    alt_up_audio_write_fifo_head(audio_dev, l_buf, ALT_UP_AUDIO_LEFT);
+    	    PERF_STOP_MEASURING(AUDIO_0_BASE);
 		}
     } while (sample_count < run_time_in_samples);
+    perf_print_formatted_report(AUDIO_0_BASE, 50000000, 2);
     IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, 0); // switch off the leds
 }
