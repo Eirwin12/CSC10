@@ -50,6 +50,8 @@ int main(void) {
     *(int *)(AUDIO_CONFIG_0_BASE+12) = samplingControl;
 
     //start performance counter
+    //before beginning, reset counter
+    PERF_RESET(PERFORMANCE_COUNTER_0_BASE);
 	PERF_START_MEASURING(PERFORMANCE_COUNTER_0_BASE);
 
     do {
