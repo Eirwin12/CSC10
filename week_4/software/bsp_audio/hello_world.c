@@ -7,15 +7,10 @@
 #include <stdlib.h>
 #include <system.h>
 
-#define TEST_BETTER_FILTER
-#ifndef TEST_BETTER_FILTER
 #include "hamming_filter.h"
-#else
 #include "better_filter.h"
-#endif
 
 int main(void) {
-	PERF_RESET(AUDIO_0_BASE);
     alt_up_audio_dev *audio_dev = alt_up_audio_open_dev("/dev/audio_0");
     if (audio_dev == NULL) {
         alt_printf("Error: could not open audio device\n");
@@ -25,23 +20,6 @@ int main(void) {
     const int run_time_in_seconds = 30;
     const int run_time_in_samples = run_time_in_seconds * 48000;
     int sample_count = 0;
-
-    alt_up_av_config_dev* audio_video_config = alt_up_av_config_open_dev("audio_config_0");
-    if (audio_dev == NULL) {
-        alt_printf("Error: could not open audio config device\n");
-        return -1;
-    } else
-        alt_printf("Opened audio config\n");
-    alt_u8 samplingControl = 1<<1 | 0b0011<<2;
-    //register addres can be found in the codec datasheet
-    //should be shifted 1 bit right (7 bit value and first bit isn't counted)
-    alt_u8 addresSamplingControl = 0x10;
-
-    while(alt_up_av_config_read_ready(audio_video_config) == 0);
-    if(alt_up_av_config_write_audio_cfg_register(audio_video_config, addresSamplingControl, samplingControl) != 0) {
-    	alt_printf("Error: couldn't write address to config");
-    	return -1;
-    }
 
     //start performance counter
     //before beginning, reset counter
@@ -65,14 +43,58 @@ int main(void) {
         }
         int fifospace_left = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_LEFT);
         if (fifospace_left > 0) { // check if data is available
-        	unsigned int l_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_LEFT);
         	PERF_BEGIN(PERFORMANCE_COUNTER_0_BASE, 2);
+        	unsigned int l_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_LEFT);
     	    alt_up_audio_write_fifo_head(audio_dev, l_buf, ALT_UP_AUDIO_LEFT);
         	PERF_END(PERFORMANCE_COUNTER_0_BASE, 2);
 		}
     } while (sample_count < run_time_in_samples);
 
+    //temp. stop measure to config the frequency
     PERF_STOP_MEASURING(PERFORMANCE_COUNTER_0_BASE);
-    perf_print_formatted_report(AUDIO_0_BASE, 50000000, 2, "right", "left");
+
+    alt_up_av_config_dev* audio_video_config = alt_up_av_config_open_dev("audio_config_0");
+    if (audio_dev == NULL) {
+        alt_printf("Error: could not open audio config device\n");
+        return -1;
+    } else
+        alt_printf("Opened audio config\n");
+    alt_u8 samplingControl = 1<<1 | 0b0011<<2;
+    //register addres can be found in the codec datasheet
+    //should be shifted 1 bit right (7 bit value and first bit isn't counted)
+    alt_u8 addresSamplingControl = 0x10;
+
+    while(alt_up_av_config_read_ready(audio_video_config) == 0);
+    if(alt_up_av_config_write_audio_cfg_register(audio_video_config, addresSamplingControl, samplingControl) != 0) {
+    	alt_printf("Error: couldn't write address to config");
+    	return -1;
+    }
+    sample_count = 0;
+    PERF_START_MEASURING(PERFORMANCE_COUNTER_0_BASE);
+    do {
+        int fifospace_right = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_RIGHT);
+        if (fifospace_right > 0) { // check if data is
+        	sample_count++;//available
+
+        	PERF_BEGIN(PERFORMANCE_COUNTER_0_BASE, 3);
+        	// read audio buffer
+        	unsigned int r_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_RIGHT);
+        	PERF_END(PERFORMANCE_COUNTER_0_BASE, 3);
+
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, abs((short)r_buf)>>5); // light up the leds
+            // write audio buffer
+            int output = secondFirFilter(r_buf);
+        	alt_up_audio_write_fifo_head(audio_dev ,(( output>>14)+1)>>1 , ALT_UP_AUDIO_RIGHT );
+        }
+        int fifospace_left = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_LEFT);
+        if (fifospace_left > 0) { // check if data is available
+        	PERF_BEGIN(PERFORMANCE_COUNTER_0_BASE, 4);
+        	unsigned int l_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_LEFT);
+    	    alt_up_audio_write_fifo_head(audio_dev, l_buf, ALT_UP_AUDIO_LEFT);
+        	PERF_END(PERFORMANCE_COUNTER_0_BASE, 4);
+		}
+    } while (sample_count < run_time_in_samples);
+
+    perf_print_formatted_report(AUDIO_0_BASE, 50000000, 4, "right high frequency", "left high frequency", "right low frequency", "left low frequency");
     IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, 0); // switch off the leds
 }

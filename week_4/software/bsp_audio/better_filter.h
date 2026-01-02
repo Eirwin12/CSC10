@@ -13,7 +13,7 @@
 
 # define N 50
 // Q1.15 : 16 bits fixed point fraction length is 15 bits
-const short int B[N +1] = {
+const short int B2[N +1] = {
 	-24 , 0, 30 , 53 , 48 , 0, -79 , -143 , -127 ,
 	0, 195 , 338 , 290 , 0, -419 , -711 , -602 , 0,
 	877 , 1520 , 1344 , 0, -2377 , -5135 , -7341 , 24552 , -7341 ,

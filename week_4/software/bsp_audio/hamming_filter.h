@@ -12,7 +12,7 @@
 #include <altera_avalon_pio_regs.h>
 #define N 8
 
-const short int B[N+1] = {
+const short int B1[N+1] = {
 		0, -528 , -2817 , -6383 , 24580 , -6383 , -2817 , -528 , 0
 };
 short int FIRFilter(short int sample);

@@ -16,7 +16,7 @@ short int secondFirFilter(short int sample)
 	int output = 0;
 	for ( size_t k = 0; k <= N; k ++)
 	{
-		output += buffer [k] * B[k ];
+		output += buffer [k] * B2[k ];
 	}
 	// Shift old samples to the back of the buffer
 	for (size_t i = N; i >= 1; i --)
