@@ -49,15 +49,18 @@ int main(void) {
     }
     *(int *)(AUDIO_CONFIG_0_BASE+12) = samplingControl;
 
+    //start performance counter
+	PERF_START_MEASURING(PERFORMANCE_COUNTER_0_BASE);
+
     do {
         int fifospace_right = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_RIGHT);
         if (fifospace_right > 0) { // check if data is
-        	sample_count++;available
+        	sample_count++;//available
 
-        	PERF_START_MEASURING(AUDIO_0_BASE);
+        	PERF_BEGIN(PERFORMANCE_COUNTER_0_BASE, 1);
         	// read audio buffer
         	unsigned int r_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_RIGHT);
-        	PERF_STOP_MEASURING(AUDIO_0_BASE);
+        	PERF_END(PERFORMANCE_COUNTER_0_BASE, 1);
 
             IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, abs((short)r_buf)>>5); // light up the leds
             // write audio buffer
@@ -67,11 +70,13 @@ int main(void) {
         int fifospace_left = alt_up_audio_read_fifo_avail(audio_dev, ALT_UP_AUDIO_LEFT);
         if (fifospace_left > 0) { // check if data is available
         	unsigned int l_buf = alt_up_audio_read_fifo_head(audio_dev, ALT_UP_AUDIO_LEFT);
-        	PERF_START_MEASURING(AUDIO_0_BASE);
+        	PERF_BEGIN(PERFORMANCE_COUNTER_0_BASE, 2);
     	    alt_up_audio_write_fifo_head(audio_dev, l_buf, ALT_UP_AUDIO_LEFT);
-    	    PERF_STOP_MEASURING(AUDIO_0_BASE);
+        	PERF_END(PERFORMANCE_COUNTER_0_BASE, 2);
 		}
     } while (sample_count < run_time_in_samples);
+
+    PERF_STOP_MEASURING(PERFORMANCE_COUNTER_0_BASE);
     perf_print_formatted_report(AUDIO_0_BASE, 50000000, 2);
     IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, 0); // switch off the leds
 }
