@@ -79,6 +79,6 @@ int main(void) {
     } while (sample_count < run_time_in_samples);
 
     PERF_STOP_MEASURING(PERFORMANCE_COUNTER_0_BASE);
-    perf_print_formatted_report(AUDIO_0_BASE, 50000000, 2);
+    perf_print_formatted_report(AUDIO_0_BASE, 50000000, 2, "right", "left");
     IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, 0); // switch off the leds
 }
