@@ -26,28 +26,22 @@ int main(void) {
     const int run_time_in_samples = run_time_in_seconds * 48000;
     int sample_count = 0;
 
-    alt_up_av_config_dev* audio_video_config = alt_up_av_config_open_dev("audio_config_0")
+    alt_up_av_config_dev* audio_video_config = alt_up_av_config_open_dev("audio_config_0");
     if (audio_dev == NULL) {
         alt_printf("Error: could not open audio config device\n");
         return -1;
     } else
         alt_printf("Opened audio config\n");
-    alt_u8 samplingControl = 0b0011 <<2;
+    alt_u8 samplingControl = 1<<1 | 0b0011<<2;
     //register addres can be found in the codec datasheet
     //should be shifted 1 bit right (7 bit value and first bit isn't counted)
-    alt_u8 addresSamplingControl = 0x10>>1;
+    alt_u8 addresSamplingControl = 0x10;
 
     while(alt_up_av_config_read_ready(audio_video_config) == 0);
-    if(alt_up_av_config_write_audio_cfg_register(audio_video_config, AUDIO_CONFIG_0_BASE+8, addresSamplingControl) != 0) {
+    if(alt_up_av_config_write_audio_cfg_register(audio_video_config, addresSamplingControl, samplingControl) != 0) {
     	alt_printf("Error: couldn't write address to config");
     	return -1;
     }
-    while(alt_up_av_config_read_ready(audio_video_config) == 0);
-    if(alt_up_av_config_write_audio_cfg_register(audio_video_config, AUDIO_CONFIG_0_BASE+12, samplingControl) != 0) {
-    	alt_printf("Error: couldn't write data to config");
-    	return -1;
-    }
-    *(int *)(AUDIO_CONFIG_0_BASE+12) = samplingControl;
 
     //start performance counter
     //before beginning, reset counter
