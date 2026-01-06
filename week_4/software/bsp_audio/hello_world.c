@@ -15,19 +15,19 @@
 #endif
 
 int main(void) {
-	PERF_RESET(AUDIO_0_BASE);
+	//PERF_RESET(AUDIO_0_BASE);
     alt_up_audio_dev *audio_dev = alt_up_audio_open_dev("/dev/audio_0");
     if (audio_dev == NULL) {
         alt_printf("Error: could not open audio device\n");
         return -1;
     } else
         alt_printf("Opened audio device\n");
-    const int run_time_in_seconds = 30;
-    const int run_time_in_samples = run_time_in_seconds * 48000;
+    const int run_time_in_seconds = 10;
+    const int run_time_in_samples = run_time_in_seconds * 3000;
     int sample_count = 0;
 
-    alt_up_av_config_dev* audio_video_config = alt_up_av_config_open_dev("audio_config_0");
-    if (audio_dev == NULL) {
+    alt_up_av_config_dev* audio_video_config = alt_up_av_config_open_dev(AUDIO_CONFIG_0_NAME);
+    if (audio_video_config == NULL) {
         alt_printf("Error: could not open audio config device\n");
         return -1;
     } else
@@ -35,7 +35,7 @@ int main(void) {
     alt_u8 samplingControl = 1<<1 | 0b0011<<2;
     //register addres can be found in the codec datasheet
     //should be shifted 1 bit right (7 bit value and first bit isn't counted)
-    alt_u8 addresSamplingControl = 0x10;
+    alt_u8 addresSamplingControl = 8;
 
     while(alt_up_av_config_read_ready(audio_video_config) == 0);
     if(alt_up_av_config_write_audio_cfg_register(audio_video_config, addresSamplingControl, samplingControl) != 0) {
