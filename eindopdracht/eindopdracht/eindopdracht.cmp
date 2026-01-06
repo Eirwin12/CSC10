@@ -1,0 +1,20 @@
+	component eindopdracht is
+		port (
+			clk_clk                                      : in  std_logic                    := 'X';             -- clk
+			pio_buttons_external_connection_export       : in  std_logic_vector(3 downto 0) := (others => 'X'); -- export
+			pio_switches_external_connection_export      : in  std_logic_vector(9 downto 0) := (others => 'X'); -- export
+			rgb_framebuffer_0_rgb_matrix_conduit_r1      : out std_logic;                                       -- r1
+			rgb_framebuffer_0_rgb_matrix_conduit_g1      : out std_logic;                                       -- g1
+			rgb_framebuffer_0_rgb_matrix_conduit_b1      : out std_logic;                                       -- b1
+			rgb_framebuffer_0_rgb_matrix_conduit_r2      : out std_logic;                                       -- r2
+			rgb_framebuffer_0_rgb_matrix_conduit_g2      : out std_logic;                                       -- g2
+			rgb_framebuffer_0_rgb_matrix_conduit_b2      : out std_logic;                                       -- b2
+			rgb_framebuffer_0_rgb_matrix_conduit_addr_a  : out std_logic;                                       -- addr_a
+			rgb_framebuffer_0_rgb_matrix_conduit_addr_b  : out std_logic;                                       -- addr_b
+			rgb_framebuffer_0_rgb_matrix_conduit_addr_c  : out std_logic;                                       -- addr_c
+			rgb_framebuffer_0_rgb_matrix_conduit_clk_out : out std_logic;                                       -- clk_out
+			rgb_framebuffer_0_rgb_matrix_conduit_lat     : out std_logic;                                       -- lat
+			rgb_framebuffer_0_rgb_matrix_conduit_oe_n    : out std_logic                                        -- oe_n
+		);
+	end component eindopdracht;
+
