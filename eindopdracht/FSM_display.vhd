@@ -26,18 +26,20 @@ begin
     process(pr_state, input1, input2, ...)
     begin
         case pr_state is
-          when idle =>
+          when IDLE =>
               if input1 then
                 nx_state <= state1;
               else
                 nx_state <= state2;
               end if;
-            when state1 =>
+            when SHIFT =>
                 nx_state <= state2;
-            when state2 =>
+            when LATCH =>
                 ...;
-            when ... =>
+            when DISPLAY =>
                 ...;
+				when NEXT_ROW =>
+					 ...;
         end case;
     end process;
 
