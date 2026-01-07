@@ -5,16 +5,11 @@ use IEEE.numeric_std.all;
 entity rgb_framebuffer is
     port (
         -- Clock en Reset (Platform Designer interface names)
-        clock_sink_clk           : in  std_logic;
-        reset_sink_reset         : in  std_logic;
-        
-        -- Avalon-MM Slave Interface (Platform Designer naming)
-        avalon_slave_address     : in  std_logic_vector(9 downto 0);  -- 1024 adressen (32x32)
-        avalon_slave_read        : in  std_logic;
-        avalon_slave_write       : in  std_logic;
-        avalon_slave_writedata   : in  std_logic_vector(31 downto 0); -- RGB888 + padding
-        avalon_slave_readdata    : out std_logic_vector(31 downto 0);
-        avalon_slave_waitrequest : out std_logic;
+        clock           : in  std_logic;
+        reset           : in  std_logic;
+		  red_vector		: in std_logic_vector(31 downto 0);
+		  blue_vector		: in std_logic_vector(31 downto 0);
+		  green_vector		: in std_logic_vector(31 downto 0);
         
         -- RGB Matrix Output Conduit
         matrix_r1     : out std_logic;
@@ -45,13 +40,10 @@ architecture rtl of rgb_framebuffer is
     signal clk_counter : unsigned(5 downto 0) := (others => '0');
     signal shift_clk : std_logic := '0';
     
-    -- FSM
+    --FSM display
     type state_type is (IDLE, SHIFT, LATCH, DISPLAY, NEXT_ROW);
     signal state : state_type := IDLE;
     
-    -- PWM voor helderheid (bit-plane modulation)
-    signal pwm_counter : unsigned(7 downto 0) := (others => '0');
-    signal bit_plane : unsigned(2 downto 0) := (others => '0'); -- 0-7 voor 8-bit kleur
     
     -- Pixel data voor huidige kolom
     signal pixel1 : std_logic_vector(23 downto 0); -- Upper half (row 0-15)
@@ -63,47 +55,93 @@ architecture rtl of rgb_framebuffer is
     -- Display timer
     signal display_counter : unsigned(7 downto 0) := (others => '0');
     
+	 --wordt dit uberhaubt gebruikt??
+--    -- PWM voor helderheid (bit-plane modulation)
+--    signal pwm_counter : unsigned(7 downto 0) := (others => '0');
+    signal bit_plane : unsigned(2 downto 0) := (others => '0'); -- 0-7 voor 8-bit kleur
+	 
+	--gemaakt in hwp01. is volledig getest en zou gwn moeten werken. 
+	component pwm_generator is
+		generic(
+			divisor: natural;--deling om van 50MHz naar 1Hz
+			duty_cycle: natural--waardes van 100 tot 0
+		);
+		port(
+			input_clock: in std_ulogic;
+			reset: in std_ulogic;
+			output_clock: out std_ulogic
+		);
+	end component;
+	
+	component clock_divider is
+	generic(
+		divisor: natural--deling om van 50MHz naar 1Hz
+	);
+	port(
+		input_clock: in std_ulogic;
+		reset: in std_ulogic;
+		output_clock: out std_ulogic
+	);
+	end component;
 begin
     
-    -- Avalon-MM Interface: Read/Write naar framebuffer
-    process(clock_sink_clk, reset_sink_reset)
-    begin
-        if reset_sink_reset = '1' then
-            framebuffer <= (others => (others => '0'));
-            avalon_slave_readdata <= (others => '0');
-            avalon_slave_waitrequest <= '0';
-        elsif rising_edge(clock_sink_clk) then
-            avalon_slave_waitrequest <= '0';
-            
-            -- Write naar framebuffer
-            if avalon_slave_write = '1' then
-                framebuffer(to_integer(unsigned(avalon_slave_address))) <= avalon_slave_writedata;
-            end if;
-            
-            -- Read van framebuffer
-            if avalon_slave_read = '1' then
-                avalon_slave_readdata <= framebuffer(to_integer(unsigned(avalon_slave_address)));
-            end if;
-        end if;
-    end process;
+	--mag in principe ook zo weg. avalon interface is een laag hoger
+	-- en zit in zijn eigen vhd bestand
+	-- zie reg32_avalon_slave.vhd
+--    -- Avalon-MM Interface: Read/Write naar framebuffer
+--    process(clock_sink_clk, reset_sink_reset)
+--    begin
+--        if reset_sink_reset = '1' then
+--            framebuffer <= (others => (others => '0'));
+--            avalon_slave_readdata <= (others => '0');
+--            avalon_slave_waitrequest <= '0';
+--        elsif rising_edge(clock_sink_clk) then
+--            avalon_slave_waitrequest <= '0';
+--            
+--            -- Write naar framebuffer
+--            if avalon_slave_write = '1' then
+--                framebuffer(to_integer(unsigned(avalon_slave_address))) <= avalon_slave_writedata;
+--            end if;
+--            
+--            -- Read van framebuffer
+--            if avalon_slave_read = '1' then
+--                avalon_slave_readdata <= framebuffer(to_integer(unsigned(avalon_slave_address)));
+--            end if;
+--        end if;
+--    end process;
     
-    -- Clock divider voor shift clock
-    process(clock_sink_clk, reset_sink_reset)
-    begin
-        if reset_sink_reset = '1' then
-            clk_counter <= (others => '0');
-            shift_clk <= '0';
-        elsif rising_edge(clock_sink_clk) then
-            clk_counter <= clk_counter + 1;
-            
-            -- Toggle elke 25 cycles (50MHz / 50 = 1MHz shift clock)
-            if clk_counter = 24 then
-                shift_clk <= not shift_clk;
-                clk_counter <= (others => '0');
-            end if;
-        end if;
-    end process;
+	--included clock divider van hwp01. is betrouwbaarder (en meer in hoe vhdl bedoelt is) 
+	--dan wat AI nu genereert (alles in 1 file proppen
+--    -- Clock divider voor shift clock
+--    process(clock_sink_clk, reset_sink_reset)
+--    begin
+--        if reset_sink_reset = '1' then
+--            clk_counter <= (others => '0');
+--            shift_clk <= '0';
+--        elsif rising_edge(clock_sink_clk) then
+--            clk_counter <= clk_counter + 1;
+--            
+--            -- Toggle elke 25 cycles (50MHz / 50 = 1MHz shift clock)
+--            if clk_counter = 24 then
+--                shift_clk <= not shift_clk;
+--                clk_counter <= (others => '0');
+--            end if;
+--        end if;
+--    end process;
+
+	 output_clock: clock_divider
+	 generic map (
+		divisor => 25)
+	 port map (
+		input_clock => clock,
+		reset => reset,
+		output_clock =>matrix_clk_internal
+	 );
     
+	 --werkt waarschijnlijk, maar FSM is niet volgens template
+	 --Quartus zal waarschijnlijk niet zien dat dit een FSM is
+	 
+	 --persoonlijk, de template is beter leesbaar(?)
     -- Matrix Scanning FSM
     process(clock_sink_clk, reset_sink_reset)
         variable upper_row : integer range 0 to 31;
