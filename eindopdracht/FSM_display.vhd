@@ -4,8 +4,8 @@ use ieee.std_logic_1164.all;
 entity fsm_display is
 	port (
         clk, rst: in std_ulogic;
-        input1, input2, ...: in std_ulogic;
-        reset_buffer, output2, ...: out std_ulogic
+        start_button, input2, ...: in std_ulogic;
+        reset_buffer, reset_clk, freeze_matrix: out std_ulogic
     );
 end fsm_display;
 
@@ -24,17 +24,22 @@ begin
     end process;
 
 	 --when to change to new state
-    process(pr_state, input1, input2, ...)
+    process(pr_state, start_button, input2, ...)
     begin
         case pr_state is
           when IDLE =>
-              if input1 then
-                nx_state <= state1;
+				  --ik neem aan starten bij druk van een knop
+              if start_button then
+                nx_state <= SHIFT;
               else
-                nx_state <= state2;
+                nx_state <= IDLE;
               end if;
             when SHIFT =>
-                nx_state <= state2;
+				  if freezing_but then
+				    nx_state <= freeze;--latch??
+				  else
+				    nx_state <= SHIFT;
+				  end if;
             when LATCH =>
                 ...;
             when DISPLAY =>
@@ -50,20 +55,12 @@ begin
         case pr_state is
             when idle =>
 					reset_buffer = '1';
-					
-					row_addr <= (others => '0');
-					col_count <= (others => '0');
-					matrix_clk_internal <= '0';
-					matrix_lat <= '0';
-					matrix_oe_n <= '1';  -- Disabled
-					bit_plane <= (others => '0');
-					pwm_counter <= (others => '0');
-					display_counter <= (others => '0');
-					 (IDLE, , , , );
+					reset_clock = '1';
+					freeze_matrix = '1';
             when SHIFT =>
-                output1 <= '0';
-                output2 <= '1';
-                ... 
+					reset_buffer = '0';
+					reset_clock = '0';
+                freeze_matrix = '0';
             when LATCH =>
                 ...;
             when DISPLAY =>

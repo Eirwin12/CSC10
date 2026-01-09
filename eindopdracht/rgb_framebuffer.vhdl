@@ -146,6 +146,8 @@ begin
 	 --Quartus zal waarschijnlijk niet zien dat dit een FSM is
 	 
 	 --persoonlijk, de template is beter leesbaar(?)
+	 
+	 --werkt deze fsm wel?? waarom 1 cycle wachten in idle????
     -- Matrix Scanning FSM
     process(clock_sink_clk, reset_sink_reset)
         variable upper_row : integer range 0 to 31;
@@ -247,7 +249,25 @@ begin
             end case;
         end if;
     end process;
-    
+	 
+	 --temp alvast invullen zodat het voor mij duidelijk is. 
+    process(reset, clock, freeze_matrix)
+	 
+	 begin
+		if reset then 
+			row_adder = (others => '0');
+			col_count = (others => '0');
+			matrix_lat <= '0';
+			matrix_oe_n <= '1';  -- Disabled
+			bit_plane <= (others => '0');
+         display_counter <= (others => '0');
+		elsif rising_edge(clock) and not(freeze_matrix) then 
+			--shift dingen zodat op scherm
+		elsif
+		elsif rising_edge(clock) and freeze_matrix then
+			--laat laatste aanpassingen staan. negeer inkomende waarden dus. 
+		end if;
+	end process;
     -- Output RGB bits gebaseerd op bit-plane modulation
     -- Compare current bit of color met bit_plane
     process(pixel1, pixel2, bit_plane)

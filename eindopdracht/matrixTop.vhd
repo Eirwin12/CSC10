@@ -37,15 +37,46 @@ architecture imp of matrix_top is
 		);
 	end component;
 	
-	
-	entity fsm_display is
+	component fsm_display is
 		port (
 			  clk, rst: in std_ulogic;
 			  input1, input2, ...: in std_ulogic;
-			  reset_buffer, output2, ...: out std_ulogic
+			  reset_buffer, reset_clk, freeze_matrix:  out std_ulogic
 		);
-	end fsm_display;
+	end component;
 	
+	component clock_divider is
+	generic(
+		divisor: natural--deling om van 50MHz naar 1Hz
+	);
+	port(
+		input_clock: in std_ulogic;
+		reset: in std_ulogic;
+		output_clock: out std_ulogic
+	);
+	end component;
+	
+	signal reset_buf, reset_clock: std_ulogic;
+
 begin
 
+	matrix_com: rgb_framebuffer
+	port map (
+	
+	);
+	fsm: fsm_display
+	port map (
+	
+		reset_buffer => reset_buf,,
+		reset_clk => reset clock,
+	);
+	
+	 matrix_clk: clock_divider
+	 generic map (
+		divisor => 25)
+	 port map (
+		input_clock => clock,
+		reset => reset_clock,
+		output_clock =>matrix_clk_internal
+	 );
 end architecture;
