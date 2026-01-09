@@ -48,6 +48,36 @@ architecture rtl of reg32_avalon_interface is
 			end if;
 		end if;
 	end procedure;
+	
+	component rgb_framebuffer is
+		port (
+		  -- Clock en Reset (Platform Designer interface names)
+		  clock           : in  std_logic;
+		  reset           : in  std_logic;
+		  red_vector_0		: in std_logic_vector(31 downto 0);
+		  blue_vector_0	: in std_logic_vector(31 downto 0);
+		  green_vector_0	: in std_logic_vector(31 downto 0);
+		  
+		  red_vector_1		: in std_logic_vector(31 downto 0);
+		  blue_vector_1	: in std_logic_vector(31 downto 0);
+		  green_vector_1	: in std_logic_vector(31 downto 0);
+		  
+		  -- RGB Matrix Output Conduit
+		  matrix_r1     : out std_logic;
+		  matrix_g1     : out std_logic;
+		  matrix_b1     : out std_logic;
+		  matrix_r2     : out std_logic;
+		  matrix_g2     : out std_logic;
+		  matrix_b2     : out std_logic;
+		  matrix_addr_a : out std_logic;
+		  matrix_addr_b : out std_logic;
+		  matrix_addr_c : out std_logic;
+		  matrix_clk    : out std_logic;
+		  matrix_lat    : out std_logic;
+		  matrix_oe_n   : out std_logic
+		);
+	end component;
+	
 begin
 	process(clock, resetn)
 	begin
@@ -82,4 +112,17 @@ begin
 	Q_export_r_1 <= regs(3);
 	Q_export_g_1 <= regs(4);
 	Q_export_b_1 <= regs(5);
+	matrix: rgb_framebuffer 
+	port map(
+		clock => clock,
+		reset => resetn, 
+		red_vector_0   => v,
+		blue_vector_0  => v,
+		grean_vector_0 => v,
+		red_vector_1   => v,
+		blue_vector_1  => v,
+		green_vector_1 => v,
+		--outputs
+		--hoe doen we dit?
+		);
 end architecture rtl;

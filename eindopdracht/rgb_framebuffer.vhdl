@@ -7,9 +7,13 @@ entity rgb_framebuffer is
         -- Clock en Reset (Platform Designer interface names)
         clock           : in  std_logic;
         reset           : in  std_logic;
-		  red_vector		: in std_logic_vector(31 downto 0);
-		  blue_vector		: in std_logic_vector(31 downto 0);
-		  green_vector		: in std_logic_vector(31 downto 0);
+		  red_vector_0		: in std_logic_vector(31 downto 0);
+		  blue_vector_0	: in std_logic_vector(31 downto 0);
+		  green_vector_0	: in std_logic_vector(31 downto 0);
+        
+		  red_vector_1		: in std_logic_vector(31 downto 0);
+		  blue_vector_1	: in std_logic_vector(31 downto 0);
+		  green_vector_1	: in std_logic_vector(31 downto 0);
         
         -- RGB Matrix Output Conduit
         matrix_r1     : out std_logic;
