@@ -77,8 +77,9 @@ architecture rtl of reg32_avalon_interface is
 		  matrix_oe_n   : out std_logic
 		);
 	end component;
-	
+	signal reset : std_logic;
 begin
+	reset => not(resetn);--1 is reset, 0 is geen reset. 
 	process(clock, resetn)
 	begin
 		if not resetn then
@@ -115,7 +116,7 @@ begin
 	matrix: rgb_framebuffer 
 	port map(
 		clock => clock,
-		reset => resetn, 
+		reset => reset, 
 		red_vector_0   => v,
 		blue_vector_0  => v,
 		grean_vector_0 => v,
