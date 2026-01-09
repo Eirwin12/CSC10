@@ -6,6 +6,7 @@
  */
 
 #include "hamming_filter.h"
+
 short int FIRFilter(short int sample)
 {
 	static short int buffer [N+1] = {0}; // buffer for input samples

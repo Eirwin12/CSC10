@@ -15,7 +15,8 @@
 #endif
 
 int main(void) {
-	//PERF_RESET(AUDIO_0_BASE);
+    PERF_RESET(PERFORMANCE_COUNTER_0_BASE);
+
     alt_up_audio_dev *audio_dev = alt_up_audio_open_dev("/dev/audio_0");
     if (audio_dev == NULL) {
         alt_printf("Error: could not open audio device\n");
@@ -23,7 +24,7 @@ int main(void) {
     } else
         alt_printf("Opened audio device\n");
     const int run_time_in_seconds = 10;
-    const int run_time_in_samples = run_time_in_seconds * 3000;
+    const int run_time_in_samples = run_time_in_seconds * 8000;
     int sample_count = 0;
 
     alt_up_av_config_dev* audio_video_config = alt_up_av_config_open_dev(AUDIO_CONFIG_0_NAME);
@@ -45,7 +46,6 @@ int main(void) {
 
     //start performance counter
     //before beginning, reset counter
-    PERF_RESET(PERFORMANCE_COUNTER_0_BASE);
 	PERF_START_MEASURING(PERFORMANCE_COUNTER_0_BASE);
 
     do {
@@ -73,6 +73,6 @@ int main(void) {
     } while (sample_count < run_time_in_samples);
 
     PERF_STOP_MEASURING(PERFORMANCE_COUNTER_0_BASE);
-    perf_print_formatted_report(AUDIO_0_BASE, 50000000, 2, "right", "left");
+    perf_print_formatted_report(PERFORMANCE_COUNTER_0_BASE, 50000000, 2, "right", "left");
     IOWR_ALTERA_AVALON_PIO_DATA(PIO_LEDS_BASE, 0); // switch off the leds
 }
