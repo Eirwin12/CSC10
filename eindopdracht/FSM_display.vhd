@@ -5,7 +5,8 @@ entity fsm_display is
 	port (
         clk, rst: in std_ulogic;
         start_button, input2, ...: in std_ulogic;
-        reset_buffer, reset_clk, freeze_matrix: out std_ulogic
+		  row_count: in unsigned(4 downto 0);
+        reset_buffer, reset_clk, enable_matrix: out std_ulogic
     );
 end fsm_display;
 
@@ -35,8 +36,8 @@ begin
                 nx_state <= IDLE;
               end if;
             when SHIFT =>
-				  if freezing_but then
-				    nx_state <= freeze;--latch??
+				  if row_count == 7 then
+				    nx_state <= LATCH;
 				  else
 				    nx_state <= SHIFT;
 				  end if;
@@ -56,13 +57,18 @@ begin
             when idle =>
 					reset_buffer = '1';
 					reset_clock = '1';
-					freeze_matrix = '1';
+					enable_matrix = '0';
+               matrix_latch <= '0';
             when SHIFT =>
 					reset_buffer = '0';
 					reset_clock = '0';
-                freeze_matrix = '0';
+                enable_matrix = '1';
+               matrix_latch <= '0';
             when LATCH =>
-                ...;
+					reset_buffer = '0';
+					reset_clock = '0';
+                enable_matrix = '1';
+               matrix_latch <= '1';
             when DISPLAY =>
                 ...;
 				when NEXT_ROW =>
@@ -115,7 +121,6 @@ end architecture;
                         -- Next column
                         if col_count = 31 then
                             col_count <= (others => '0');
-                            state <= LATCH;
                         else
                             col_count <= col_count + 1;
                         end if;

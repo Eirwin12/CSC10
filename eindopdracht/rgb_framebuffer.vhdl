@@ -25,19 +25,26 @@ entity rgb_framebuffer is
         matrix_addr_a : out std_logic;
         matrix_addr_b : out std_logic;
         matrix_addr_c : out std_logic;
-        matrix_clk    : out std_logic;
+        matrix_addr_d : out std_logic;
         matrix_lat    : out std_logic;
         matrix_oe_n   : out std_logic
     );
 end entity rgb_framebuffer;
 
 architecture rtl of rgb_framebuffer is
+	--in plaats van 1 buffer van 1024, grid/matrix maken van 32*32. 
+	--overzichtelijker en begrijpbaarder dan alles in 1 vector gepropt
+	--rgb is elk 1 bit. kan natuurlijk verandert worden
+	 type rgb is std_ulogic_vector(2 downto 0);--3 bit rgb-->1bit red, 1 bit green, 1 bit blue
+	 type ram_type_grid is array(31 downto 0, 31 downto 0) of rgb;
+    signal framebuffer_1 : ram_type_grid := (others => (others => '0'));
+	 
     -- Framebuffer RAM (32x32 pixels, elk 32-bit RGB)
     type ram_type is array (0 to 1023) of std_logic_vector(31 downto 0);
     signal framebuffer : ram_type := (others => (others => '0'));
     
     -- Scanning signals
-    signal row_addr : unsigned(2 downto 0) := (others => '0');  -- 0-7 voor 8 rij-paren
+    signal row_addr : unsigned(3 downto 0) := (others => '0');  -- 0-15 voor 16 rij-paren
     signal col_count : unsigned(4 downto 0) := (others => '0'); -- 0-31 voor 32 kolommen
     
     -- Clock divider (50MHz → ~1MHz voor shift clock)
@@ -133,14 +140,14 @@ begin
 --        end if;
 --    end process;
 
-	 output_clock: clock_divider
-	 generic map (
-		divisor => 25)
-	 port map (
-		input_clock => clock,
-		reset => reset,
-		output_clock =>matrix_clk_internal
-	 );
+--	 output_clock: clock_divider
+--	 generic map (
+--		divisor => 25)
+--	 port map (
+--		input_clock => clock,
+--		reset => reset,
+--		output_clock =>matrix_clk_internal
+--	 );
     
 	 --werkt waarschijnlijk, maar FSM is niet volgens template
 	 --Quartus zal waarschijnlijk niet zien dat dit een FSM is
@@ -180,8 +187,8 @@ begin
                     -- Clock data uit naar shift registers
                     if shift_clk = '1' and clk_counter = 0 then
                         -- Calculate addresses voor current column en row
-                        upper_row := to_integer(row_addr);              -- 0-7
-                        lower_row := to_integer(row_addr) + 16;         -- 16-23
+                        upper_row := to_integer(row_addr);              -- 0-7 <-- moet dit niet 0-15 zijn?
+                        lower_row := to_integer(row_addr) + 16;         -- 16-23 <-- moet dit niet 16+15 = 31 zijn??
                         
                         -- Address = Y * 32 + X
                         pixel_addr1 := upper_row * 32 + to_integer(col_count);
@@ -251,23 +258,51 @@ begin
     end process;
 	 
 	 --temp alvast invullen zodat het voor mij duidelijk is. 
-    process(reset, clock, freeze_matrix)
-	 
-	 begin
+    process(reset, clock, enable_matrix)
+	 variable upper_row : integer range 0 to 31;
+	 variable lower_row : integer range 0 to 31;
+	 type pixel_adress is array(0 to 1) of integer range 0 to 31;
+	 variable pixel_addr1 : pixel_adress;
+	 variable pixel_addr2 : pixel_adress;
+begin
 		if reset then 
 			row_adder = (others => '0');
 			col_count = (others => '0');
 			matrix_lat <= '0';
 			matrix_oe_n <= '1';  -- Disabled
-			bit_plane <= (others => '0');
-         display_counter <= (others => '0');
-		elsif rising_edge(clock) and not(freeze_matrix) then 
-			--shift dingen zodat op scherm
-		elsif
-		elsif rising_edge(clock) and freeze_matrix then
-			--laat laatste aanpassingen staan. negeer inkomende waarden dus. 
-		end if;
-	end process;
+			framebuffer_1 <= (others => (others => "000"));
+		elsif rising_edge(clock) then
+			if enable_matrix then
+				-- Calculate addresses voor current column en row
+				upper_row := to_integer(row_addr);              -- 0-7
+				lower_row := to_integer(row_addr) + 16;         -- 16-23
+				
+				-- Address = Y * 32 + X
+--				pixel_addr1 := upper_row * 32 + to_integer(col_count);
+--				pixel_addr2 := lower_row * 32 + to_integer(col_count);
+				pixel_addr1 := (upper_row, col_count);
+				pixel_addr2 := (lower_row, col_count);
+				-- Fetch pixel data
+				pixel1 <= framebuffer(pixel_addr1(0), pixel_addr1(1));
+				pixel2 <= framebuffer(pixel_addr2(0), pixel_addr2(1));
+				
+				-- Clock toggle
+				matrix_clk_internal <= '1';
+				
+				-- Next column
+				if col_count = 31 then
+					 col_count <= (others => '0');
+					 state <= LATCH;
+				else
+					 col_count <= col_count + 1;
+				end if;
+			else 
+				--shift dingen zodat op scherm
+		   end if;
+	  end if;
+	  
+	end if;
+end process;
     -- Output RGB bits gebaseerd op bit-plane modulation
     -- Compare current bit of color met bit_plane
     process(pixel1, pixel2, bit_plane)

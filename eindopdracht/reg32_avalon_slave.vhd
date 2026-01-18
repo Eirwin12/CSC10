@@ -49,7 +49,7 @@ architecture rtl of reg32_avalon_interface is
 		end if;
 	end procedure;
 	
-	component rgb_framebuffer is
+	component matrix_top is
 		port (
 		  -- Clock en Reset (Platform Designer interface names)
 		  clock           : in  std_logic;
@@ -113,7 +113,7 @@ begin
 	Q_export_r_1 <= regs(3);
 	Q_export_g_1 <= regs(4);
 	Q_export_b_1 <= regs(5);
-	matrix: rgb_framebuffer 
+	matrix: matrix_top 
 	port map(
 		clock => clock,
 		reset => reset, 
