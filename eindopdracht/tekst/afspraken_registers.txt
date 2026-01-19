@@ -1,0 +1,23 @@
+register 0, 1 en 2 zijn 'write' registers. code mag hiernaartoe schrijven en lezen
+
+register 4, 5 en 6 zijn 'read' registers. code mag NIET hier schrijven. wel lezen
+register 4, 5 en 6 wordt geschreven door de hardware
+
+register 3 is de controle register het beschrijft wanneer wel en wanneer niet gelezen kan worden. 
+
+MSB
+------------------------------------------------
+|x||x||x||x||x||x||x||x||x||x||x||x||0||0||0||0|
+------------------------------------------------
+bit 16 t/m 19: geven de rij aan. 4 rijen i.p.v. 3 rijen, wegens matrix 32x32 is. 
+getal wordt zo gelezen
+
+LSB
+------------------------------------------------
+|x||x||x||x||x||x||x||x||x||x||x||x||0||0||0||0|
+------------------------------------------------
+bit 0: start
+bit 1: reset
+bit 2: Software wil een rij lezen
+bit 3: software wil een rij schrijven. 
+als deze bits hoog => uitgevoerd. 

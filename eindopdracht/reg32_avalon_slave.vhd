@@ -55,7 +55,7 @@ architecture rtl of reg32_avalon_interface is
 		  -- Clock en Reset (Platform Designer interface names)
 		  clock           	: in  std_logic;
 		  reset           	: in  std_logic;
-		  control_register	: in std_ulogic_vector(31 downto 0);
+		  control_register	: inout std_ulogic_vector(31 downto 0);
 		  red_vector_read		: out std_logic_vector(31 downto 0);
 		  blue_vector_read	: out std_logic_vector(31 downto 0);
 		  green_vector_read	: out std_logic_vector(31 downto 0);
@@ -115,20 +115,6 @@ begin
 			end if;
 		end if;
 	end process;
-	
-	--register 3 is voor data lezen of versturen. zie het als de controle register
-	--1 bit voor lezen/schrijven
-	--4 bits voor welke rij geschreven/gelezen wordt
-	--1 bit voor start
-	--1 bit (software) reset
-	
-	--bit 16 tot 19 voor de rij definiëren
-	--bit1 is start
-	--bit2 reset
-	--bit3 is lezen/schrijven
-	
-	--afspreken 0 t/m 2 zijn voor schrijven
-	--afspreken 4 t/m 6 is voor lezen. 
 	
 	Q_export_r_0 <= export_matrix(0);
 	matrix: matrix_top 
