@@ -4,14 +4,16 @@ use ieee.std_logic_1164.all;
 entity fsm_display is
 	port (
         clk, rst: in std_ulogic;
-        start_button, timer_repeated, ...: in std_ulogic;
-		  row_count: in unsigned(4 downto 0);
-        reset_buffer, reset_clk, enable_matrix, enable_change: out std_ulogic
+        start_button, timer_repeated: in std_ulogic;
+		  --matrix outputs
+        reset_matrix, enable_matrix, enable_change, enable_latch: out std_ulogic;
+		  --external unit outputs. 
+		  reset_clk, reset_counter, enable_counter: out std_ulogic;
     );
 end fsm_display;
 
 architecture behavior of fsm_display is
-   type state_type is (IDLE, SHIFT, LATCH, DISPLAY, NEXT_ROW, BRIGHTNESS_ADJUST);
+   type state_type is (IDLE, SHIFT_ROW, LATCH, DISPLAY, NEXT_ROW, BRIGHTNESS_ADJUST);
 	signal pr_state, nx_state: state_type;
 begin
 
@@ -25,36 +27,25 @@ begin
     end process;
 
 	 --when to change to new state
-    process(pr_state, start_button, input2, ...)
+    process(pr_state, start_button, timer_repeated)
     begin
         case pr_state is
           when IDLE =>
 				  --ik neem aan starten bij druk van een knop
               if start_button then
-                nx_state <= SHIFT;
+                nx_state <= SHIFT_ROW;
               else
                 nx_state <= IDLE;
               end if;
-            when SHIFT =>
+            when SHIFT_ROW =>
 				  if collumn_filled then
 					 nx_state <= BRIGHTNESS_ADJUST;
 				  else
-				    nx_state <= SHIFT;
+				    nx_state <= SHIFT_ROW;
 				  end if;
---				  if row_count == 7 then
---				    nx_state <= LATCH;
---				  else
---				    nx_state <= SHIFT;
-				  end if;
-            when LATCH =>
-                ...;
-            when DISPLAY =>
-                ...;
-				when NEXT_ROW =>
-					 ...;
 				when BRIGHTNESS_ADJUST =>
 					 if timer_repeated then
-						nx_state <= SHIFT;
+						nx_state <= SHIFT_ROW;
 				    else
 						nx_state <= BRIGHTNESS_ADJUST;
 					 end if;
@@ -66,133 +57,33 @@ begin
     begin
         case pr_state is
             when idle =>
-					reset_buffer <= '1';
-					reset_clock <= '1';
+					reset_matrix <= '1';
 					enable_matrix <= '0';
-               matrix_latch <= '0';
-					enable_change <= '0';
-            when SHIFT =>
-					reset_buffer <= '0';
-					reset_clock <= '0';
-                enable_matrix <= '1';
-               matrix_latch <= '0';
-					enable_change <= '0';
-				--gebeurt wanneer 1 rij klaar is. 
-            when LATCH => 
-					reset_buffer <= '0';
-					reset_clock <= '0';
-                enable_matrix <= '1';
-               matrix_latch <= '1';
-					enable_change <= '0';
-				--wacht alleen voor hoe licht het systeem moet zijn. 
-				--dit generiek maken??
-            when DISPLAY =>
-                ...;
-				when NEXT_ROW =>
-					...;
-				when BRIGHTNESS_ADJUST =>
-					--in this time, we should receive next (two) row(s) of information
-					reset_buffer <= '0';
-					reset_clock <= '0';
-               enable_matrix <= '1';
-               matrix_latch <= '1';
 					enable_change <= '1';
+               enable_latch <= '0';
+					reset_clock <= '1';
+					reset_counter <= '1';
+					enable-counter <= '0';
+					
+            when SHIFT_ROW =>
+				--gebeurt wanneer 1 rij klaar is. 
+					reset_matrix <= '0';
+					enable_matrix <= '1';
+					enable_change <= '0';
+					enable_latch <= '0';
+					reset_clock <= '0';
+					reset_counter <= '1';
+					enable-counter <= '0';
+					
+				when BRIGHTNESS_ADJUST =>
+					reset_matrix <= '0';
+               enable_matrix <= '1';
+					enable_change <= '0';
+               enable_latch <= '1';
+					reset_clock <= '0';
+					reset_counter <= '0';
+					enable_counter <= '1';
         end case;
     end process;
 
 end architecture;
-
-
---    process(clock_sink_clk, reset_sink_reset)
---        variable upper_row : integer range 0 to 31;
---        variable lower_row : integer range 0 to 31;
---        variable pixel_addr1 : integer range 0 to 1023;
---        variable pixel_addr2 : integer range 0 to 1023;
---    begin
---        if reset_sink_reset = '1' then
---            state <= IDLE;
---
---            
---        elsif rising_edge(clock_sink_clk) then
---            
---            case state is
---                
---                when IDLE =>
---                    col_count <= (others => '0');
---                    matrix_oe_n <= '1';  -- Disable output
---                    matrix_lat <= '0';
---						  --wanneer willen we beginnen??
---                    state <= SHIFT;
---                    
---                when SHIFT =>
---                    -- Clock data uit naar shift registers
---                    if shift_clk = '1' and clk_counter = 0 then
---                        -- Calculate addresses voor current column en row
---                        upper_row := to_integer(row_addr);              -- 0-7
---                        lower_row := to_integer(row_addr) + 16;         -- 16-23
---                        
---                        -- Address = Y * 32 + X
---                        pixel_addr1 := upper_row * 32 + to_integer(col_count);
---                        pixel_addr2 := lower_row * 32 + to_integer(col_count);
---                        
---                        -- Fetch pixel data
---                        pixel1 <= framebuffer(pixel_addr1)(23 downto 0);
---                        pixel2 <= framebuffer(pixel_addr2)(23 downto 0);
---                        
---                        -- Clock toggle
---                        matrix_clk_internal <= '1';
---                        
---                        -- Next column
---                        if col_count = 31 then
---                            col_count <= (others => '0');
---                        else
---                            col_count <= col_count + 1;
---                        end if;
---                    elsif shift_clk = '0' and clk_counter = 0 then
---                        matrix_clk_internal <= '0';
---                    end if;
---                    
---                when LATCH =>
---                    -- Latch data in LED drivers
---                    matrix_clk_internal <= '0';
---                    matrix_lat <= '1';
---                    display_counter <= (others => '0');
---                    state <= DISPLAY;
---                    
---                when DISPLAY =>
---                    -- Enable output en wacht
---                    matrix_lat <= '0';
---                    matrix_oe_n <= '0';  -- Enable output
---                    
---                    -- Wait voor brightness control
---                    display_counter <= display_counter + 1;
---                    
---                    -- Display tijd afhankelijk van bit plane (2^bit_plane cycles)
---                    if display_counter = shift_left(to_unsigned(1, 8), to_integer(bit_plane)) then
---                        matrix_oe_n <= '1';  -- Disable output
---                        state <= NEXT_ROW;
---                    end if;
---                    
---                when NEXT_ROW =>
---                    -- Next bit plane of next row
---                    if bit_plane = 7 then
---                        bit_plane <= (others => '0');
---                        
---                        -- Next row pair
---                        if row_addr = 7 then
---                            row_addr <= (others => '0');
---                        else
---                            row_addr <= row_addr + 1;
---                        end if;
---                    else
---                        bit_plane <= bit_plane + 1;
---                    end if;
---                    
---                    state <= IDLE;
---                    
---                when others =>
---                    state <= IDLE;
---                    
---            end case;
---        end if;
---    end process;
