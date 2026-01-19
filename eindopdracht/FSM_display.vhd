@@ -4,9 +4,9 @@ use ieee.std_logic_1164.all;
 entity fsm_display is
 	port (
         clk, rst: in std_ulogic;
-        start_button, timer_repeated: in std_ulogic;
+        start_button, timer_repeated, collumn_filled: in std_ulogic;
 		  --matrix outputs
-        reset_matrix, enable_matrix, enable_change, enable_latch: out std_ulogic;
+        reset_matrix, enable_matrix, enable_latch: out std_ulogic;
 		  --external unit outputs. 
 		  reset_clk, reset_counter, enable_counter: out std_ulogic;
     );
@@ -59,7 +59,6 @@ begin
             when idle =>
 					reset_matrix <= '1';
 					enable_matrix <= '0';
-					enable_change <= '1';
                enable_latch <= '0';
 					reset_clock <= '1';
 					reset_counter <= '1';
@@ -69,7 +68,6 @@ begin
 				--gebeurt wanneer 1 rij klaar is. 
 					reset_matrix <= '0';
 					enable_matrix <= '1';
-					enable_change <= '0';
 					enable_latch <= '0';
 					reset_clock <= '0';
 					reset_counter <= '1';
@@ -77,8 +75,7 @@ begin
 					
 				when BRIGHTNESS_ADJUST =>
 					reset_matrix <= '0';
-               enable_matrix <= '1';
-					enable_change <= '0';
+               enable_matrix <= '0';
                enable_latch <= '1';
 					reset_clock <= '0';
 					reset_counter <= '0';
