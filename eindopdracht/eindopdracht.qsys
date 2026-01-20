@@ -9,7 +9,7 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element DEBUG
+   element JTAG_DEBUG
    {
       datum _sortIndex
       {
@@ -17,11 +17,11 @@
          type = "int";
       }
    }
-   element DEBUG.avalon_jtag_slave
+   element JTAG_DEBUG.avalon_jtag_slave
    {
       datum baseAddress
       {
-         value = "532552";
+         value = "528584";
          type = "String";
       }
    }
@@ -42,7 +42,7 @@
    {
       datum baseAddress
       {
-         value = "530432";
+         value = "526336";
          type = "String";
       }
    }
@@ -70,12 +70,36 @@
          type = "int";
       }
    }
-   element performance_counter_0
+   element led_matrix_0
    {
       datum _sortIndex
       {
          value = "9";
          type = "int";
+      }
+   }
+   element led_matrix_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "528384";
+         type = "String";
+      }
+   }
+   element performance_checker_0
+   {
+      datum _sortIndex
+      {
+         value = "8";
+         type = "int";
+      }
+   }
+   element performance_checker_0.control_slave
+   {
+      datum baseAddress
+      {
+         value = "528448";
+         type = "String";
       }
    }
    element pio_buttons
@@ -90,7 +114,7 @@
    {
       datum baseAddress
       {
-         value = "532528";
+         value = "528560";
          type = "String";
       }
    }
@@ -106,23 +130,7 @@
    {
       datum baseAddress
       {
-         value = "532512";
-         type = "String";
-      }
-   }
-   element rgb_framebuffer_0
-   {
-      datum _sortIndex
-      {
-         value = "8";
-         type = "int";
-      }
-   }
-   element rgb_framebuffer_0.avalon_slave
-   {
-      datum baseAddress
-      {
-         value = "524288";
+         value = "528544";
          type = "String";
       }
    }
@@ -138,7 +146,7 @@
    {
       datum baseAddress
       {
-         value = "532544";
+         value = "528576";
          type = "String";
       }
    }
@@ -154,7 +162,7 @@
    {
       datum baseAddress
       {
-         value = "532480";
+         value = "528512";
          type = "String";
       }
    }
@@ -181,6 +189,11 @@
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface
+   name="matrix_connection"
+   internal="led_matrix_0.conduit_end"
+   type="conduit"
+   dir="end" />
+ <interface
    name="pio_buttons_external_connection"
    internal="pio_buttons.external_connection"
    type="conduit"
@@ -190,13 +203,8 @@
    internal="pio_switches.external_connection"
    type="conduit"
    dir="end" />
- <interface
-   name="rgb_framebuffer_0_rgb_matrix_conduit"
-   internal="rgb_framebuffer_0.rgb_matrix_conduit"
-   type="conduit"
-   dir="end" />
  <module
-   name="DEBUG"
+   name="JTAG_DEBUG"
    kind="altera_avalon_jtag_uart"
    version="18.1"
    enabled="1">
@@ -228,7 +236,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="20" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='performance_counter_0.control_slave' start='0x0' end='0x40' /><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='rgb_framebuffer_0.avalon_slave' start='0x80000' end='0x81000' /><slave name='Processor_Nios.jtag_debug_module' start='0x81800' end='0x82000' /><slave name='timer_0.s1' start='0x82000' end='0x82020' /><slave name='pio_switches.s1' start='0x82020' end='0x82030' /><slave name='pio_buttons.s1' start='0x82030' end='0x82040' /><slave name='sysid_qsys_0.control_slave' start='0x82040' end='0x82048' /><slave name='DEBUG.avalon_jtag_slave' start='0x82048' end='0x82050' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='led_matrix_0.avalon_slave_0' start='0x81000' end='0x81040' /><slave name='performance_checker_0.control_slave' start='0x81040' end='0x81080' /><slave name='timer_0.s1' start='0x81080' end='0x810A0' /><slave name='pio_switches.s1' start='0x810A0' end='0x810B0' /><slave name='pio_buttons.s1' start='0x810B0' end='0x810C0' /><slave name='sysid_qsys_0.control_slave' start='0x810C0' end='0x810C8' /><slave name='JTAG_DEBUG.avalon_jtag_slave' start='0x810C8' end='0x810D0' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -253,9 +261,9 @@
   <parameter name="icache_ramBlockType" value="Automatic" />
   <parameter name="icache_size" value="4096" />
   <parameter name="icache_tagramBlockType" value="Automatic" />
-  <parameter name="impl" value="Fast" />
+  <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="20" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x81800' end='0x82000' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x80800' end='0x81000' /></address-map>]]></parameter>
   <parameter name="internalIrqMaskSystemInfo" value="3" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
@@ -383,8 +391,9 @@
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
+ <module name="led_matrix_0" kind="32x32_led_matrix" version="1.0" enabled="1" />
  <module
-   name="performance_counter_0"
+   name="performance_checker_0"
    kind="altera_avalon_performance_counter"
    version="18.1"
    enabled="1">
@@ -427,11 +436,6 @@
   <parameter name="width" value="10" />
  </module>
  <module
-   name="rgb_framebuffer_0"
-   kind="rgb_framebuffer"
-   version="1.0"
-   enabled="1" />
- <module
    name="sysid_qsys_0"
    kind="altera_avalon_sysid_qsys"
    version="18.1"
@@ -454,18 +458,18 @@
    kind="avalon"
    version="18.1"
    start="Processor_Nios.data_master"
-   end="DEBUG.avalon_jtag_slave">
+   end="JTAG_DEBUG.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082048" />
+  <parameter name="baseAddress" value="0x000810c8" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="18.1"
    start="Processor_Nios.data_master"
-   end="rgb_framebuffer_0.avalon_slave">
+   end="led_matrix_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00080000" />
+  <parameter name="baseAddress" value="0x00081000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -474,16 +478,16 @@
    start="Processor_Nios.data_master"
    end="sysid_qsys_0.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082040" />
+  <parameter name="baseAddress" value="0x000810c0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="18.1"
    start="Processor_Nios.data_master"
-   end="performance_counter_0.control_slave">
+   end="performance_checker_0.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x00081040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -492,7 +496,7 @@
    start="Processor_Nios.data_master"
    end="Processor_Nios.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081800" />
+  <parameter name="baseAddress" value="0x00080800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -510,7 +514,7 @@
    start="Processor_Nios.data_master"
    end="pio_buttons.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082030" />
+  <parameter name="baseAddress" value="0x000810b0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -519,7 +523,7 @@
    start="Processor_Nios.data_master"
    end="pio_switches.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082020" />
+  <parameter name="baseAddress" value="0x000810a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -528,7 +532,7 @@
    start="Processor_Nios.data_master"
    end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082000" />
+  <parameter name="baseAddress" value="0x00081080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -537,7 +541,7 @@
    start="Processor_Nios.instruction_master"
    end="Processor_Nios.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081800" />
+  <parameter name="baseAddress" value="0x00080800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -549,7 +553,7 @@
   <parameter name="baseAddress" value="0x00040000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
- <connection kind="clock" version="18.1" start="clk_0.clk" end="DEBUG.clk" />
+ <connection kind="clock" version="18.1" start="clk_0.clk" end="JTAG_DEBUG.clk" />
  <connection kind="clock" version="18.1" start="clk_0.clk" end="pio_buttons.clk" />
  <connection kind="clock" version="18.1" start="clk_0.clk" end="pio_switches.clk" />
  <connection kind="clock" version="18.1" start="clk_0.clk" end="sysid_qsys_0.clk" />
@@ -563,18 +567,18 @@
    kind="clock"
    version="18.1"
    start="clk_0.clk"
-   end="performance_counter_0.clk" />
+   end="performance_checker_0.clk" />
  <connection kind="clock" version="18.1" start="clk_0.clk" end="RAM.clk1" />
  <connection
    kind="clock"
    version="18.1"
    start="clk_0.clk"
-   end="rgb_framebuffer_0.clock_sink" />
+   end="led_matrix_0.clock_sink" />
  <connection
    kind="interrupt"
    version="18.1"
    start="Processor_Nios.d_irq"
-   end="DEBUG.irq">
+   end="JTAG_DEBUG.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
  <connection
@@ -584,7 +588,16 @@
    end="timer_0.irq">
   <parameter name="irqNumber" value="1" />
  </connection>
- <connection kind="reset" version="18.1" start="clk_0.clk_reset" end="DEBUG.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="led_matrix_0.clock_reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="JTAG_DEBUG.reset" />
  <connection
    kind="reset"
    version="18.1"
@@ -609,18 +622,13 @@
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
-   end="performance_counter_0.reset" />
+   end="performance_checker_0.reset" />
  <connection kind="reset" version="18.1" start="clk_0.clk_reset" end="RAM.reset1" />
  <connection
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
    end="Processor_Nios.reset_n" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="rgb_framebuffer_0.reset_sink" />
  <connection
    kind="reset"
    version="18.1"

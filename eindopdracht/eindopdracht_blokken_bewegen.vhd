@@ -16,52 +16,31 @@ entity eindopdracht_blokken_bewegen is
         LEDR : out std_logic_vector(9 downto 0);
         
         -- GPIO1 (JP2) voor RGB Matrix
-        GPIO_1 : inout std_logic_vector(35 downto 0)
+        GPIO_1 : inout std_logic_vector(34 downto 0)
     );
 end entity eindopdracht_blokken_bewegen;
 
 architecture structure of eindopdracht_blokken_bewegen is
-    
+
     -- Platform Designer component (gegenereerd als "eindopdracht") 
     component eindopdracht is
         port (
-            clk_clk                                      : in  std_logic                    := 'X';             -- clk
-            pio_buttons_external_connection_export       : in  std_logic_vector(3 downto 0) := (others => 'X'); -- export
-            pio_switches_external_connection_export      : in  std_logic_vector(9 downto 0) := (others => 'X'); -- export
-            rgb_framebuffer_0_rgb_matrix_conduit_r1      : out std_logic;                                       -- r1
-            rgb_framebuffer_0_rgb_matrix_conduit_g1      : out std_logic;                                       -- g1
-            rgb_framebuffer_0_rgb_matrix_conduit_b1      : out std_logic;                                       -- b1
-            rgb_framebuffer_0_rgb_matrix_conduit_r2      : out std_logic;                                       -- r2
-            rgb_framebuffer_0_rgb_matrix_conduit_g2      : out std_logic;                                       -- g2
-            rgb_framebuffer_0_rgb_matrix_conduit_b2      : out std_logic;                                       -- b2
-            rgb_framebuffer_0_rgb_matrix_conduit_addr_a  : out std_logic;                                       -- addr_a
-            rgb_framebuffer_0_rgb_matrix_conduit_addr_b  : out std_logic;                                       -- addr_b
-            rgb_framebuffer_0_rgb_matrix_conduit_addr_c  : out std_logic;                                       -- addr_c
-            rgb_framebuffer_0_rgb_matrix_conduit_clk_out : out std_logic;                                       -- clk_out
-            rgb_framebuffer_0_rgb_matrix_conduit_lat     : out std_logic;                                       -- lat
-            rgb_framebuffer_0_rgb_matrix_conduit_oe_n    : out std_logic                                        -- oe_n
+            clk_clk                                 : in  std_logic                     := 'X';             -- clk
+            pio_buttons_external_connection_export  : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- export
+            pio_switches_external_connection_export : in  std_logic_vector(9 downto 0)  := (others => 'X'); -- export
+            matrix_connection_readdata              : out std_logic_vector(31 downto 0)                     -- readdata
         );
     end component eindopdracht;
-    
+	 signal output_matrix_buffer: std_ulogic_vector( 31 downto 0);
 begin
-    
-    -- Platform Designer System instantie (geen externe reset nodig, gebruikt intern reset)
+
     u0 : component eindopdracht
         port map (
-            clk_clk                                      => CLOCK_50,
-            pio_buttons_external_connection_export       => KEY,
-            pio_switches_external_connection_export      => SW,
-            rgb_framebuffer_0_rgb_matrix_conduit_r1      => GPIO_1(0),
-            rgb_framebuffer_0_rgb_matrix_conduit_g1      => GPIO_1(1),
-            rgb_framebuffer_0_rgb_matrix_conduit_b1      => GPIO_1(2),
-            rgb_framebuffer_0_rgb_matrix_conduit_r2      => GPIO_1(3),
-            rgb_framebuffer_0_rgb_matrix_conduit_g2      => GPIO_1(4),
-            rgb_framebuffer_0_rgb_matrix_conduit_b2      => GPIO_1(5),
-            rgb_framebuffer_0_rgb_matrix_conduit_addr_a  => GPIO_1(6),
-            rgb_framebuffer_0_rgb_matrix_conduit_addr_b  => GPIO_1(7),
-            rgb_framebuffer_0_rgb_matrix_conduit_addr_c  => GPIO_1(8),
-            rgb_framebuffer_0_rgb_matrix_conduit_clk_out => GPIO_1(9),
-            rgb_framebuffer_0_rgb_matrix_conduit_lat     => GPIO_1(10),
-            rgb_framebuffer_0_rgb_matrix_conduit_oe_n    => GPIO_1(11)
+            clk_clk                                 => ClOCK_50,                                 --                              clk.clk
+            pio_buttons_external_connection_export  => KEY,  --  pio_buttons_external_connection.export
+            pio_switches_external_connection_export => SW, -- pio_switches_external_connection.export
+            matrix_connection_readdata              => output_matrix_buffer               --                matrix_connection.readdata
         );
+	 GPIO_1(12 downto 0) <= output_matrix_buffer(12 downto 0);
+
 end architecture structure;
