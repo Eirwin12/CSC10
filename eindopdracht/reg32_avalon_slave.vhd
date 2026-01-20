@@ -1,70 +1,63 @@
 -- altera vhdl_input_version vhdl_2008
 library IEEE;
 use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
 
 entity reg32_avalon_interface is
 	port (
-		clock, resetn : in std_logic;
-		read, write : in std_logic;
-		chipselect_0, chipselect_1, chipselect_2, chipselect_3, chipselect_4, chipselect_5: in std_logic;
-		readdata     : out std_logic_vector(31 downto 0);
-		writedata    : in  std_logic_vector(31 downto 0);
-		byteenable   : in  std_logic_vector( 3 downto 0);
-		Q_export_r_0 : out std_logic_vector(31 downto 0);
-		Q_export_g_0 : out std_logic_vector(31 downto 0);
-		Q_export_b_0 : out std_logic_vector(31 downto 0);
-		Q_export_r_1 : out std_logic_vector(31 downto 0);
-		Q_export_g_1 : out std_logic_vector(31 downto 0);
-		Q_export_b_1 : out std_logic_vector(31 downto 0)
+		clock, reset : in std_logic;
+		read_0, read_1, read_2, read_3, read_4, read_5, read_6: in std_logic;
+		write_0, write_1, write_2, write_3, write_4, write_5, write_6: in std_logic;
+		chipselect_0, chipselect_1, chipselect_2, chipselect_3, chipselect_4, chipselect_5, chipselect_6: in std_logic;
+		readdata_0, readdata_1, readdata_2, readdata_3, readdata_4, readdata_5, readdata_6: out std_logic_vector(31 downto 0);
+		writedata_0, writedata_1, writedata_2, writedata_3, writedata_4, writedata_5, writedata_6: in  std_logic_vector(31 downto 0);
+		byteenable_0, byteenable_1, byteenable_2, byteenable_3, byteenable_4, byteenable_5, byteenable_6: in  std_logic_vector( 3 downto 0);
+		Q_export_matrix : out std_logic_vector(31 downto 0)
 	);
 end reg32_avalon_interface;
 
 architecture rtl of reg32_avalon_interface is
-	constant AMOUNT_REGISTERS: natural := 6;
-	
-	type registers is array (0 to AMOUNT_REGISTERS) of std_logic_vector(31 downto 0);
+	constant AMOUNT_REGISTERS: natural := 7;
+	type logic_vector_vector is array(natural range<>) of std_logic_vector;
+	type registers is array (0 to AMOUNT_REGISTERS-1) of std_logic_vector(31 downto 0);
 	signal regs: registers;
-	procedure read_write_reg(signal writedata: in std_logic_vector(31 downto 0);
-								  signal register_number: in unsigned(4 downto 0);
-								  signal read: in std_logic;
-								  signal write: in std_logic;
-								  signal byteenable: in std_logic_vector (3 downto 0);
-								  signal readdata: out std_logic_vector(31 downto 0);
-								  signal reg: out registers) is
+	procedure read_write_reg(constant register_number: in integer;
+								  signal read: in std_logic_vector;
+								  signal write: in std_logic_vector;
+								  signal writedata: in logic_vector_vector;
+								  signal byteenable: in logic_vector_vector;
+								  signal readdata: out logic_vector_vector;
+								  signal reg: inout registers) is
 	begin
-		if read then 
-			readdata <= reg(register_number);
-		elsif write then
-			if byteenable(0) then
-				reg(register_number)(7 downto 0) <= writedata(7 downto 0);
+		if read(register_number) then 
+			readdata(register_number) <= reg(register_number);
+		elsif write(register_number) then
+			if byteenable(register_number)(0) then
+				reg(register_number)(7 downto 0) <= writedata(register_number)(7 downto 0);
 			end if;
-			if byteenable(1) then
-				reg(register_number)(15 downto 8) <= writedata(15 downto 8);
+			if byteenable(register_number)(1) then
+				reg(register_number)(15 downto 8) <= writedata(register_number)(15 downto 8);
 			end if;
-			if byteenable(2) then
-				reg(register_number)(23 downto 16) <= writedata(23 downto 16);
+			if byteenable(register_number)(2) then
+				reg(register_number)(23 downto 16) <= writedata(register_number)(23 downto 16);
 			end if;
-			if byteenable(3) then
-				reg(register_number)(31 downto 24) <= writedata(31 downto 24);
+			if byteenable(register_number)(3) then
+				reg(register_number)(31 downto 24) <= writedata(register_number)(31 downto 24);
 			end if;
 		end if;
 	end procedure;
 	
 	component matrix_top is
 		port (
-		  -- Clock en Reset (Platform Designer interface names)
-		  clock           	: in  std_logic;
-		  reset           	: in  std_logic;
-		  control_register	: inout std_ulogic_vector(31 downto 0);
-		  red_vector_read		: out std_logic_vector(31 downto 0);
-		  blue_vector_read	: out std_logic_vector(31 downto 0);
-		  green_vector_read	: out std_logic_vector(31 downto 0);
-		  
+        clock, reset: in std_ulogic;
+		  control_register	: inout std_logic_vector(31 downto 0);
+		  red_vector_read		: in std_logic_vector(31 downto 0);
+		  blue_vector_read	: in std_logic_vector(31 downto 0);
+		  green_vector_read	: in std_logic_vector(31 downto 0);
 		  red_vector_write	: in std_logic_vector(31 downto 0);
 		  blue_vector_write	: in std_logic_vector(31 downto 0);
 		  green_vector_write	: in std_logic_vector(31 downto 0);
 		  
-		  -- RGB Matrix Output Conduit
 		  matrix_r1     : out std_logic;
 		  matrix_g1     : out std_logic;
 		  matrix_b1     : out std_logic;
@@ -77,57 +70,51 @@ architecture rtl of reg32_avalon_interface is
 		  matrix_addr_d : out std_logic;
 		  matrix_clk    : out std_logic;
 		  matrix_lat    : out std_logic;
-		  matrix_oe_n   : out std_logic
+		  matrix_oe     : out std_logic
 		);
 	end component;
 	
-	signal reset_s : std_logic;
-	signal export_matrix: std_logic_vector(12 downto 0);
+	signal export_matrix: std_logic_vector(31 downto 0);
+	signal read: std_logic_vector(6 downto 0);
+	signal write: std_logic_vector(6 downto 0);
+	signal chipselect: std_logic_vector(6 downto 0);
+	signal readdata: logic_vector_vector(6 downto 0)(31 downto 0);
+	signal writedata: logic_vector_vector(6 downto 0)(31 downto 0);
+	signal byteenable: logic_vector_vector(6 downto 0)(3 downto 0);
 begin
-	reset_s => not(resetn);--1 is reset, 0 is geen reset. 
-	process(clock, reset_s)
+	read <= (read_0, read_1, read_2, read_3, read_4, read_5, read_6);
+	write <= (write_0, write_1, write_2, write_3, write_4, write_5, write_6);
+	chipselect <= (chipselect_0, chipselect_1, chipselect_2, chipselect_3, chipselect_4, chipselect_5, chipselect_6);
+	readdata <= (readdata_0, readdata_1, readdata_2, readdata_3, readdata_4, readdata_5, readdata_6);
+	writedata <= (writedata_0, writedata_1, writedata_2, writedata_3, writedata_4, writedata_5, writedata_6);
+	byteenable <= (byteenable_0, byteenable_1, byteenable_2, byteenable_3, byteenable_4, byteenable_5, byteenable_6);
+	process(clock, reset)
 	begin
-		if reset_s then
+		if reset then
 			for i in 0 to AMOUNT_REGISTERS loop
 				regs(i) <= (others => '0');
 			end loop;
 		elsif rising_edge(clock) then
-			if chipselect_0 then
-				read_write_reg(writedata, 0, read, write, byteenable, readdata, regs);
-			end if;
-			if chipselect_1 then
-				read_write_reg(writedata, 1, read, write, byteenable, readdata, regs);
-			end if;
-			if chipselect_2 then
-				read_write_reg(writedata, 2, read, write, byteenable, readdata, regs);
-			end if;
-			if chipselect_3 then
-				read_write_reg(writedata, 3, read, write, byteenable, readdata, regs);
-			end if;
-			if chipselect_4 then
-				read_write_reg(writedata, 4, read, write, byteenable, readdata, regs);
-			end if;
-			if chipselect_5 then
-				read_write_reg(writedata, 5, read, write, byteenable, readdata, regs);
-			end if;
-			if chipselect_6 then
-				read_write_reg(writedata, 6, read, write, byteenable, readdata, regs);
-			end if;
+			for i in chipselect'range loop
+				if chipselect(i) then
+					read_write_reg(i, read, write, writedata, readdata, byteenable, regs);
+				end if;
+			end loop;
 		end if;
 	end process;
 	
-	Q_export_r_0 <= export_matrix(0);
+	Q_export_matrix <= export_matrix;
 	matrix: matrix_top 
 	port map(
 		clock => clock,
 		reset => reset, 
-		control_register => reg(3),
-		red_vector_read => reg(0),
-		blue_vector_read  => reg(1),
-		green_vector_read => reg(2),
-		red_vector_write   => reg(4),
-		blue_vector_write  => reg(5),
-		green_vector_write => reg(6),
+		control_register => regs(3),
+		red_vector_read => regs(0),
+		blue_vector_read  => regs(1),
+		green_vector_read => regs(2),
+		red_vector_write   => regs(4),
+		blue_vector_write  => regs(5),
+		green_vector_write => regs(6),
 
 		matrix_r1 => export_matrix(0),
 		matrix_g1 => export_matrix(1),
@@ -141,8 +128,6 @@ begin
 		matrix_addr_d => export_matrix(9),
 		matrix_clk => export_matrix(10),
 		matrix_lat => export_matrix(11),
-		matrix_oe_n => export_matrix(12),
-		--outputs
-		--hoe doen we dit?
+		matrix_oe  => export_matrix(12)
 		);
 end architecture rtl;
