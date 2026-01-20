@@ -82,7 +82,7 @@ architecture imp of matrix_top is
 	
 	--houdt bij machten van 2, was wat AI had gedaan, maar kan in principe welke waarde dat gewild wordt
 	constant brightness: unsigned := 32;
-	component counter is
+	component nibble_count is
 		generic (max_count: natural);
 		port(
 			klok, reset, enable: in std_ulogic;
@@ -153,7 +153,7 @@ begin
 		reset => reset_clock_s,
 		output_clock =>matrix_clk
 	 );
-	 brightness_control: counter
+	 brightness_control: nibble_count
 	 generic map (max_count => brightness)
 	 port map (
 		klok => clk, 
