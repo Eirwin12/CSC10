@@ -31,7 +31,7 @@ architecture structure of eindopdracht_blokken_bewegen is
             matrix_connection_readdata              : out std_logic_vector(31 downto 0)                     -- readdata
         );
     end component eindopdracht;
-	 signal output_matrix_buffer: std_ulogic_vector( 31 downto 0);
+	 signal output_matrix_buffer: std_logic_vector( 31 downto 0);
 begin
 
     u0 : component eindopdracht

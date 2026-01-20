@@ -24,10 +24,10 @@ architecture rtl of reg32_avalon_interface is
 	component matrix_top is
 		port (
 			  clk, rst: in std_ulogic;
-			  control_register	: inout std_ulogic_vector(31 downto 0);
-			  red_vector_read		: in std_logic_vector(31 downto 0);
-			  blue_vector_read	: in std_logic_vector(31 downto 0);
-			  green_vector_read	: in std_logic_vector(31 downto 0);
+			  control_register	: inout std_logic_vector(31 downto 0);
+			  red_vector_read		: out std_logic_vector(31 downto 0);
+			  blue_vector_read	: out std_logic_vector(31 downto 0);
+			  green_vector_read	: out std_logic_vector(31 downto 0);
 			  
 			  red_vector_write	: in std_logic_vector(31 downto 0);
 			  blue_vector_write	: in std_logic_vector(31 downto 0);

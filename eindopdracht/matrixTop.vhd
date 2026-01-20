@@ -1,11 +1,14 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity matrix_top is
 	port (
         clk, rst: in std_ulogic;
-		  control_register	: inout std_ulogic_vector(31 downto 0);
-		  red_vector_read		: in std_logic_vector(31 downto 0);
-		  blue_vector_read	: in std_logic_vector(31 downto 0);
-		  green_vector_read	: in std_logic_vector(31 downto 0);
+		  control_register	: inout std_logic_vector(31 downto 0);
+		  red_vector_read		: out std_logic_vector(31 downto 0) := (others =>'0');
+		  blue_vector_read	: out std_logic_vector(31 downto 0);
+		  green_vector_read	: out std_logic_vector(31 downto 0);
 		  
 		  red_vector_write	: in std_logic_vector(31 downto 0);
 		  blue_vector_write	: in std_logic_vector(31 downto 0);
@@ -40,8 +43,8 @@ architecture imp of matrix_top is
 	  green_vector_write	: in std_logic_vector(31 downto 0);
 	  address			: in std_logic_vector(3 downto 0);
 	  read, write     : inout std_logic;
-	  collumn_filled  : in std_ulogic;
-	  matrix_latch    : in std_ulogic;
+	  collumn_filled  : out std_ulogic;
+	  change_row      : in std_ulogic;
 	  enable_matrix   : in std_ulogic;
 	  -- RGB Matrix Output Conduit
 	  matrix_r1     : out std_logic;
@@ -62,9 +65,9 @@ architecture imp of matrix_top is
 			  clk, rst: in std_ulogic;
 			  start_button, timer_repeated, collumn_filled: in std_ulogic;
 			  --matrix outputs
-			  reset_matrix, enable_matrix, enable_change, enable_latch: out std_ulogic;
+			  reset_matrix, enable_matrix, enable_change, enable_latch, row_change: out std_ulogic;
 			  --external unit outputs. 
-			  reset_clk, reset_counter, enable_counter: out std_ulogic;
+			  reset_clk, reset_counter, enable_counter: out std_ulogic
 		 );
 	end component;
 	
@@ -80,7 +83,7 @@ architecture imp of matrix_top is
 	end component;
 	
 	--houdt bij machten van 2, was wat AI had gedaan, maar kan in principe welke waarde dat gewild wordt
-	constant brightness: unsigned := 32;
+	constant brightness: natural := 32;
 	component nibble_count is
 		generic (max_count: natural);
 		port(
@@ -90,12 +93,12 @@ architecture imp of matrix_top is
 		);
 	end component;
 	--tijdelijke signalen. hoort in de entity declaratie
-	signal reset: std_ulogic:= 0;
+	signal reset: std_ulogic:=  '0';
 	signal start: std_ulogic;
 	
 	signal repeated_count: std_ulogic;
 	
-	signal reset_matrix_s, enable_change_s, enable_latch_s, collumn_filled: std_ulogic;
+	signal reset_matrix_s, enable_matrix_s, enable_latch_s, collumn_filled_s, row_changed: std_ulogic := '0';
 	signal reset_clock_s, reset_counter_s, enable_counter_s: std_ulogic;
 	
 	constant CONTROL_START_BIT: natural := 0;
@@ -103,8 +106,8 @@ architecture imp of matrix_top is
 	constant CONTROL_READ_BIT: natural  := 2;
 	constant CONTROL_WRITE_BIT: natural := 3;
 	
-	constant ADDRES_UPPER_BOUND: natural := 3;
-	constant ADDRES_LOWER_BOUND: natural := 0;
+	constant ADDRESS_UPPER_BOUND: natural := 3;
+	constant ADDRESS_LOWER_BOUND: natural := 0;
 begin
 	reset <= rst and control_register(CONTROL_RESET_BIT);
 	matrix_com: rgb_framebuffer
@@ -121,8 +124,8 @@ begin
 	  address => control_register(ADDRESS_UPPER_BOUND downto ADDRESS_LOWER_BOUND),
 	  read => control_register(CONTROL_READ_BIT),
 	  write => control_register(CONTROL_WRITE_BIT),
-	  collumn_filled => collumn_filled_s
-	  matrix_latch => enable_latch_s,
+	  collumn_filled => collumn_filled_s,
+	  change_row => row_changed,
 	  enable_matrix => enable_matrix_s,
 		-- RGB Matrix Output Conduit
 		matrix_r1 => matrix_r1,
@@ -140,16 +143,17 @@ begin
 	port map (
 		clk => clk,
 		rst => reset,
-		start_button => CONTROL_START_BIT,
+		start_button => control_register(CONTROL_START_BIT),
 		timer_repeated => repeated_count,
-		collumn_filled => collumn_filled_s
+		collumn_filled => collumn_filled_s,
 		
 		reset_matrix => reset_matrix_s,
 		enable_matrix => enable_matrix_s,
 		enable_latch => enable_latch_s,
 		reset_clk => reset_clock_s,
 		reset_counter => reset_counter_s,
-		enable_counter => enable_counter_s
+		enable_counter => enable_counter_s,
+		row_change => row_changed
 	);
 	
 	 matrix_clock: clock_divider

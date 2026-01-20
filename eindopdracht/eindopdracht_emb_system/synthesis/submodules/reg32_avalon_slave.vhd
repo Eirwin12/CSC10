@@ -18,16 +18,17 @@ end reg32_avalon_interface;
 architecture rtl of reg32_avalon_interface is
 	constant AMOUNT_REGISTERS: natural := 7;
 	constant LAST_REGISTER_INDEX: natural := AMOUNT_REGISTERS-1;
-	type registers is array (0 to AMOUNT_REGISTERS-1) of std_logic_vector(31 downto 0);
-	signal regs: registers;
+	type registers is array (range <>) of std_logic_vector(31 downto 0);
+	signal regs: registers(0 to AMOUNT_REGISTERS-1);
+	signal matrix_output: registers(0 to 3);
 	
 	component matrix_top is
 		port (
         clock, reset: in std_ulogic;
 		  control_register	: inout std_logic_vector(31 downto 0);
-		  red_vector_read		: in std_logic_vector(31 downto 0);
-		  blue_vector_read	: in std_logic_vector(31 downto 0);
-		  green_vector_read	: in std_logic_vector(31 downto 0);
+		  red_vector_read		: out std_logic_vector(31 downto 0);
+		  blue_vector_read	: out std_logic_vector(31 downto 0);
+		  green_vector_read	: out std_logic_vector(31 downto 0);
 		  red_vector_write	: in std_logic_vector(31 downto 0);
 		  blue_vector_write	: in std_logic_vector(31 downto 0);
 		  green_vector_write	: in std_logic_vector(31 downto 0);
@@ -61,7 +62,7 @@ begin
 			if chipselect then
 				address_value := to_integer(unsigned(address));
 				if read then
-					readdata <= regs(0);
+					readdata <= regs(address_value);
 				elsif write then
 					if byteenable(0) then
 						regs(address_value)(7 downto 0) <= writedata(7 downto 0);
@@ -85,10 +86,10 @@ begin
 	port map(
 		clock => clock,
 		reset => reset, 
-		control_register => regs(3),
-		red_vector_read => regs(0),
-		blue_vector_read  => regs(1),
-		green_vector_read => regs(2),
+		control_register => int_regs(3),
+		red_vector_read => int_regs(0),
+		blue_vector_read  => int_regs(1),
+		green_vector_read => int_regs(2),
 		red_vector_write   => regs(4),
 		blue_vector_write  => regs(5),
 		green_vector_write => regs(6),
