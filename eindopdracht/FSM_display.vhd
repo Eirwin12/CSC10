@@ -13,7 +13,9 @@ entity fsm_display is
 end fsm_display;
 
 architecture behavior of fsm_display is
-   type state_type is (IDLE, SHIFT_ROW, LATCH, DISPLAY, NEXT_ROW, BRIGHTNESS_ADJUST);
+	--hier moet eigenlijk 2/4 states erbij
+	--1 voor lezen, 1 voor schrijven. dubbel om terug te gaan naar de juiste state (of extra input/geheugen?
+   type state_type is (IDLE, SHIFT_ROW, BRIGHTNESS_ADJUST);
 	signal pr_state, nx_state: state_type;
 begin
 

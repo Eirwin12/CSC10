@@ -23,29 +23,30 @@ architecture rtl of reg32_avalon_interface is
 	
 	component matrix_top is
 		port (
-        clock, reset: in std_ulogic;
-		  control_register	: inout std_logic_vector(31 downto 0);
-		  red_vector_read		: in std_logic_vector(31 downto 0);
-		  blue_vector_read	: in std_logic_vector(31 downto 0);
-		  green_vector_read	: in std_logic_vector(31 downto 0);
-		  red_vector_write	: in std_logic_vector(31 downto 0);
-		  blue_vector_write	: in std_logic_vector(31 downto 0);
-		  green_vector_write	: in std_logic_vector(31 downto 0);
-		  
-		  matrix_r1     : out std_logic;
-		  matrix_g1     : out std_logic;
-		  matrix_b1     : out std_logic;
-		  matrix_r2     : out std_logic;
-		  matrix_g2     : out std_logic;
-		  matrix_b2     : out std_logic;
-		  matrix_addr_a : out std_logic;
-		  matrix_addr_b : out std_logic;
-		  matrix_addr_c : out std_logic;
-		  matrix_addr_d : out std_logic;
-		  matrix_clk    : out std_logic;
-		  matrix_lat    : out std_logic;
-		  matrix_oe     : out std_logic
-		);
+			  clk, rst: in std_ulogic;
+			  control_register	: inout std_ulogic_vector(31 downto 0);
+			  red_vector_read		: in std_logic_vector(31 downto 0);
+			  blue_vector_read	: in std_logic_vector(31 downto 0);
+			  green_vector_read	: in std_logic_vector(31 downto 0);
+			  
+			  red_vector_write	: in std_logic_vector(31 downto 0);
+			  blue_vector_write	: in std_logic_vector(31 downto 0);
+			  green_vector_write	: in std_logic_vector(31 downto 0);
+			  
+			  matrix_r1     : out std_logic;
+			  matrix_g1     : out std_logic;
+			  matrix_b1     : out std_logic;
+			  matrix_r2     : out std_logic;
+			  matrix_g2     : out std_logic;
+			  matrix_b2     : out std_logic;
+			  matrix_addr_a : out std_logic;
+			  matrix_addr_b : out std_logic;
+			  matrix_addr_c : out std_logic;
+			  matrix_addr_d : out std_logic;
+			  matrix_clk    : out std_logic;
+			  matrix_lat    : out std_logic;
+			  matrix_oe     : out std_logic
+			);
 	end component;
 	
 	signal export_matrix: std_logic_vector(31 downto 0);
@@ -83,8 +84,8 @@ begin
 	Q_export <= export_matrix;
 	matrix: matrix_top 
 	port map(
-		clock => clock,
-		reset => reset, 
+		clk => clock,
+		rst => reset, 
 		control_register => regs(3),
 		red_vector_read => regs(0),
 		blue_vector_read  => regs(1),

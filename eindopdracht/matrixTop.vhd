@@ -25,7 +25,6 @@ entity matrix_top is
 		  matrix_lat    : out std_logic;
 		  matrix_oe     : out std_logic
 		);
-    );
 end;
 
 architecture imp of matrix_top is
@@ -40,7 +39,7 @@ architecture imp of matrix_top is
 	  blue_vector_write	: in std_logic_vector(31 downto 0);
 	  green_vector_write	: in std_logic_vector(31 downto 0);
 	  address			: in std_logic_vector(3 downto 0);
-	  read_write		: in std_ulogic;
+	  read, write     : inout std_logic;
 	  collumn_filled  : in std_ulogic;
 	  matrix_latch    : in std_ulogic;
 	  enable_matrix   : in std_ulogic;
@@ -91,20 +90,27 @@ architecture imp of matrix_top is
 		);
 	end component;
 	--tijdelijke signalen. hoort in de entity declaratie
-	signal reset: std_ulogic:= 1;
+	signal reset: std_ulogic:= 0;
 	signal start: std_ulogic;
 	
 	signal repeated_count: std_ulogic;
 	
 	signal reset_matrix_s, enable_change_s, enable_latch_s, collumn_filled: std_ulogic;
 	signal reset_clock_s, reset_counter_s, enable_counter_s: std_ulogic;
-
+	
+	constant CONTROL_START_BIT: natural := 0;
+	constant CONTROL_RESET_BIT: natural := 1;
+	constant CONTROL_READ_BIT: natural  := 2;
+	constant CONTROL_WRITE_BIT: natural := 3;
+	
+	constant ADDRES_UPPER_BOUND: natural := 3;
+	constant ADDRES_LOWER_BOUND: natural := 0;
 begin
-	reset <= rst and 
+	reset <= rst and control_register(CONTROL_RESET_BIT);
 	matrix_com: rgb_framebuffer
 	port map(
 		clock => clk,
-		reset => rst,
+		reset => reset_matrix_s,
 	  red_vector_read => blue_vector_read,
 	  blue_vector_read => blue_vector_read,
 	  green_vector_read => green_vector_read,
@@ -112,8 +118,9 @@ begin
 	  red_vector_write => red_vector_write,
 	  blue_vector_write => blue_vector_write,
 	  green_vector_write => green_vector_write,
-	  address			: in std_logic_vector(3 downto 0);
-	  read_write		: in std_ulogic;
+	  address => control_register(ADDRESS_UPPER_BOUND downto ADDRESS_LOWER_BOUND),
+	  read => control_register(CONTROL_READ_BIT),
+	  write => control_register(CONTROL_WRITE_BIT),
 	  collumn_filled => collumn_filled_s
 	  matrix_latch => enable_latch_s,
 	  enable_matrix => enable_matrix_s,
@@ -132,8 +139,8 @@ begin
 	fsm: fsm_display
 	port map (
 		clk => clk,
-		rst => rst,
-		start_button => start,
+		rst => reset,
+		start_button => CONTROL_START_BIT,
 		timer_repeated => repeated_count,
 		collumn_filled => collumn_filled_s
 		

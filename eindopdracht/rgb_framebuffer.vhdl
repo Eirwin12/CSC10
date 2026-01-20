@@ -14,7 +14,7 @@ entity rgb_framebuffer is
 	  blue_vector_write	: in std_logic_vector(31 downto 0);
 	  green_vector_write	: in std_logic_vector(31 downto 0);
 	  address			: in std_logic_vector(3 downto 0);
-	  read_write		: in std_ulogic;
+	  read, write     : inout std_logic;
 	  collumn_filled  : in std_ulogic;
 	  matrix_latch    : in std_ulogic;
 	  enable_matrix   : in std_ulogic;
@@ -74,7 +74,7 @@ begin
 		if reset then 
 			row_addr = (others => '0');
 			col_count = (others => '0');
-			framebuffer_1 <= (others => (others => "000"));
+			framebuffer <= (others => (others => "000"));
 		elsif rising_edge(clock) then
 			if rising_edge(matrix_latch) then
 				if row_addr >= 16 then
@@ -92,13 +92,13 @@ begin
 					pixel_addr2 := (lower_row, col_count);
 
 					--verstuur de pixels naar de matrix toe. 
-					matrix_r1 <= framebuffer_1(pixel_addr1(0), pixel_addr1(1))(0);
-					matrix_g1 <= framebuffer_1(pixel_addr1(0), pixel_addr1(1))(1);
-					matrix_b1 <= framebuffer_1(pixel_addr1(0), pixel_addr1(1))(2);
+					matrix_r1 <= framebuffer(pixel_addr1(0), pixel_addr1(1))(0);
+					matrix_g1 <= framebuffer(pixel_addr1(0), pixel_addr1(1))(1);
+					matrix_b1 <= framebuffer(pixel_addr1(0), pixel_addr1(1))(2);
 
-					matrix_r2 <= framebuffer_1(pixel_addr2(0), pixel_addr2(1))(0);
-					matrix_g2 <= framebuffer_1(pixel_addr2(0), pixel_addr2(1))(1);
-					matrix_b2 <= framebuffer_1(pixel_addr2(0), pixel_addr2(1))(2);
+					matrix_r2 <= framebuffer(pixel_addr2(0), pixel_addr2(1))(0);
+					matrix_g2 <= framebuffer(pixel_addr2(0), pixel_addr2(1))(1);
+					matrix_b2 <= framebuffer(pixel_addr2(0), pixel_addr2(1))(2);
 
 					-- Next column
 					if col_count = 31 then
@@ -111,7 +111,31 @@ begin
 			end if;
 		end if;
 	end process;
-    
+	
+	--dit is nog gevaarlijk!!
+	--schrijven naar buffer, terwijl het gebruikt kan worden voor matrix.
+	--extra state maken in de FSM!
+   process(read, write, address)
+		variable address_i: integer range 0 to 32;
+	begin
+		row := to_integer(unsigned(address));
+		--read verstuurd data naar master
+		if read then
+			for collumn in 0 to 31 loop
+				red_vector_read(i)   <= framebuffer(row, collumn)(0);
+				green_vector_read(i) <= framebuffer(row, collumn)(1);
+				blue_vector_read(i)  <= framebuffer(row, collumn)(2);
+			end loop
+			read <= '0';
+		elsif write then
+			for collumn in 0 to 31 loop
+				framebuffer(row, collumn)(0) <= red_vector_write(i);
+				framebuffer(row, collumn)(1) <= green_vector_write(i);
+				framebuffer(row, collumn)(2) <= blue_vector_write(i);
+			end loop
+			write <= '0';
+		end if;
+	end process;
     -- Output assignments
     matrix_addr_a <= std_logic(row_addr(0));
     matrix_addr_b <= std_logic(row_addr(1));
