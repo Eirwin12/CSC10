@@ -1,12 +1,14 @@
 
 module eindopdracht (
 	clk_clk,
-	pio_buttons_external_connection_export,
-	pio_switches_external_connection_export,
-	matrix_connection_readdata);	
+	pio_buttons_export,
+	pio_switches_export,
+	pio_leds_export,
+	matrix_output_readdata);	
 
 	input		clk_clk;
-	input	[3:0]	pio_buttons_external_connection_export;
-	input	[9:0]	pio_switches_external_connection_export;
-	output	[31:0]	matrix_connection_readdata;
+	input	[3:0]	pio_buttons_export;
+	input	[9:0]	pio_switches_export;
+	output	[9:0]	pio_leds_export;
+	output	[31:0]	matrix_output_readdata;
 endmodule

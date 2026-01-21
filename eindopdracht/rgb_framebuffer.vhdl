@@ -6,15 +6,13 @@ entity rgb_framebuffer is
 	port (
 		clock           : in  std_logic;
 		reset           : in  std_logic;
-	  red_vector_read		: out std_logic_vector(31 downto 0);
-	  blue_vector_read	: out std_logic_vector(31 downto 0);
-	  green_vector_read	: out std_logic_vector(31 downto 0);
 	  
 	  red_vector_write	: in std_logic_vector(31 downto 0);
 	  blue_vector_write	: in std_logic_vector(31 downto 0);
 	  green_vector_write	: in std_logic_vector(31 downto 0);
 	  address			: in std_logic_vector(3 downto 0);
-	  read, write     : inout std_logic;
+	  write           : in std_logic;
+	  write_done      : out std_logic;
 	  collumn_filled  : out std_ulogic;
 	  change_row      : in std_ulogic;
 	  enable_matrix   : in std_ulogic;
@@ -33,9 +31,6 @@ entity rgb_framebuffer is
 end entity rgb_framebuffer;
 
 architecture rtl of rgb_framebuffer is
-	--in plaats van 1 buffer van 1024, grid/matrix maken van 32*32. 
-	--overzichtelijker en begrijpbaarder dan alles in 1 vector gepropt
-	--rgb is elk 1 bit. kan natuurlijk verandert worden
 
 	--matrix heeft 32x32 leds. elke led heeft 3 bits nodig: 1 bit rood, 1 bit groen en 1 bit blauw. 
 	--elke led is een logic_vector, waarbij rood bit 0, groen bit 2 en blauw bit 2 is. 
@@ -114,28 +109,25 @@ begin
 	--dit is nog gevaarlijk!!
 	--schrijven naar buffer, terwijl het gebruikt kan worden voor matrix.
 	--extra state maken in de FSM!
-   process(reset, clock, read, write, address, framebuffer)
+   process(reset, clock, write, address, framebuffer)
 		variable row: integer range 0 to 32;
 	begin
+	
 		row := to_integer(unsigned(address));
 		--read verstuurd data naar master
 		if reset then
 			framebuffer <= (others => (others => "000"));
 		elsif rising_edge(clock) then
-			if read then
-				for collumn in 0 to 31 loop
-					red_vector_read(collumn)   <= framebuffer(row, collumn)(0);
-					green_vector_read(collumn) <= framebuffer(row, collumn)(1);
-					blue_vector_read(collumn)  <= framebuffer(row, collumn)(2);
-				end loop;
-				read <= '0';
-			elsif write then
+			if write then
 				for collumn in 0 to 31 loop
 					framebuffer(row, collumn)(0) <= red_vector_write(collumn);
 					framebuffer(row, collumn)(1) <= green_vector_write(collumn);
 					framebuffer(row, collumn)(2) <= blue_vector_write(collumn);
 				end loop;
-				write <= '0';
+				--let FSM know write is done. 
+				write_done <= '1';
+			else
+				write_done <= '0';
 			end if;
 		end if;
 	end process;
@@ -147,11 +139,4 @@ begin
     
 end architecture rtl;
 
-
---hardware onthoud volledige matrix
---bijhouden rijen
-
-
---randen kunnen we hard coden. 
---software kan vragen welke kleur een pixel/rij welke kleur heeft
---software kunnen sturen welke pixel/rij welke kleur
+--software en hardware houden state van matrix bij (software mis. simpeler dan hardware)

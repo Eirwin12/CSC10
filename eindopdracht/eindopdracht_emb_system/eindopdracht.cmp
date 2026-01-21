@@ -1,9 +1,10 @@
 	component eindopdracht is
 		port (
-			clk_clk                                 : in  std_logic                     := 'X';             -- clk
-			matrix_connection_readdata              : out std_logic_vector(31 downto 0);                    -- readdata
-			pio_buttons_external_connection_export  : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- export
-			pio_switches_external_connection_export : in  std_logic_vector(9 downto 0)  := (others => 'X')  -- export
+			clk_clk                : in  std_logic                     := 'X';             -- clk
+			matrix_output_readdata : out std_logic_vector(31 downto 0);                    -- readdata
+			pio_buttons_export     : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- export
+			pio_leds_export        : out std_logic_vector(9 downto 0);                     -- export
+			pio_switches_export    : in  std_logic_vector(9 downto 0)  := (others => 'X')  -- export
 		);
 	end component eindopdracht;
 

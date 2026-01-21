@@ -5,10 +5,7 @@ use ieee.numeric_std.all;
 entity matrix_top is
 	port (
         clk, rst: in std_ulogic;
-		  control_register	: inout std_logic_vector(31 downto 0);
-		  red_vector_read		: out std_logic_vector(31 downto 0) := (others =>'0');
-		  blue_vector_read	: out std_logic_vector(31 downto 0);
-		  green_vector_read	: out std_logic_vector(31 downto 0);
+		  control_register	: in std_logic_vector(31 downto 0);
 		  
 		  red_vector_write	: in std_logic_vector(31 downto 0);
 		  blue_vector_write	: in std_logic_vector(31 downto 0);
@@ -33,39 +30,36 @@ end;
 architecture imp of matrix_top is
 	component rgb_framebuffer is
 		port (
-		clock, reset      : in  std_logic;
-	  red_vector_read		: out std_logic_vector(31 downto 0);
-	  blue_vector_read	: out std_logic_vector(31 downto 0);
-	  green_vector_read	: out std_logic_vector(31 downto 0);
-	  
-	  red_vector_write	: in std_logic_vector(31 downto 0);
-	  blue_vector_write	: in std_logic_vector(31 downto 0);
-	  green_vector_write	: in std_logic_vector(31 downto 0);
-	  address			: in std_logic_vector(3 downto 0);
-	  read, write     : inout std_logic;
-	  collumn_filled  : out std_ulogic;
-	  change_row      : in std_ulogic;
-	  enable_matrix   : in std_ulogic;
-	  -- RGB Matrix Output Conduit
-	  matrix_r1     : out std_logic;
-	  matrix_g1     : out std_logic;
-	  matrix_b1     : out std_logic;
-	  matrix_r2     : out std_logic;
-	  matrix_g2     : out std_logic;
-	  matrix_b2     : out std_logic;
-	  matrix_addr_a : out std_logic;
-	  matrix_addr_b : out std_logic;
-	  matrix_addr_c : out std_logic;
-	  matrix_addr_d : out std_logic
+			clock, reset      : in  std_logic;	  
+			red_vector_write	: in std_logic_vector(31 downto 0);
+			blue_vector_write	: in std_logic_vector(31 downto 0);
+			green_vector_write	: in std_logic_vector(31 downto 0);
+			address			: in std_logic_vector(3 downto 0);
+		   write           : in std_logic;
+		   write_done      : out std_logic;
+			collumn_filled  : out std_ulogic;
+			change_row      : in std_ulogic;
+			enable_matrix   : in std_ulogic;
+			-- RGB Matrix Output Conduit
+			matrix_r1     : out std_logic;
+			matrix_g1     : out std_logic;
+			matrix_b1     : out std_logic;
+			matrix_r2     : out std_logic;
+			matrix_g2     : out std_logic;
+			matrix_b2     : out std_logic;
+			matrix_addr_a : out std_logic;
+			matrix_addr_b : out std_logic;
+			matrix_addr_c : out std_logic;
+			matrix_addr_d : out std_logic
 		);
 	end component;
 	
 	component fsm_display is
 		port (
 			  clk, rst: in std_ulogic;
-			  start_button, timer_repeated, collumn_filled: in std_ulogic;
+			  start_button, timer_repeated, collumn_filled, write, write_done: in std_ulogic;
 			  --matrix outputs
-			  reset_matrix, enable_matrix, enable_change, enable_latch, row_change: out std_ulogic;
+			  reset_matrix, enable_matrix, enable_latch, row_change, write_matrix: out std_ulogic;
 			  --external unit outputs. 
 			  reset_clk, reset_counter, enable_counter: out std_ulogic
 		 );
@@ -92,19 +86,14 @@ architecture imp of matrix_top is
 			count_done: out std_ulogic
 		);
 	end component;
-	--tijdelijke signalen. hoort in de entity declaratie
-	signal reset: std_ulogic:=  '0';
-	signal start: std_ulogic;
 	
-	signal repeated_count: std_ulogic;
-	
-	signal reset_matrix_s, enable_matrix_s, enable_latch_s, collumn_filled_s, row_changed: std_ulogic := '0';
-	signal reset_clock_s, reset_counter_s, enable_counter_s: std_ulogic;
+	signal reset_matrix_s, enable_matrix_s, enable_latch_s, collumn_filled_s, row_changed, write_done_s, write_matrix_s: std_ulogic := '0';
+	signal reset_clock_s, reset_counter_s, enable_counter_s, repeated_count: std_ulogic;
+	signal reset: std_ulogic;
 	
 	constant CONTROL_START_BIT: natural := 0;
 	constant CONTROL_RESET_BIT: natural := 1;
-	constant CONTROL_READ_BIT: natural  := 2;
-	constant CONTROL_WRITE_BIT: natural := 3;
+	constant CONTROL_WRITE_BIT: natural := 2;
 	
 	constant ADDRESS_UPPER_BOUND: natural := 3;
 	constant ADDRESS_LOWER_BOUND: natural := 0;
@@ -114,16 +103,13 @@ begin
 	port map(
 		clock => clk,
 		reset => reset_matrix_s,
-	  red_vector_read => blue_vector_read,
-	  blue_vector_read => blue_vector_read,
-	  green_vector_read => green_vector_read,
 	  
 	  red_vector_write => red_vector_write,
 	  blue_vector_write => blue_vector_write,
 	  green_vector_write => green_vector_write,
 	  address => control_register(ADDRESS_UPPER_BOUND downto ADDRESS_LOWER_BOUND),
-	  read => control_register(CONTROL_READ_BIT),
-	  write => control_register(CONTROL_WRITE_BIT),
+	  write => write_matrix_s,
+	  write_done => write_done_s,
 	  collumn_filled => collumn_filled_s,
 	  change_row => row_changed,
 	  enable_matrix => enable_matrix_s,
@@ -146,7 +132,10 @@ begin
 		start_button => control_register(CONTROL_START_BIT),
 		timer_repeated => repeated_count,
 		collumn_filled => collumn_filled_s,
+		write => control_register(CONTROL_WRITE_BIT),
+		write_done => write_done_s,
 		
+		write_matrix => write_matrix_s,
 		reset_matrix => reset_matrix_s,
 		enable_matrix => enable_matrix_s,
 		enable_latch => enable_latch_s,

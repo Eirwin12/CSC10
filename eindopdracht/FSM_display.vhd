@@ -4,9 +4,9 @@ use ieee.std_logic_1164.all;
 entity fsm_display is
 	port (
         clk, rst: in std_ulogic;
-        start_button, timer_repeated, collumn_filled: in std_ulogic;
+        start_button, timer_repeated, collumn_filled, write, write_done: in std_ulogic;
 		  --matrix outputs
-        reset_matrix, enable_matrix, enable_latch, row_change: out std_ulogic;
+        reset_matrix, enable_matrix, enable_latch, row_change, write_matrix: out std_ulogic;
 		  --external unit outputs. 
 		  reset_clk, reset_counter, enable_counter: out std_ulogic
     );
@@ -15,7 +15,7 @@ end fsm_display;
 architecture behavior of fsm_display is
 	--hier moet eigenlijk 2/4 states erbij
 	--1 voor lezen, 1 voor schrijven. dubbel om terug te gaan naar de juiste state (of extra input/geheugen?
-   type state_type is (IDLE, SHIFT_ROW, BRIGHTNESS_ADJUST, NEXT_ROW);
+   type state_type is (IDLE, SHIFT_ROW, BRIGHTNESS_ADJUST, NEXT_ROW, GET_NEW_VALUE);
 	signal pr_state, nx_state: state_type;
 	
 begin
@@ -31,30 +31,40 @@ begin
 
 	 --when to change to new state
     process(pr_state, start_button, timer_repeated)
-    begin
-        case pr_state is
-          when IDLE =>
+	 variable state_before_write: state_type;
+	 begin
+		  case pr_state is
+			 when IDLE =>
 				  --ik neem aan starten bij druk van een knop
-              if start_button then
-                nx_state <= SHIFT_ROW;
-              else
-                nx_state <= IDLE;
-              end if;
-            when SHIFT_ROW =>
+				  if start_button then
+					 nx_state <= SHIFT_ROW;
+				  else
+					 nx_state <= IDLE;
+				  end if;
+				when SHIFT_ROW =>
 				  if collumn_filled then
 					 nx_state <= BRIGHTNESS_ADJUST;
 				  else
-				    nx_state <= SHIFT_ROW;
+					 nx_state <= SHIFT_ROW;
 				  end if;
 				when BRIGHTNESS_ADJUST =>
-					 if timer_repeated then
+					 if write = '1' and write_done = '0' then 
+						state_before_write := nx_state;
+						nx_state <= GET_NEW_VALUE;
+					 elsif timer_repeated then
 						nx_state <= SHIFT_ROW;
-				    else
+					 else
 						nx_state <= BRIGHTNESS_ADJUST;
 					 end if;
 				when NEXT_ROW =>
 					nx_state <= SHIFT_ROW;
-        end case;
+				when GET_NEW_VALUE =>
+					 if write_done then
+						nx_state <= state_before_write;
+					 else
+						nx_state <= GET_NEW_VALUE;
+					 end if;
+		  end case;
     end process;
 
 	 --what to do in state
@@ -69,6 +79,7 @@ begin
 					reset_counter <= '1';
 					enable_counter <= '0';
 					row_change <= '0';
+					write_matrix <= '0';
 					
             when SHIFT_ROW =>
 				--gebeurt wanneer 1 rij klaar is. 
@@ -79,24 +90,38 @@ begin
 					reset_counter <= '1';
 					enable_counter <= '0';
 					row_change <= '0';
+					write_matrix <= '0';
 					
 				when BRIGHTNESS_ADJUST =>
 					reset_matrix <= '0';
-               enable_matrix <= '0';
+               enable_matrix <= '1';
                enable_latch <= '1';
 					reset_clk <= '0';
 					reset_counter <= '0';
 					enable_counter <= '1';
 					row_change <= '0';
+					write_matrix <= '0';
 					
 				when NEXT_ROW =>
 					reset_matrix <= '0';
-               enable_matrix <= '0';
+               enable_matrix <= '1';
                enable_latch <= '1';
 					reset_clk <= '0';
 					reset_counter <= '0';
 					enable_counter <= '1';
 					row_change <= '1';
+					write_matrix <= '0';
+					
+				when GET_NEW_VALUE =>
+					reset_matrix <= '0';
+               enable_matrix <= '1';
+               enable_latch <= '1';
+					reset_clk <= '0';
+					reset_counter <= '0';
+					enable_counter <= '0';
+					row_change <= '1';
+					write_matrix <= '1';
+				
         end case;
     end process;
 

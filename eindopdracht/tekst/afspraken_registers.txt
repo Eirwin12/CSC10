@@ -18,6 +18,5 @@ LSB
 ------------------------------------------------
 bit 0: start
 bit 1: reset
-bit 2: Software wil een rij lezen
-bit 3: software wil een rij schrijven. 
+bit 2: software wil een rij schrijven. 
 als deze bits hoog => uitgevoerd. 

@@ -10,25 +10,21 @@ entity reg32_avalon_interface is
 		readdata : out std_logic_vector(31 downto 0);
 		writedata : in std_logic_vector(31 downto 0);
 		byteenable : in std_logic_vector(3 downto 0);
-		address    : in std_logic_vector(3 downto 0);
+		address    : in std_logic_vector(1 downto 0);
 		Q_export : out std_logic_vector(31 downto 0)
 	);
 end reg32_avalon_interface;
 
 architecture rtl of reg32_avalon_interface is
-	constant AMOUNT_REGISTERS: natural := 7;
+	constant AMOUNT_REGISTERS: natural := 4;
 	constant LAST_REGISTER_INDEX: natural := AMOUNT_REGISTERS-1;
-	type registers is array (range <>) of std_logic_vector(31 downto 0);
-	signal regs: registers(0 to AMOUNT_REGISTERS-1);
-	signal matrix_output: registers(0 to 3);
+	type registers is array (0 to AMOUNT_REGISTERS-1) of std_logic_vector(31 downto 0);
+	signal regs: registers;
 	
 	component matrix_top is
 		port (
-        clock, reset: in std_ulogic;
+        clk, rst: in std_ulogic;
 		  control_register	: inout std_logic_vector(31 downto 0);
-		  red_vector_read		: out std_logic_vector(31 downto 0);
-		  blue_vector_read	: out std_logic_vector(31 downto 0);
-		  green_vector_read	: out std_logic_vector(31 downto 0);
 		  red_vector_write	: in std_logic_vector(31 downto 0);
 		  blue_vector_write	: in std_logic_vector(31 downto 0);
 		  green_vector_write	: in std_logic_vector(31 downto 0);
@@ -84,15 +80,12 @@ begin
 	Q_export <= export_matrix;
 	matrix: matrix_top 
 	port map(
-		clock => clock,
-		reset => reset, 
-		control_register => int_regs(3),
-		red_vector_read => int_regs(0),
-		blue_vector_read  => int_regs(1),
-		green_vector_read => int_regs(2),
-		red_vector_write   => regs(4),
-		blue_vector_write  => regs(5),
-		green_vector_write => regs(6),
+		clk => clock,
+		rst => reset, 
+		control_register => regs(0),
+		red_vector_write   => regs(1),
+		blue_vector_write  => regs(2),
+		green_vector_write => regs(3),
 
 		matrix_r1 => export_matrix(0),
 		matrix_g1 => export_matrix(1),

@@ -10,43 +10,39 @@ entity reg32_avalon_interface is
 		readdata : out std_logic_vector(31 downto 0);
 		writedata : in std_logic_vector(31 downto 0);
 		byteenable : in std_logic_vector(3 downto 0);
-		address    : in std_logic_vector(3 downto 0);
+		address    : in std_logic_vector(1 downto 0);
 		Q_export : out std_logic_vector(31 downto 0)
 	);
 end reg32_avalon_interface;
 
 architecture rtl of reg32_avalon_interface is
-	constant AMOUNT_REGISTERS: natural := 7;
+	constant AMOUNT_REGISTERS: natural := 4;
 	constant LAST_REGISTER_INDEX: natural := AMOUNT_REGISTERS-1;
 	type registers is array (0 to AMOUNT_REGISTERS-1) of std_logic_vector(31 downto 0);
 	signal regs: registers;
 	
 	component matrix_top is
 		port (
-			  clk, rst: in std_ulogic;
-			  control_register	: inout std_logic_vector(31 downto 0);
-			  red_vector_read		: out std_logic_vector(31 downto 0);
-			  blue_vector_read	: out std_logic_vector(31 downto 0);
-			  green_vector_read	: out std_logic_vector(31 downto 0);
-			  
-			  red_vector_write	: in std_logic_vector(31 downto 0);
-			  blue_vector_write	: in std_logic_vector(31 downto 0);
-			  green_vector_write	: in std_logic_vector(31 downto 0);
-			  
-			  matrix_r1     : out std_logic;
-			  matrix_g1     : out std_logic;
-			  matrix_b1     : out std_logic;
-			  matrix_r2     : out std_logic;
-			  matrix_g2     : out std_logic;
-			  matrix_b2     : out std_logic;
-			  matrix_addr_a : out std_logic;
-			  matrix_addr_b : out std_logic;
-			  matrix_addr_c : out std_logic;
-			  matrix_addr_d : out std_logic;
-			  matrix_clk    : out std_logic;
-			  matrix_lat    : out std_logic;
-			  matrix_oe     : out std_logic
-			);
+        clk, rst: in std_ulogic;
+		  control_register	: inout std_logic_vector(31 downto 0);
+		  red_vector_write	: in std_logic_vector(31 downto 0);
+		  blue_vector_write	: in std_logic_vector(31 downto 0);
+		  green_vector_write	: in std_logic_vector(31 downto 0);
+		  
+		  matrix_r1     : out std_logic;
+		  matrix_g1     : out std_logic;
+		  matrix_b1     : out std_logic;
+		  matrix_r2     : out std_logic;
+		  matrix_g2     : out std_logic;
+		  matrix_b2     : out std_logic;
+		  matrix_addr_a : out std_logic;
+		  matrix_addr_b : out std_logic;
+		  matrix_addr_c : out std_logic;
+		  matrix_addr_d : out std_logic;
+		  matrix_clk    : out std_logic;
+		  matrix_lat    : out std_logic;
+		  matrix_oe     : out std_logic
+		);
 	end component;
 	
 	signal export_matrix: std_logic_vector(31 downto 0);
@@ -62,7 +58,7 @@ begin
 			if chipselect then
 				address_value := to_integer(unsigned(address));
 				if read then
-					readdata <= regs(0);
+					readdata <= regs(address_value);
 				elsif write then
 					if byteenable(0) then
 						regs(address_value)(7 downto 0) <= writedata(7 downto 0);
@@ -86,13 +82,10 @@ begin
 	port map(
 		clk => clock,
 		rst => reset, 
-		control_register => regs(3),
-		red_vector_read => regs(0),
-		blue_vector_read  => regs(1),
-		green_vector_read => regs(2),
-		red_vector_write   => regs(4),
-		blue_vector_write  => regs(5),
-		green_vector_write => regs(6),
+		control_register => regs(0),
+		red_vector_write   => regs(1),
+		blue_vector_write  => regs(2),
+		green_vector_write => regs(3),
 
 		matrix_r1 => export_matrix(0),
 		matrix_g1 => export_matrix(1),
