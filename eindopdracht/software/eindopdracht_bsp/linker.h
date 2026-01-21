@@ -1,10 +1,10 @@
 /*
  * linker.h - Linker script mapping information
  *
- * Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'eindopdracht'
+ * Machine generated for CPU 'Processor_Nios' in SOPC Builder design 'eindopdracht'
  * SOPC Builder design path: ../../eindopdracht.sopcinfo
  *
- * Generated: Sun Jan 04 12:40:08 CET 2026
+ * Generated: Wed Jan 21 14:13:02 CET 2026
  */
 
 /*
@@ -65,8 +65,8 @@
  *
  */
 
-#define ONCHIP_MEMORY2_0_REGION_BASE 0x40020
-#define ONCHIP_MEMORY2_0_REGION_SPAN 255968
+#define RAM_REGION_BASE 0x40020
+#define RAM_REGION_SPAN 255968
 #define RESET_REGION_BASE 0x40000
 #define RESET_REGION_SPAN 32
 
@@ -76,11 +76,11 @@
  *
  */
 
-#define ALT_EXCEPTIONS_DEVICE ONCHIP_MEMORY2_0
-#define ALT_RESET_DEVICE ONCHIP_MEMORY2_0
-#define ALT_RODATA_DEVICE ONCHIP_MEMORY2_0
-#define ALT_RWDATA_DEVICE ONCHIP_MEMORY2_0
-#define ALT_TEXT_DEVICE ONCHIP_MEMORY2_0
+#define ALT_EXCEPTIONS_DEVICE RAM
+#define ALT_RESET_DEVICE RAM
+#define ALT_RODATA_DEVICE RAM
+#define ALT_RWDATA_DEVICE RAM
+#define ALT_TEXT_DEVICE RAM
 
 
 /*

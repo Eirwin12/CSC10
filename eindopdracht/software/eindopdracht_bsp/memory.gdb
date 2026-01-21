@@ -1,9 +1,9 @@
 # memory.gdb - GDB memory region definitions
 #
-# Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'eindopdracht'
+# Machine generated for CPU 'Processor_Nios' in SOPC Builder design 'eindopdracht'
 # SOPC Builder design path: ../../eindopdracht.sopcinfo
 #
-# Generated: Sun Jan 04 12:40:08 CET 2026
+# Generated: Wed Jan 21 14:13:02 CET 2026
 
 # DO NOT MODIFY THIS FILE
 #
@@ -46,5 +46,5 @@
 # The cache attribute is specified which improves GDB performance
 # by allowing GDB to cache memory contents on the host.
 
-# onchip_memory2_0
+# RAM
 memory 0x40000 0x7e800 cache

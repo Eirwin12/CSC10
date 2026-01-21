@@ -100,21 +100,21 @@ BSP_CRT0 := $(ALT_LIBRARY_ROOT_DIR)/obj/HAL/src/crt0.o
 
 # Name of BSP library as provided to linker using the "-msys-lib" flag or 
 # linker script GROUP command. 
-# setting BSP_SYS_LIB is hal_bsp
-BSP_SYS_LIB := hal_bsp
-ELF_PATCH_FLAG  += --thread_model hal
+# setting BSP_SYS_LIB is ucosii_bsp
+BSP_SYS_LIB := ucosii_bsp
+ELF_PATCH_FLAG  += --thread_model ucosii
 
 # Type identifier of the BSP library 
-# setting BSP_TYPE is hal
+# setting BSP_TYPE is ucosii
 ALT_CPPFLAGS += -D__hal__
-BSP_TYPE := hal
+BSP_TYPE := ucosii
 
 # CDX present. 
 # setting CDX is false
 
 # CPU Name 
-# setting CPU_NAME is nios2_qsys_0
-CPU_NAME = nios2_qsys_0
+# setting CPU_NAME is Processor_Nios
+CPU_NAME = Processor_Nios
 ELF_PATCH_FLAG  += --cpu_name $(CPU_NAME)
 
 # Hardware Divider present. 
@@ -122,8 +122,8 @@ ELF_PATCH_FLAG  += --cpu_name $(CPU_NAME)
 ALT_CFLAGS += -mno-hw-div
 
 # Hardware Multiplier present. 
-# setting HARDWARE_MULTIPLY is true
-ALT_CFLAGS += -mhw-mul
+# setting HARDWARE_MULTIPLY is false
+ALT_CFLAGS += -mno-hw-mul
 
 # Hardware Mulx present. 
 # setting HARDWARE_MULX is false
@@ -152,14 +152,14 @@ SOPC_SYSID_FLAG += --id=0
 ELF_PATCH_FLAG  += --id 0
 
 # The SOPC System ID Base Address 
-# setting SOPC_SYSID_BASE_ADDRESS is 0x82040
-SOPC_SYSID_FLAG += --sidp=0x82040
-ELF_PATCH_FLAG  += --sidp 0x82040
+# setting SOPC_SYSID_BASE_ADDRESS is 0x810a0
+SOPC_SYSID_FLAG += --sidp=0x810a0
+ELF_PATCH_FLAG  += --sidp 0x810a0
 
 # The SOPC Timestamp 
-# setting SOPC_TIMESTAMP is 1767475132
-SOPC_SYSID_FLAG += --timestamp=1767475132
-ELF_PATCH_FLAG  += --timestamp 1767475132
+# setting SOPC_TIMESTAMP is 1768997999
+SOPC_SYSID_FLAG += --timestamp=1768997999
+ELF_PATCH_FLAG  += --timestamp 1768997999
 
 # Enable JTAG UART driver to recover when host is inactive causing buffer to 
 # full without returning error. Printf will not fail with this recovery. none 
@@ -344,31 +344,32 @@ ALT_CFLAGS += -mgpopt=global
 
 # Slave descriptor of STDERR character-mode device. This setting is used by the 
 # ALT_STDERR family of defines in system.h. none 
-# setting hal.stderr is jtag_uart_0
-ELF_PATCH_FLAG  += --stderr_dev jtag_uart_0
+# setting hal.stderr is JTAG_DEBUG
+ELF_PATCH_FLAG  += --stderr_dev JTAG_DEBUG
 
 # Slave descriptor of STDIN character-mode device. This setting is used by the 
 # ALT_STDIN family of defines in system.h. none 
-# setting hal.stdin is jtag_uart_0
-ELF_PATCH_FLAG  += --stdin_dev jtag_uart_0
+# setting hal.stdin is JTAG_DEBUG
+ELF_PATCH_FLAG  += --stdin_dev JTAG_DEBUG
 
 # Slave descriptor of STDOUT character-mode device. This setting is used by the 
 # ALT_STDOUT family of defines in system.h. none 
-# setting hal.stdout is jtag_uart_0
-ELF_PATCH_FLAG  += --stdout_dev jtag_uart_0
+# setting hal.stdout is JTAG_DEBUG
+ELF_PATCH_FLAG  += --stdout_dev JTAG_DEBUG
 
 
 #------------------------------------------------------------------------------
 #                 SOFTWARE COMPONENT & DRIVER INCLUDE PATHS
 #------------------------------------------------------------------------------
 
+ALT_INCLUDE_DIRS += $(ALT_LIBRARY_ROOT_DIR)/UCOSII/inc
 ALT_INCLUDE_DIRS += $(ALT_LIBRARY_ROOT_DIR)/HAL/inc
 
 #------------------------------------------------------------------------------
 #        SOFTWARE COMPONENT & DRIVER PRODUCED ALT_CPPFLAGS ADDITIONS
 #------------------------------------------------------------------------------
 
-ALT_CPPFLAGS += -DALT_SINGLE_THREADED
+ALT_CPPFLAGS += -D__ucosii__
 
 #END MANAGED
 

@@ -1,10 +1,10 @@
 /*
  * alt_sys_init.c - HAL initialization source
  *
- * Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'eindopdracht'
+ * Machine generated for CPU 'Processor_Nios' in SOPC Builder design 'eindopdracht'
  * SOPC Builder design path: ../../eindopdracht.sopcinfo
  *
- * Generated: Sun Jan 04 12:40:08 CET 2026
+ * Generated: Wed Jan 21 14:13:02 CET 2026
  */
 
 /*
@@ -60,6 +60,7 @@
 
 #include "altera_nios2_qsys_irq.h"
 #include "altera_avalon_jtag_uart.h"
+#include "altera_avalon_performance_counter.h"
 #include "altera_avalon_sysid_qsys.h"
 #include "altera_avalon_timer.h"
 
@@ -67,8 +68,9 @@
  * Allocate the device storage
  */
 
-ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( NIOS2_QSYS_0, nios2_qsys_0);
-ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_0, jtag_uart_0);
+ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( PROCESSOR_NIOS, Processor_Nios);
+ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_DEBUG, JTAG_DEBUG);
+ALTERA_AVALON_PERFORMANCE_COUNTER_INSTANCE ( PERFORMANCE_CHECKER_0, performance_checker_0);
 ALTERA_AVALON_SYSID_QSYS_INSTANCE ( SYSID_QSYS_0, sysid_qsys_0);
 ALTERA_AVALON_TIMER_INSTANCE ( TIMER_0, timer_0);
 
@@ -82,7 +84,7 @@ ALTERA_AVALON_TIMER_INSTANCE ( TIMER_0, timer_0);
 
 void alt_irq_init ( const void* base )
 {
-    ALTERA_NIOS2_QSYS_IRQ_INIT ( NIOS2_QSYS_0, nios2_qsys_0);
+    ALTERA_NIOS2_QSYS_IRQ_INIT ( PROCESSOR_NIOS, Processor_Nios);
     alt_irq_cpu_enable_interrupts();
 }
 
@@ -94,6 +96,7 @@ void alt_irq_init ( const void* base )
 void alt_sys_init( void )
 {
     ALTERA_AVALON_TIMER_INIT ( TIMER_0, timer_0);
-    ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART_0, jtag_uart_0);
+    ALTERA_AVALON_JTAG_UART_INIT ( JTAG_DEBUG, JTAG_DEBUG);
+    ALTERA_AVALON_PERFORMANCE_COUNTER_INIT ( PERFORMANCE_CHECKER_0, performance_checker_0);
     ALTERA_AVALON_SYSID_QSYS_INIT ( SYSID_QSYS_0, sysid_qsys_0);
 }

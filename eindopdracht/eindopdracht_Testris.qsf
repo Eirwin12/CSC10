@@ -397,14 +397,6 @@ set_location_assignment PIN_E12 -to VGA_R[6]
 set_location_assignment PIN_F13 -to VGA_R[7]
 set_location_assignment PIN_C10 -to VGA_SYNC_N
 set_location_assignment PIN_D11 -to VGA_VS
-set_global_assignment -name QIP_FILE eindopdracht_emb_system/synthesis/eindopdracht.qip
-set_global_assignment -name VHDL_FILE nibble_count.vhd -hdl_version VHDL_2008
-set_global_assignment -name VHDL_FILE matrixTop.vhd
-set_global_assignment -name VHDL_FILE eindopdracht_blokken_bewegen.vhd
-set_global_assignment -name VHDL_FILE FSM_display.vhd
-set_global_assignment -name VHDL_FILE clock_divider.vhd
-set_global_assignment -name VHDL_FILE reg32_avalon_slave.vhd
-set_global_assignment -name VHDL_FILE rgb_framebuffer.vhdl -hdl_version VHDL_2008
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1[12]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1[13]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1[14]
@@ -429,4 +421,12 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1[29]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1[31]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1[33]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1
+set_global_assignment -name QIP_FILE eindopdracht_emb_system/synthesis/eindopdracht.qip
+set_global_assignment -name VHDL_FILE nibble_count.vhd -hdl_version VHDL_2008
+set_global_assignment -name VHDL_FILE matrixTop.vhd
+set_global_assignment -name VHDL_FILE eindopdracht_blokken_bewegen.vhd
+set_global_assignment -name VHDL_FILE FSM_display.vhd
+set_global_assignment -name VHDL_FILE clock_divider.vhd
+set_global_assignment -name VHDL_FILE reg32_avalon_slave.vhd
+set_global_assignment -name VHDL_FILE rgb_framebuffer.vhdl -hdl_version VHDL_2008
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

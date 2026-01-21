@@ -2,7 +2,7 @@
 #
 # This script creates the ucosii_net_zipfs Board Support Package (BSP).
 
-BSP_TYPE=hal
+BSP_TYPE=ucosii
 BSP_DIR=.
 SOPC_DIR=../../
 SOPC_FILE=../../eindopdracht.sopcinfo
@@ -29,7 +29,7 @@ do
 done
 
 
-# Run nios2-bsp utility to create a hal BSP in this directory
+# Run nios2-bsp utility to create a ucosii BSP in this directory
 # for the system with a .sopc file in $SOPC_FILE.
 # Deprecating $SOPC_DIR in 10.1. Multiple .sopcinfo files in a directory may exist.
 

@@ -115,7 +115,8 @@ architecture rtl of eindopdracht is
 			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
 			chipselect : in  std_logic                     := 'X';             -- chipselect
 			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
-			in_port    : in  std_logic_vector(3 downto 0)  := (others => 'X')  -- export
+			in_port    : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- export
+			irq        : out std_logic                                         -- irq
 		);
 	end component eindopdracht_pio_buttons;
 
@@ -134,11 +135,15 @@ architecture rtl of eindopdracht is
 
 	component eindopdracht_pio_switches is
 		port (
-			clk      : in  std_logic                     := 'X';             -- clk
-			reset_n  : in  std_logic                     := 'X';             -- reset_n
-			address  : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
-			readdata : out std_logic_vector(31 downto 0);                    -- readdata
-			in_port  : in  std_logic_vector(9 downto 0)  := (others => 'X')  -- export
+			clk        : in  std_logic                     := 'X';             -- clk
+			reset_n    : in  std_logic                     := 'X';             -- reset_n
+			address    : in  std_logic_vector(1 downto 0)  := (others => 'X'); -- address
+			write_n    : in  std_logic                     := 'X';             -- write_n
+			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			chipselect : in  std_logic                     := 'X';             -- chipselect
+			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
+			in_port    : in  std_logic_vector(9 downto 0)  := (others => 'X'); -- export
+			irq        : out std_logic                                         -- irq
 		);
 	end component eindopdracht_pio_switches;
 
@@ -210,7 +215,10 @@ architecture rtl of eindopdracht is
 			pio_leds_s1_writedata                              : out std_logic_vector(31 downto 0);                    -- writedata
 			pio_leds_s1_chipselect                             : out std_logic;                                        -- chipselect
 			pio_switches_s1_address                            : out std_logic_vector(1 downto 0);                     -- address
+			pio_switches_s1_write                              : out std_logic;                                        -- write
 			pio_switches_s1_readdata                           : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			pio_switches_s1_writedata                          : out std_logic_vector(31 downto 0);                    -- writedata
+			pio_switches_s1_chipselect                         : out std_logic;                                        -- chipselect
 			Processor_Nios_jtag_debug_module_address           : out std_logic_vector(8 downto 0);                     -- address
 			Processor_Nios_jtag_debug_module_write             : out std_logic;                                        -- write
 			Processor_Nios_jtag_debug_module_read              : out std_logic;                                        -- read
@@ -366,8 +374,11 @@ architecture rtl of eindopdracht is
 	signal mm_interconnect_0_pio_buttons_s1_address                            : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pio_buttons_s1_address -> pio_buttons:address
 	signal mm_interconnect_0_pio_buttons_s1_write                              : std_logic;                     -- mm_interconnect_0:pio_buttons_s1_write -> mm_interconnect_0_pio_buttons_s1_write:in
 	signal mm_interconnect_0_pio_buttons_s1_writedata                          : std_logic_vector(31 downto 0); -- mm_interconnect_0:pio_buttons_s1_writedata -> pio_buttons:writedata
+	signal mm_interconnect_0_pio_switches_s1_chipselect                        : std_logic;                     -- mm_interconnect_0:pio_switches_s1_chipselect -> pio_switches:chipselect
 	signal mm_interconnect_0_pio_switches_s1_readdata                          : std_logic_vector(31 downto 0); -- pio_switches:readdata -> mm_interconnect_0:pio_switches_s1_readdata
 	signal mm_interconnect_0_pio_switches_s1_address                           : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pio_switches_s1_address -> pio_switches:address
+	signal mm_interconnect_0_pio_switches_s1_write                             : std_logic;                     -- mm_interconnect_0:pio_switches_s1_write -> mm_interconnect_0_pio_switches_s1_write:in
+	signal mm_interconnect_0_pio_switches_s1_writedata                         : std_logic_vector(31 downto 0); -- mm_interconnect_0:pio_switches_s1_writedata -> pio_switches:writedata
 	signal mm_interconnect_0_timer_0_s1_chipselect                             : std_logic;                     -- mm_interconnect_0:timer_0_s1_chipselect -> timer_0:chipselect
 	signal mm_interconnect_0_timer_0_s1_readdata                               : std_logic_vector(15 downto 0); -- timer_0:readdata -> mm_interconnect_0:timer_0_s1_readdata
 	signal mm_interconnect_0_timer_0_s1_address                                : std_logic_vector(2 downto 0);  -- mm_interconnect_0:timer_0_s1_address -> timer_0:address
@@ -386,6 +397,7 @@ architecture rtl of eindopdracht is
 	signal mm_interconnect_0_jtag_debug_avalon_jtag_slave_read_ports_inv       : std_logic;                     -- mm_interconnect_0_jtag_debug_avalon_jtag_slave_read:inv -> JTAG_DEBUG:av_read_n
 	signal mm_interconnect_0_jtag_debug_avalon_jtag_slave_write_ports_inv      : std_logic;                     -- mm_interconnect_0_jtag_debug_avalon_jtag_slave_write:inv -> JTAG_DEBUG:av_write_n
 	signal mm_interconnect_0_pio_buttons_s1_write_ports_inv                    : std_logic;                     -- mm_interconnect_0_pio_buttons_s1_write:inv -> pio_buttons:write_n
+	signal mm_interconnect_0_pio_switches_s1_write_ports_inv                   : std_logic;                     -- mm_interconnect_0_pio_switches_s1_write:inv -> pio_switches:write_n
 	signal mm_interconnect_0_timer_0_s1_write_ports_inv                        : std_logic;                     -- mm_interconnect_0_timer_0_s1_write:inv -> timer_0:write_n
 	signal mm_interconnect_0_pio_leds_s1_write_ports_inv                       : std_logic;                     -- mm_interconnect_0_pio_leds_s1_write:inv -> pio_leds:write_n
 	signal rst_controller_reset_out_reset_ports_inv                            : std_logic;                     -- rst_controller_reset_out_reset:inv -> [JTAG_DEBUG:rst_n, Processor_Nios:reset_n, performance_checker_0:reset_n, pio_buttons:reset_n, pio_leds:reset_n, pio_switches:reset_n, sysid_qsys_0:reset_n, timer_0:reset_n]
@@ -485,7 +497,8 @@ begin
 			writedata  => mm_interconnect_0_pio_buttons_s1_writedata,       --                    .writedata
 			chipselect => mm_interconnect_0_pio_buttons_s1_chipselect,      --                    .chipselect
 			readdata   => mm_interconnect_0_pio_buttons_s1_readdata,        --                    .readdata
-			in_port    => pio_buttons_export                                -- external_connection.export
+			in_port    => pio_buttons_export,                               -- external_connection.export
+			irq        => open                                              --                 irq.irq
 		);
 
 	pio_leds : component eindopdracht_pio_leds
@@ -502,11 +515,15 @@ begin
 
 	pio_switches : component eindopdracht_pio_switches
 		port map (
-			clk      => clk_clk,                                    --                 clk.clk
-			reset_n  => rst_controller_reset_out_reset_ports_inv,   --               reset.reset_n
-			address  => mm_interconnect_0_pio_switches_s1_address,  --                  s1.address
-			readdata => mm_interconnect_0_pio_switches_s1_readdata, --                    .readdata
-			in_port  => pio_switches_export                         -- external_connection.export
+			clk        => clk_clk,                                           --                 clk.clk
+			reset_n    => rst_controller_reset_out_reset_ports_inv,          --               reset.reset_n
+			address    => mm_interconnect_0_pio_switches_s1_address,         --                  s1.address
+			write_n    => mm_interconnect_0_pio_switches_s1_write_ports_inv, --                    .write_n
+			writedata  => mm_interconnect_0_pio_switches_s1_writedata,       --                    .writedata
+			chipselect => mm_interconnect_0_pio_switches_s1_chipselect,      --                    .chipselect
+			readdata   => mm_interconnect_0_pio_switches_s1_readdata,        --                    .readdata
+			in_port    => pio_switches_export,                               -- external_connection.export
+			irq        => open                                               --                 irq.irq
 		);
 
 	sysid_qsys_0 : component eindopdracht_sysid_qsys_0
@@ -575,7 +592,10 @@ begin
 			pio_leds_s1_writedata                              => mm_interconnect_0_pio_leds_s1_writedata,                             --                                             .writedata
 			pio_leds_s1_chipselect                             => mm_interconnect_0_pio_leds_s1_chipselect,                            --                                             .chipselect
 			pio_switches_s1_address                            => mm_interconnect_0_pio_switches_s1_address,                           --                              pio_switches_s1.address
+			pio_switches_s1_write                              => mm_interconnect_0_pio_switches_s1_write,                             --                                             .write
 			pio_switches_s1_readdata                           => mm_interconnect_0_pio_switches_s1_readdata,                          --                                             .readdata
+			pio_switches_s1_writedata                          => mm_interconnect_0_pio_switches_s1_writedata,                         --                                             .writedata
+			pio_switches_s1_chipselect                         => mm_interconnect_0_pio_switches_s1_chipselect,                        --                                             .chipselect
 			Processor_Nios_jtag_debug_module_address           => mm_interconnect_0_processor_nios_jtag_debug_module_address,          --             Processor_Nios_jtag_debug_module.address
 			Processor_Nios_jtag_debug_module_write             => mm_interconnect_0_processor_nios_jtag_debug_module_write,            --                                             .write
 			Processor_Nios_jtag_debug_module_read              => mm_interconnect_0_processor_nios_jtag_debug_module_read,             --                                             .read
@@ -679,6 +699,8 @@ begin
 	mm_interconnect_0_jtag_debug_avalon_jtag_slave_write_ports_inv <= not mm_interconnect_0_jtag_debug_avalon_jtag_slave_write;
 
 	mm_interconnect_0_pio_buttons_s1_write_ports_inv <= not mm_interconnect_0_pio_buttons_s1_write;
+
+	mm_interconnect_0_pio_switches_s1_write_ports_inv <= not mm_interconnect_0_pio_switches_s1_write;
 
 	mm_interconnect_0_timer_0_s1_write_ports_inv <= not mm_interconnect_0_timer_0_s1_write;
 

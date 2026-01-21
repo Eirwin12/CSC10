@@ -233,7 +233,7 @@ module eindopdracht_mm_interconnect_0_router
     end
 
     // ( 0x81070 .. 0x81080 )
-    if ( {address[RG:PAD5],{PAD5{1'b0}}} == 20'h81070  && read_transaction  ) begin
+    if ( {address[RG:PAD5],{PAD5{1'b0}}} == 20'h81070   ) begin
             src_channel = 10'b0010000000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 7;
     end

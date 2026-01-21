@@ -4,7 +4,7 @@
 <h3>BSP Description</h3>
 <table border="1" bgcolor="#FFFFCC" width="90%">
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Type:</td><td>hal</td>
+<td width="20%" bgcolor="#77BBFF">BSP Type:</td><td>ucosii</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">SOPC Design File:</td><td>..\..\eindopdracht.sopcinfo</td>
@@ -13,7 +13,7 @@
 <td width="20%" bgcolor="#77BBFF">Quartus JDI File:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">CPU:</td><td>nios2_qsys_0</td>
+<td width="20%" bgcolor="#77BBFF">CPU:</td><td>Processor_Nios</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">BSP Settings File:</td><td>.\settings.bsp</td>
@@ -22,13 +22,13 @@
 <td width="20%" bgcolor="#77BBFF">BSP Version:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>4-jan-2026 12:40:07</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>21-jan-2026 14:12:59</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1767526807934</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1769001179452</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>C:\Users\mitch\Documents\GitHub\CSC10\eindopdracht\software\eindopdracht_bsp</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>C:\CSC10\eindopdracht\software\eindopdracht_bsp</td>
 </tr>
 </table>
 <br>
@@ -38,25 +38,31 @@
 <th align="left" width="20%">Slave Descriptor</th><th align="left" width="40%">Address Range</th><th align="left" width="20%">Size</th><th align="left" width="20%">Attributes</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>jtag_uart_0</td><td>0x00082048 - 0x0008204F</td><td>8</td><td class="listing">printable</td>
+<td>JTAG_DEBUG</td><td>0x000810A8 - 0x000810AF</td><td>8</td><td class="listing">printable</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>sysid_qsys_0</td><td>0x00082040 - 0x00082047</td><td>8</td><td class="listing">&nbsp;</td>
+<td>sysid_qsys_0</td><td>0x000810A0 - 0x000810A7</td><td>8</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>pio_buttons</td><td>0x00082030 - 0x0008203F</td><td>16</td><td class="listing">&nbsp;</td>
+<td>led_matrix_0</td><td>0x00081090 - 0x0008109F</td><td>16</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>pio_switches</td><td>0x00082020 - 0x0008202F</td><td>16</td><td class="listing">&nbsp;</td>
+<td>pio_buttons</td><td>0x00081080 - 0x0008108F</td><td>16</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>timer_0</td><td>0x00082000 - 0x0008201F</td><td>32</td><td class="listing">timer</td>
+<td>pio_switches</td><td>0x00081070 - 0x0008107F</td><td>16</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>rgb_framebuffer_0</td><td>0x00080000 - 0x00080FFF</td><td>4096</td><td class="listing">&nbsp;</td>
+<td>pio_leds</td><td>0x00081060 - 0x0008106F</td><td>16</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>onchip_memory2_0</td><td>0x00040000 - 0x0007E7FF</td><td>256000</td><td class="listing">memory</td>
+<td>timer_0</td><td>0x00081040 - 0x0008105F</td><td>32</td><td class="listing">timer</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>performance_checker_0</td><td>0x00081000 - 0x0008103F</td><td>64</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>RAM</td><td>0x00040000 - 0x0007E7FF</td><td>256000</td><td class="listing">memory</td>
 </tr>
 </table>
 <br>
@@ -75,22 +81,22 @@
 <th align="left" width="50%">Section</th><th align="left" width="50%">Region</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.text</td><td>onchip_memory2_0</td>
+<td>.text</td><td>RAM</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.rodata</td><td>onchip_memory2_0</td>
+<td>.rodata</td><td>RAM</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.rwdata</td><td>onchip_memory2_0</td>
+<td>.rwdata</td><td>RAM</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.bss</td><td>onchip_memory2_0</td>
+<td>.bss</td><td>RAM</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.heap</td><td>onchip_memory2_0</td>
+<td>.heap</td><td>RAM</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.stack</td><td>onchip_memory2_0</td>
+<td>.stack</td><td>RAM</td>
 </tr>
 </table>
 <h3>Settings</h3>
@@ -699,7 +705,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>onchip_memory2_0</td>
+<td width="20%">Value:</td><td>RAM</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -753,7 +759,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>onchip_memory2_0</td>
+<td width="20%">Value:</td><td>RAM</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -1968,7 +1974,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>jtag_uart_0</td>
+<td width="20%">Value:</td><td>JTAG_DEBUG</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -1995,7 +2001,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>jtag_uart_0</td>
+<td width="20%">Value:</td><td>JTAG_DEBUG</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -2022,7 +2028,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>jtag_uart_0</td>
+<td width="20%">Value:</td><td>JTAG_DEBUG</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -2086,6 +2092,1896 @@
 </tr>
 <tr mode="wrap">
 <td width="20%">Description:</td><td>Slave descriptor of timestamp timer device. This device is used by Altera HAL timestamp drivers for high-resolution time measurement. This setting defines the value of ALT_TIMESTAMP_CLK in system.h.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.event_flag.os_flag_accept_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_FLAG_ACCEPT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSFlagAccept(). CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.event_flag.os_flag_del_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_FLAG_DEL_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSFlagDel(). CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.event_flag.os_flag_name_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_FLAG_NAME_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Size of name of Event Flags group. CAUTION: This is required by the HAL and many Altera device drivers; use caution in reducing this value.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.event_flag.os_flag_query_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_FLAG_QUERY_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSFlagQuery(). CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.event_flag.os_flag_wait_clr_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_FLAG_WAIT_CLR_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for Wait on Clear Event Flags. CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.event_flag.os_flags_nbits</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_FLAGS_NBITS</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>16</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>16</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Event Flag bits (8,16,32). CAUTION: This is required by the HAL and many Altera device drivers; use caution in changing this value.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.event_flag.os_max_flags</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MAX_FLAGS</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>20</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>20</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Maximum number of Event Flags groups. CAUTION: This is required by the HAL and many Altera device drivers; use caution in reducing this value.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mailbox.os_mbox_accept_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MBOX_ACCEPT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMboxAccept()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mailbox.os_mbox_del_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MBOX_DEL_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMboxDel()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mailbox.os_mbox_post_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MBOX_POST_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMboxPost()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mailbox.os_mbox_post_opt_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MBOX_POST_OPT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMboxPostOpt()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mailbox.os_mbox_query_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MBOX_QUERY_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMboxQuery()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.memory.os_max_mem_part</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MAX_MEM_PART</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>60</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>60</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Maximum number of memory partitions</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.memory.os_mem_name_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MEM_NAME_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Size of memory partition name</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.memory.os_mem_query_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MEM_QUERY_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMemQuery()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_arg_chk_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_ARG_CHK_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable argument checking</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_cpu_hooks_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_CPU_HOOKS_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable uCOS-II hooks</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_debug_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_DEBUG_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable debug variables</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_event_name_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_EVENT_NAME_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Size of name of Event Control Block groups</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_max_events</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MAX_EVENTS</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>60</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>60</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Maximum number of event control blocks</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_sched_lock_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_SCHED_LOCK_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSSchedLock() and OSSchedUnlock()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_task_idle_stk_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_IDLE_STK_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>512</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>512</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Idle task stack size</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_task_stat_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_STAT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable statistics task</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_task_stat_stk_chk_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_STAT_STK_CHK_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Check task stacks from statistics task</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_task_stat_stk_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_STAT_STK_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>512</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>512</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Statistics task stack size</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.miscellaneous.os_tick_step_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TICK_STEP_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable tick stepping feature for uCOS-View</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mutex.os_mutex_accept_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MUTEX_ACCEPT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMutexAccept()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mutex.os_mutex_del_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MUTEX_DEL_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMutexDel()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.mutex.os_mutex_query_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MUTEX_QUERY_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSMutexQuery</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_flag_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_FLAG_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable code for Event Flags. CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_lowest_prio</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_LOWEST_PRIO</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>20</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>20</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Lowest assignable priority</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_max_tasks</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MAX_TASKS</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>10</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>10</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Maximum number of tasks</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_mbox_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MBOX_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable code for mailboxes</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_mem_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MEM_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable code for memory management</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_mutex_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MUTEX_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable code for Mutex Semaphores</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_q_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable code for Queues</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_sem_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_SEM_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable code for semaphores. CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_thread_safe_newlib</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_THREAD_SAFE_NEWLIB</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Thread safe C library</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.os_tmr_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TMR_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>0</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>0</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Enable code for timers</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_max_qs</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_MAX_QS</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>20</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>20</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Maximum number of Queue Control Blocks</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_q_accept_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_ACCEPT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSQAccept()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_q_del_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_DEL_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSQDel()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_q_flush_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_FLUSH_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSQFlush()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_q_post_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_POST_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code of OSQFlush()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_q_post_front_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_POST_FRONT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSQPostFront()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_q_post_opt_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_POST_OPT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSQPostOpt()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.queue.os_q_query_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_Q_QUERY_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSQQuery()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.semaphore.os_sem_accept_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_SEM_ACCEPT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSSemAccept(). CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.semaphore.os_sem_del_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_SEM_DEL_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSSemDel(). CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.semaphore.os_sem_query_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_SEM_QUERY_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSSemQuery(). CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.semaphore.os_sem_set_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_SEM_SET_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSSemSet(). CAUTION: This is required by the HAL and many Altera device drivers.</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_change_prio_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_CHANGE_PRIO_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTaskChangePrio()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_create_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_CREATE_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTaskCreate()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_create_ext_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_CREATE_EXT_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTaskCreateExt()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_del_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_DEL_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTaskDel()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_name_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_NAME_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>32</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Size of task name</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_profile_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_PROFILE_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include data structure for run-time task profiling</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_query_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_QUERY_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTaskQuery</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_suspend_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_SUSPEND_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTaskSuspend() and OSTaskResume()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.task.os_task_sw_hook_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_SW_HOOK_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTaskSwHook()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.time.os_time_dly_hmsm_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TIME_DLY_HMSM_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTimeDlyHMSM()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.time.os_time_dly_resume_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TIME_DLY_RESUME_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTimeDlyResume()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.time.os_time_get_set_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TIME_GET_SET_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTimeGet and OSTimeSet()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.time.os_time_tick_hook_en</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TIME_TICK_HOOK_EN</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>1</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>Boolean</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Include code for OSTimeTickHook()</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.timer.os_task_tmr_prio</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_TMR_PRIO</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>0</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>0</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Priority of timer task (0=highest)</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.timer.os_task_tmr_stk_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TASK_TMR_STK_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>512</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>512</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Stack size for timer task</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.timer.os_tmr_cfg_max</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TMR_CFG_MAX</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>16</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>16</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Maximum number of timers</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.timer.os_tmr_cfg_name_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TMR_CFG_NAME_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>16</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>16</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Size of timer name</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.timer.os_tmr_cfg_ticks_per_sec</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TMR_CFG_TICKS_PER_SEC</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>10</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>10</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Rate at which timer management task runs (Hz)</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Restrictions:</td><td>none</td>
+</tr>
+</table>
+<br>
+<table border="1" bgcolor="#FFFFCC" width="60%">
+<tr bgcolor="#77BBFF">
+<td align="left" width="15%">Setting Name:</td><td align="left">ucosii.timer.os_tmr_cfg_wheel_size</td>
+</tr>
+<tr>
+<td width="20%">Identifier:</td><td>OS_TMR_CFG_WHEEL_SIZE</td>
+</tr>
+<tr>
+<td width="20%">Default Value:</td><td>2</td>
+</tr>
+<tr>
+<td width="20%">Value:</td><td>2</td>
+</tr>
+<tr>
+<td width="20%">Type:</td><td>DecimalNumber</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Destination:</td><td>system_h_define</td>
+</tr>
+<tr mode="wrap">
+<td width="20%">Description:</td><td>Size of timer wheel (number of spokes)</td>
 </tr>
 <tr mode="wrap">
 <td width="20%">Restrictions:</td><td>none</td>
