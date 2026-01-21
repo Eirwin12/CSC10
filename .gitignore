@@ -56,7 +56,6 @@ dkms.conf
 
 # files van quartus
 .qsys_edit/
-output_files/
 db/
 incremental_db/
 *.bak
