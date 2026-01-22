@@ -10,7 +10,7 @@ entity rgb_framebuffer is
 	  red_vector_write	: in std_logic_vector(31 downto 0);
 	  blue_vector_write	: in std_logic_vector(31 downto 0);
 	  green_vector_write	: in std_logic_vector(31 downto 0);
-	  address			: in std_logic_vector(3 downto 0);
+	  address			: in std_logic_vector(4 downto 0);
 	  write           : in std_logic;
 	  write_done      : out std_logic;
 	  collumn_filled  : out std_ulogic;
@@ -106,9 +106,6 @@ begin
 		end if;
 	end process;
 	
-	--dit is nog gevaarlijk!!
-	--schrijven naar buffer, terwijl het gebruikt kan worden voor matrix.
-	--extra state maken in de FSM!
    process(reset, clock, write, address, framebuffer)
 		variable row: integer range 0 to 32;
 	begin

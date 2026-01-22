@@ -4,7 +4,7 @@
  * Machine generated for CPU 'Processor_Nios' in SOPC Builder design 'eindopdracht'
  * SOPC Builder design path: ../../eindopdracht.sopcinfo
  *
- * Generated: Wed Jan 21 14:13:02 CET 2026
+ * Generated: Wed Jan 21 14:39:05 CET 2026
  */
 
 /*

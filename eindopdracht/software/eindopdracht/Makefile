@@ -144,6 +144,7 @@ ELF := eindopdracht.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS += hello_ucosii.c
 C_SRCS += input_handler.c
+C_SRCS += matrix.c
 CXX_SRCS :=
 ASM_SRCS :=
 

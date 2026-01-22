@@ -1,12 +1,12 @@
-Fitter Status : Successful - Wed Jan 21 14:27:06 2026
+Fitter Status : Successful - Thu Jan 22 14:33:13 2026
 Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 Revision Name : eindopdracht_Testris
 Top-level Entity Name : eindopdracht_blokken_bewegen
 Family : Cyclone V
 Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 1,973 / 32,070 ( 6 % )
-Total registers : 3418
+Logic utilization (in ALMs) : 2,604 / 32,070 ( 8 % )
+Total registers : 4977
 Total pins : 60 / 457 ( 13 % )
 Total virtual pins : 0
 Total block memory bits : 2,059,264 / 4,065,280 ( 51 % )

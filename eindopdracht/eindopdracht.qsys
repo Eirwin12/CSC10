@@ -285,7 +285,7 @@
   <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="20" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x80800' end='0x81000' /></address-map>]]></parameter>
-  <parameter name="internalIrqMaskSystemInfo" value="3" />
+  <parameter name="internalIrqMaskSystemInfo" value="15" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="mmu_TLBMissExcSlave" value="None" />
@@ -632,6 +632,20 @@
    start="Processor_Nios.d_irq"
    end="timer_0.irq">
   <parameter name="irqNumber" value="1" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="Processor_Nios.d_irq"
+   end="pio_buttons.irq">
+  <parameter name="irqNumber" value="2" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="Processor_Nios.d_irq"
+   end="pio_switches.irq">
+  <parameter name="irqNumber" value="3" />
  </connection>
  <connection
    kind="reset"

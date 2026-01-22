@@ -250,6 +250,8 @@ architecture rtl of eindopdracht is
 			reset         : in  std_logic                     := 'X'; -- reset
 			receiver0_irq : in  std_logic                     := 'X'; -- irq
 			receiver1_irq : in  std_logic                     := 'X'; -- irq
+			receiver2_irq : in  std_logic                     := 'X'; -- irq
+			receiver3_irq : in  std_logic                     := 'X'; -- irq
 			sender_irq    : out std_logic_vector(31 downto 0)         -- irq
 		);
 	end component eindopdracht_irq_mapper;
@@ -391,6 +393,8 @@ architecture rtl of eindopdracht is
 	signal mm_interconnect_0_pio_leds_s1_writedata                             : std_logic_vector(31 downto 0); -- mm_interconnect_0:pio_leds_s1_writedata -> pio_leds:writedata
 	signal irq_mapper_receiver0_irq                                            : std_logic;                     -- JTAG_DEBUG:av_irq -> irq_mapper:receiver0_irq
 	signal irq_mapper_receiver1_irq                                            : std_logic;                     -- timer_0:irq -> irq_mapper:receiver1_irq
+	signal irq_mapper_receiver2_irq                                            : std_logic;                     -- pio_buttons:irq -> irq_mapper:receiver2_irq
+	signal irq_mapper_receiver3_irq                                            : std_logic;                     -- pio_switches:irq -> irq_mapper:receiver3_irq
 	signal processor_nios_d_irq_irq                                            : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> Processor_Nios:d_irq
 	signal rst_controller_reset_out_reset                                      : std_logic;                     -- rst_controller:reset_out -> [RAM:reset, irq_mapper:reset, led_matrix_0:reset, mm_interconnect_0:Processor_Nios_reset_n_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
 	signal rst_controller_reset_out_reset_req                                  : std_logic;                     -- rst_controller:reset_req -> [Processor_Nios:reset_req, RAM:reset_req, rst_translator:reset_req_in]
@@ -498,7 +502,7 @@ begin
 			chipselect => mm_interconnect_0_pio_buttons_s1_chipselect,      --                    .chipselect
 			readdata   => mm_interconnect_0_pio_buttons_s1_readdata,        --                    .readdata
 			in_port    => pio_buttons_export,                               -- external_connection.export
-			irq        => open                                              --                 irq.irq
+			irq        => irq_mapper_receiver2_irq                          --                 irq.irq
 		);
 
 	pio_leds : component eindopdracht_pio_leds
@@ -523,7 +527,7 @@ begin
 			chipselect => mm_interconnect_0_pio_switches_s1_chipselect,      --                    .chipselect
 			readdata   => mm_interconnect_0_pio_switches_s1_readdata,        --                    .readdata
 			in_port    => pio_switches_export,                               -- external_connection.export
-			irq        => open                                               --                 irq.irq
+			irq        => irq_mapper_receiver3_irq                           --                 irq.irq
 		);
 
 	sysid_qsys_0 : component eindopdracht_sysid_qsys_0
@@ -626,6 +630,8 @@ begin
 			reset         => rst_controller_reset_out_reset, -- clk_reset.reset
 			receiver0_irq => irq_mapper_receiver0_irq,       -- receiver0.irq
 			receiver1_irq => irq_mapper_receiver1_irq,       -- receiver1.irq
+			receiver2_irq => irq_mapper_receiver2_irq,       -- receiver2.irq
+			receiver3_irq => irq_mapper_receiver3_irq,       -- receiver3.irq
 			sender_irq    => processor_nios_d_irq_irq        --    sender.irq
 		);
 

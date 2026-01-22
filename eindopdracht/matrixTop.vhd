@@ -34,7 +34,7 @@ architecture imp of matrix_top is
 			red_vector_write	: in std_logic_vector(31 downto 0);
 			blue_vector_write	: in std_logic_vector(31 downto 0);
 			green_vector_write	: in std_logic_vector(31 downto 0);
-			address			: in std_logic_vector(3 downto 0);
+			address			: in std_logic_vector(4 downto 0);
 		   write           : in std_logic;
 		   write_done      : out std_logic;
 			collumn_filled  : out std_ulogic;
@@ -95,8 +95,8 @@ architecture imp of matrix_top is
 	constant CONTROL_RESET_BIT: natural := 1;
 	constant CONTROL_WRITE_BIT: natural := 2;
 	
-	constant ADDRESS_UPPER_BOUND: natural := 3;
-	constant ADDRESS_LOWER_BOUND: natural := 0;
+	constant ADDRESS_UPPER_BOUND: natural := 20;
+	constant ADDRESS_LOWER_BOUND: natural := 16;
 begin
 	reset <= rst and control_register(CONTROL_RESET_BIT);
 	matrix_com: rgb_framebuffer

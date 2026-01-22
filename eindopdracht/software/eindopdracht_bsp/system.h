@@ -4,7 +4,7 @@
  * Machine generated for CPU 'Processor_Nios' in SOPC Builder design 'eindopdracht'
  * SOPC Builder design path: ../../eindopdracht.sopcinfo
  *
- * Generated: Wed Jan 21 14:13:02 CET 2026
+ * Generated: Wed Jan 21 14:39:05 CET 2026
  */
 
 /*
@@ -275,7 +275,7 @@
 #define PIO_BUTTONS_HAS_TRI 0
 #define PIO_BUTTONS_IRQ -1
 #define PIO_BUTTONS_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define PIO_BUTTONS_IRQ_TYPE "NONE"
+#define PIO_BUTTONS_IRQ_TYPE "EDGE"
 #define PIO_BUTTONS_NAME "/dev/pio_buttons"
 #define PIO_BUTTONS_RESET_VALUE 0
 #define PIO_BUTTONS_SPAN 16
@@ -329,7 +329,7 @@
 #define PIO_SWITCHES_HAS_TRI 0
 #define PIO_SWITCHES_IRQ -1
 #define PIO_SWITCHES_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define PIO_SWITCHES_IRQ_TYPE "NONE"
+#define PIO_SWITCHES_IRQ_TYPE "LEVEL"
 #define PIO_SWITCHES_NAME "/dev/pio_switches"
 #define PIO_SWITCHES_RESET_VALUE 0
 #define PIO_SWITCHES_SPAN 16
@@ -348,7 +348,7 @@
 #define SYSID_QSYS_0_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_QSYS_0_NAME "/dev/sysid_qsys_0"
 #define SYSID_QSYS_0_SPAN 8
-#define SYSID_QSYS_0_TIMESTAMP 1768997999
+#define SYSID_QSYS_0_TIMESTAMP 1769001811
 #define SYSID_QSYS_0_TYPE "altera_avalon_sysid_qsys"
 
 

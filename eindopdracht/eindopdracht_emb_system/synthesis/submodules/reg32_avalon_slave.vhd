@@ -84,8 +84,8 @@ begin
 		rst => reset, 
 		control_register => regs(0),
 		red_vector_write   => regs(1),
-		blue_vector_write  => regs(2),
-		green_vector_write => regs(3),
+		green_vector_write => regs(2),
+		blue_vector_write  => regs(3),
 
 		matrix_r1 => export_matrix(0),
 		matrix_g1 => export_matrix(1),
