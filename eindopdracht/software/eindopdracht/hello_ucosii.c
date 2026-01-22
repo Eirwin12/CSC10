@@ -29,6 +29,7 @@
 
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "includes.h"
 #include "system.h"
 
@@ -47,28 +48,52 @@ bool links_button;
 bool rechts_button;
 bool boven_button;
 bool onder_button;
+bool startSysteem;
 //handle all the inputs
 void input_handler(void* pdata)
 {
 	volatile int *button_base = (int *) PIO_BUTTONS_BASE;
 	volatile int *leds_base = (int *) PIO_LEDS_BASE;
 	volatile int *switch_base = (int *) PIO_SWITCHES_BASE;
+	int startReset, buttonValues;
 	while(1)
 	{
-	int values = *button_base;
-		links_button = values & 1;
-		rechts_button = values & 1<<1;
-		boven_button = values & 1<<2;
-		onder_button = values & 1<<3;
+		startReset = *switch_base;
+		if(!startSysteem)
+		{
+			//key wordt gebruikt voor starten en resetten
+			if (startReset & 0x1) {
+			startSysteem = true;
+			volatile int* matrixRegister = (int *)LED_MATRIX_0_BASE;
+			*matrixRegister = 1;//zet het fpga aan.
+			}
+		}
+		else
+		{
+			if (startReset & (1<<1))
+			{
+				startSysteem = false;
+				volatile int* matrixRegister = (int *)LED_MATRIX_0_BASE;
+				*matrixRegister = 1<<1;//zet het fpga aan.
+			}
+			else
+			{
+				buttonValues = * button_base;
+				links_button = buttonValues & 1;
+				rechts_button = buttonValues & 1<<1;
+				boven_button = buttonValues & 1<<2;
+				onder_button = buttonValues & 1<<3;
+			}
+		}
 		OSTimeDlyHMSM(0, 0, 1, 0);
 	}
 }
 
 typedef enum kleuren {
 	zwart = 0,
-	rood,
-	groen,
-	blauw,
+	rood = 0b001,
+	groen = 0b010,
+	blauw = 0b100,
 	//secundaire kleuren (combi van 2 van de 3 kleuren
 	magenta,//rood + blauw
 	geel, //groen + blauw
@@ -84,49 +109,101 @@ typedef enum kleuren {
  * register 3: green
  * register 4: blue
  */
+
+typedef struct square{
+	int lengte;
+	kleuren_matrix_e kleur;
+} vierkant_s;
+
+#define START_INDEX_WIDTH 16
+#define START_INDEX_HEIGHT 0
+
 void matrix_handler(void* pdata)
 {
 	volatile int* matrixRegister = (int *)LED_MATRIX_0_BASE;
 	*matrixRegister = 1;//zet het fpga aan.
-	kleuren_matrix_e matrix_buf[32][32];
+	kleuren_matrix_e matrixBuf[32][32];
+	for(int i=0; i<32; i++){
+		for (j=0; i<32; j++){
+			matrixBuf[i][j] = zwart;
+		}
+	}
+	vierkant_s figuur = {2, blauw};
+	int indexFiguur = START_INDEX;//dit is de linksboven index
+	int indexFiguurHeight = START_INDEX_HEIGHT;//dit is de linksboven index
+	matrixBuf[0][indexFiguur] = matrixBuf[1][indexFiguur] = blauw;
+	matrixBuf[0][indexFiguur+1] = matrixBuf[1][indexFiguur+1] = blauw;
+
+	*(matrixRegister+1) = 0x0;
+	*(matrixRegister+2) = matrixBuf[0] & 0b100;
+	*(matrixRegister+3) = 0x0;
+	*matrixRegister = 0 | 0b100;
+	//wacht tot dit doorgevoerd is
+    OSTimeDlyHMSM(0, 0, 0, 10);
+
+    //zet write weer even uit
+	*matrixRegister = 0;
+	*(matrixRegister+1) = 0x0;
+	*(matrixRegister+2) = matrixBuf[1] & 0b100;
+	*(matrixRegister+3) = 0x0;
+	*matrixRegister = (1<<16)| 0b100;
+    OSTimeDlyHMSM(0, 0, 0, 10);
+    //zet write weer even uit
+	*matrixRegister = 0;
 	while(1)
 	{
-		for(int i=0; i<32; i++){
-			for (j=0; i<32; j++){
-				matrixRegister[i][j] = rood;
+		if(links_button) {
+			if(indexFiguur == 0) {
+				//ignore input
+				continue;
 			}
-			if(i%8 == 0) {
-				*(matrixRegister+1) = 0xffffffff;
-				*(matrixRegister+2) = 0x0;
-				*(matrixRegister+3) = 0x0;
-				*matrixRegister = (i/8)<<16 | 0b100;
-			}
+			matrixBuf[indexFiguurHeight][indexFiguur+1] = matrixBuf[indexFiguurHeight+1][indexFiguur+1] = zwart;
+			indexFiguur -=1;
 		}
-	    OSTimeDlyHMSM(0, 0, 3, 0);
-		for(int i=0; i<32; i++){
-			for (j=0; i<32; j++){
-				matrixRegister[i][j] = groen;
+		else if(rechts_button) {
+			if((indexFiguur + 1) == 31) {
+				//tegen de rechter muur
+				continue;
 			}
-			if(i%8 == 0) {
-				*(matrixRegister+1) = 0x0;
-				*(matrixRegister+2) = 0xffffffff;
-				*(matrixRegister+3) = 0x0;
-				*matrixRegister = (i/8)<<16 | 0b100;
-			}
+			matrixBuf[indexFiguurHeight][indexFiguur] = matrixBuf[indexFiguurHeight+1][indexFiguur] = zwart;
+			indexFiguur += 1;
 		}
-	    OSTimeDlyHMSM(0, 0, 3, 0);
-		for(int i=0; i<32; i++){
-			for (j=0; i<32; j++){
-				matrixRegister[i][j] = blauw;
+		if(boven_button) {
+			if(indexFiguurHeight == 0) {
+				continue;
 			}
-			if(i%8 == 0) {
-				*(matrixRegister+1) = 0x0;
-				*(matrixRegister+2) = 0x0;
-				*(matrixRegister+3) = 0xffffffff;
-				*matrixRegister = (i/8)<<16 | 0b100;
-			}
+			matrixBuf[indexFiguurHeight+1][indexFiguur] = matrixBuf[indexFiguurHeight+1][indexFiguur+1] = zwart;
+			indexFiguurHeight -=1;
 		}
-	    OSTimeDlyHMSM(0, 0, 3, 0);
+		else if(onder_button) {
+			if((indexFiguurHeight + 1) == 31) {
+				continue;
+			}
+			matrixBuf[indexFiguurHeight][indexFiguur] = matrixBuf[indexFiguurHeight][indexFiguur+1] = zwart;
+			indexFiguurHeight += 1;
+		}
+		matrixBuf[indexFiguurHeight][indexFiguur] = matrixBuf[indexFiguurHeight+1][indexFiguur] = blauw;
+		matrixBuf[indexFiguurHeight][indexFiguur+1] = matrixBuf[indexFiguurHeight+1][indexFiguur+1] = blauw;
+
+		//update de matrix
+		*(matrixRegister+1) = matrixBuf[indexFiguurHeight] & 0b001;
+		*(matrixRegister+2) = matrixBuf[indexFiguurHeight] & 0b010;
+		*(matrixRegister+3) = matrixBuf[indexFiguurHeight] & 0b100;
+		*matrixRegister = (indexFiguurHeight<<16) | 0b100;
+		//wacht tot dit doorgevoerd is
+	    OSTimeDlyHMSM(0, 0, 0, 10);
+
+	    //zet write weer even uit
+		*matrixRegister = 0;
+		*(matrixRegister+1) = matrixBuf[indexFiguurHeight+1] & 0b001;
+		*(matrixRegister+2) = matrixBuf[indexFiguurHeight+1] & 0b010;
+		*(matrixRegister+3) = matrixBuf[indexFiguurHeight+1] & 0b100;
+		*matrixRegister = ((indexFiguurHeight+1)<<16)| 0b100;
+	    OSTimeDlyHMSM(0, 0, 0, 10);
+		*matrixRegister = 0;
+		//updat de scherm elke 2 seconden
+	    OSTimeDlyHMSM(0, 0, 2, 0);
+
 	}
 }
 /* The main function creates two task and starts multi-tasking */
