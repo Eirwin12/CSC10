@@ -42,23 +42,92 @@ OS_STK    task2_stk[TASK_STACKSIZE];
 #define TASK1_PRIORITY      1
 #define TASK2_PRIORITY      2
 
-/* Prints "Hello World" and sleeps for three seconds */
-void task1(void* pdata)
+
+bool links_button;
+bool rechts_button;
+bool boven_button;
+bool onder_button;
+//handle all the inputs
+void input_handler(void* pdata)
 {
-  while (1)
-  { 
-    printf("Hello from task1\n");
-    OSTimeDlyHMSM(0, 0, 3, 0);
-  }
+	volatile int *button_base = (int *) PIO_BUTTONS_BASE;
+	volatile int *leds_base = (int *) PIO_LEDS_BASE;
+	volatile int *switch_base = (int *) PIO_SWITCHES_BASE;
+	while(1)
+	{
+	int values = *button_base;
+		links_button = values & 1;
+		rechts_button = values & 1<<1;
+		boven_button = values & 1<<2;
+		onder_button = values & 1<<3;
+		OSTimeDlyHMSM(0, 0, 1, 0);
+	}
 }
-/* Prints "Hello World" and sleeps for three seconds */
-void task2(void* pdata)
+
+typedef enum kleuren {
+	zwart = 0,
+	rood,
+	groen,
+	blauw,
+	//secundaire kleuren (combi van 2 van de 3 kleuren
+	magenta,//rood + blauw
+	geel, //groen + blauw
+	cyaan, //groen + blauw
+	wit,
+}kleuren_matrix_e;
+
+//eerst testen of de matrix werkt of niet
+/*
+ * LED_MATRIX_0_BASE
+ * register 1: control
+ * register 2: red
+ * register 3: green
+ * register 4: blue
+ */
+void matrix_handler(void* pdata)
 {
-  while (1)
-  { 
-    printf("Hello from task2\n");
-    OSTimeDlyHMSM(0, 0, 3, 0);
-  }
+	volatile int* matrixRegister = (int *)LED_MATRIX_0_BASE;
+	*matrixRegister = 1;//zet het fpga aan.
+	kleuren_matrix_e matrix_buf[32][32];
+	while(1)
+	{
+		for(int i=0; i<32; i++){
+			for (j=0; i<32; j++){
+				matrixRegister[i][j] = rood;
+			}
+			if(i%8 == 0) {
+				*(matrixRegister+1) = 0xffffffff;
+				*(matrixRegister+2) = 0x0;
+				*(matrixRegister+3) = 0x0;
+				*matrixRegister = (i/8)<<16 | 0b100;
+			}
+		}
+	    OSTimeDlyHMSM(0, 0, 3, 0);
+		for(int i=0; i<32; i++){
+			for (j=0; i<32; j++){
+				matrixRegister[i][j] = groen;
+			}
+			if(i%8 == 0) {
+				*(matrixRegister+1) = 0x0;
+				*(matrixRegister+2) = 0xffffffff;
+				*(matrixRegister+3) = 0x0;
+				*matrixRegister = (i/8)<<16 | 0b100;
+			}
+		}
+	    OSTimeDlyHMSM(0, 0, 3, 0);
+		for(int i=0; i<32; i++){
+			for (j=0; i<32; j++){
+				matrixRegister[i][j] = blauw;
+			}
+			if(i%8 == 0) {
+				*(matrixRegister+1) = 0x0;
+				*(matrixRegister+2) = 0x0;
+				*(matrixRegister+3) = 0xffffffff;
+				*matrixRegister = (i/8)<<16 | 0b100;
+			}
+		}
+	    OSTimeDlyHMSM(0, 0, 3, 0);
+	}
 }
 /* The main function creates two task and starts multi-tasking */
 int main(void)
@@ -78,7 +147,7 @@ int main(void)
   printf("Email: sales@micrium.com\n");
   printf("URL: www.micrium.com\n\n\n");  
 
-  OSTaskCreateExt(task1,
+  OSTaskCreateExt(input_handler,
                   NULL,
                   (void *)&task1_stk[TASK_STACKSIZE-1],
                   TASK1_PRIORITY,
@@ -89,7 +158,7 @@ int main(void)
                   0);
               
                
-  OSTaskCreateExt(task2,
+  OSTaskCreateExt(matrix_handler,
                   NULL,
                   (void *)&task2_stk[TASK_STACKSIZE-1],
                   TASK2_PRIORITY,
