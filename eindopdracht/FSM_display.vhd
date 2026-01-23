@@ -15,7 +15,7 @@ end fsm_display;
 architecture behavior of fsm_display is
 	--hier moet eigenlijk 2/4 states erbij
 	--1 voor lezen, 1 voor schrijven. dubbel om terug te gaan naar de juiste state (of extra input/geheugen?
-   type state_type is (IDLE, SHIFT_ROW, BRIGHTNESS_ADJUST, NEXT_ROW, GET_NEW_VALUE);
+   type state_type is (IDLE, SHIFT_ROW, BRIGHTNESS_ADJUST, GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST, NEXT_ROW);
 	signal pr_state, nx_state: state_type;
 	
 begin
@@ -33,10 +33,10 @@ begin
     process(pr_state, start_button, timer_repeated)
 	 variable state_before_write: state_type;
 	 begin
-		  case pr_state is
-			 when IDLE =>
-				  --ik neem aan starten bij druk van een knop
-				  if start_button then
+		case pr_state is
+			when IDLE =>
+				--ik neem aan starten bij druk van een knop
+				if start_button then
 					 nx_state <= SHIFT_ROW;
 				  else
 					 nx_state <= IDLE;
@@ -49,8 +49,7 @@ begin
 				  end if;
 				when BRIGHTNESS_ADJUST =>
 					 if write = '1' and write_done = '0' then 
-						state_before_write := nx_state;
-						nx_state <= GET_NEW_VALUE;
+						nx_state <= GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST;
 					 elsif timer_repeated then
 						nx_state <= SHIFT_ROW;
 					 else
@@ -58,11 +57,11 @@ begin
 					 end if;
 				when NEXT_ROW =>
 					nx_state <= SHIFT_ROW;
-				when GET_NEW_VALUE =>
+				when GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST =>
 					 if write_done then
-						nx_state <= state_before_write;
+						nx_state <= BRIGHTNESS_ADJUST;
 					 else
-						nx_state <= GET_NEW_VALUE;
+						nx_state <= GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST;
 					 end if;
 		  end case;
     end process;
@@ -74,7 +73,7 @@ begin
             when idle =>
 					reset_matrix <= '1';
 					enable_matrix <= '0';
-               enable_latch <= '0';
+					enable_latch <= '0';
 					reset_clk <= '1';
 					reset_counter <= '1';
 					enable_counter <= '0';
@@ -87,15 +86,15 @@ begin
 					enable_matrix <= '1';
 					enable_latch <= '0';
 					reset_clk <= '0';
-					reset_counter <= '1';
+					reset_counter <= '0';
 					enable_counter <= '0';
 					row_change <= '0';
 					write_matrix <= '0';
 					
 				when BRIGHTNESS_ADJUST =>
 					reset_matrix <= '0';
-               enable_matrix <= '1';
-               enable_latch <= '1';
+               				enable_matrix <= '1';
+              	 			enable_latch <= '1';
 					reset_clk <= '0';
 					reset_counter <= '0';
 					enable_counter <= '1';
@@ -104,22 +103,22 @@ begin
 					
 				when NEXT_ROW =>
 					reset_matrix <= '0';
-               enable_matrix <= '1';
-               enable_latch <= '1';
+               				enable_matrix <= '1';
+               				enable_latch <= '1';
+					reset_clk <= '0';
+					reset_counter <= '1';
+					enable_counter <= '0';
+					row_change <= '1';
+					write_matrix <= '0';
+
+				when GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST =>
+					reset_matrix <= '0';
+               				enable_matrix <= '1';
+               				enable_latch <= '1';
 					reset_clk <= '0';
 					reset_counter <= '0';
 					enable_counter <= '1';
-					row_change <= '1';
-					write_matrix <= '0';
-					
-				when GET_NEW_VALUE =>
-					reset_matrix <= '0';
-               enable_matrix <= '1';
-               enable_latch <= '1';
-					reset_clk <= '0';
-					reset_counter <= '0';
-					enable_counter <= '0';
-					row_change <= '1';
+					row_change <= '0';
 					write_matrix <= '1';
 				
         end case;

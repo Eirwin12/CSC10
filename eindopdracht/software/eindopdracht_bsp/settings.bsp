@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>21-jan-2026 15:16:03</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1769004963175</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>23-jan-2026 12:43:08</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1769168588037</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\CSC10\eindopdracht\software\eindopdracht_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\eindopdracht.sopcinfo</SopcDesignFile>

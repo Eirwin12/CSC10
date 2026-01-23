@@ -1,0 +1,59 @@
+C:/CSC10/eindopdracht/simulatie/FSM_tb.vhd {1 {vcom -work work -2008 -explicit -stats=none C:/CSC10/eindopdracht/simulatie/FSM_tb.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity testbench_fsm
+-- Compiling architecture tb of testbench_fsm
+-- Loading package ENV
+
+} {} {}} C:/CSC10/eindopdracht/rgb_framebuffer.vhd {1 {vcom -work work -2008 -explicit -stats=none C:/CSC10/eindopdracht/rgb_framebuffer.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity rgb_framebuffer
+-- Compiling architecture rtl of rgb_framebuffer
+
+} {} {}} C:/CSC10/eindopdracht/simulatie/matrix_top_tb.vhd {0 {vcom -work work -2008 -explicit -stats=none C:/CSC10/eindopdracht/simulatie/matrix_top_tb.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+** Error (suppressible): C:/CSC10/eindopdracht/simulatie/matrix_top_tb.vhd(2): (vcom-1491) Empty source files.
+
+} {} {}} C:/CSC10/eindopdracht/matrixTop.vhd {1 {vcom -work work -2008 -explicit -stats=none C:/CSC10/eindopdracht/matrixTop.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity matrix_top
+-- Compiling architecture imp of matrix_top
+
+} {} {}} C:/CSC10/eindopdracht/nibble_count.vhd {1 {vcom -work work -2008 -explicit -stats=none C:/CSC10/eindopdracht/nibble_count.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity nibble_count
+-- Compiling architecture imp of nibble_count
+
+} {} {}} C:/CSC10/eindopdracht/simulatie/frame_buffer_tb.vhd {0 {vcom -work work -2008 -explicit -stats=none C:/CSC10/eindopdracht/simulatie/frame_buffer_tb.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+** Error (suppressible): C:/CSC10/eindopdracht/simulatie/frame_buffer_tb.vhd(2): (vcom-1491) Empty source files.
+
+} {} {}} C:/CSC10/eindopdracht/clock_divider.vhd {1 {vcom -work work -2008 -explicit -stats=none C:/CSC10/eindopdracht/clock_divider.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity PWM_generator
+-- Compiling architecture imp of PWM_generator
+-- Compiling entity clock_divider
+-- Compiling architecture imp of clock_divider
+
+} {} {}}

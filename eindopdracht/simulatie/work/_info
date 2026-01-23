@@ -1,0 +1,296 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/intelFPGA/18.1
+Eclock_divider
+Z0 w1768825401
+Z1 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z4 dC:/CSC10/eindopdracht/simulatie
+Z5 8C:/CSC10/eindopdracht/clock_divider.vhd
+Z6 FC:/CSC10/eindopdracht/clock_divider.vhd
+l0
+L48
+VWXL10iQN7AML09zzVL_zU3
+!s100 R_3G:JYDVlZz9LAe9<5[l2
+Z7 OV;C;10.5b;63
+33
+Z8 !s110 1769177463
+!i10b 1
+Z9 !s108 1769177463.000000
+Z10 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|C:/CSC10/eindopdracht/clock_divider.vhd|
+Z11 !s107 C:/CSC10/eindopdracht/clock_divider.vhd|
+!i113 1
+Z12 o-work work -2008 -explicit
+Z13 tExplicit 1 CvgOpt 0
+Aimp
+R1
+R2
+R3
+DEx4 work 13 clock_divider 0 22 WXL10iQN7AML09zzVL_zU3
+l72
+L59
+V:_?VW`]fc1P:_<]OHcmFb1
+!s100 @b]QPN0=^mz_<faT6]<Y<1
+R7
+33
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+Efsm_display
+Z14 w1769177919
+R2
+R3
+R4
+Z15 8C:/CSC10/eindopdracht/FSM_display.vhd
+Z16 FC:/CSC10/eindopdracht/FSM_display.vhd
+l0
+L4
+VZcN<>lRFX17=Z<cH0Qzz90
+!s100 onJ9aRzX1k>Wa^K8z9]9n1
+R7
+33
+Z17 !s110 1769178027
+!i10b 1
+Z18 !s108 1769178027.000000
+Z19 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|C:/CSC10/eindopdracht/FSM_display.vhd|
+Z20 !s107 C:/CSC10/eindopdracht/FSM_display.vhd|
+!i113 1
+R12
+R13
+Abehavior
+R2
+R3
+DEx4 work 11 fsm_display 0 22 ZcN<>lRFX17=Z<cH0Qzz90
+l21
+L15
+VS80KgK4^cTS_io_;dS2Ce1
+!s100 [ffKBM?DYcebI8g6fI]OW1
+R7
+33
+R17
+!i10b 1
+R18
+R19
+R20
+!i113 1
+R12
+R13
+Ematrix_top
+Z21 w1769174565
+R1
+R2
+R3
+R4
+Z22 8C:/CSC10/eindopdracht/matrixTop.vhd
+Z23 FC:/CSC10/eindopdracht/matrixTop.vhd
+l0
+L5
+V<WE;;>biJ>I4n7AkZ]3hV1
+!s100 O?A^B<L;_0d7Al9l3<VjX1
+R7
+33
+R8
+!i10b 1
+R9
+Z24 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|C:/CSC10/eindopdracht/matrixTop.vhd|
+Z25 !s107 C:/CSC10/eindopdracht/matrixTop.vhd|
+!i113 1
+R12
+R13
+Aimp
+R1
+R2
+R3
+DEx4 work 10 matrix_top 0 22 <WE;;>biJ>I4n7AkZ]3hV1
+l100
+L30
+VIEBb`gAL0=mo>Ic^VJ[W<0
+!s100 3iP=FmU=[Sf[oK39;2]VG2
+R7
+33
+R8
+!i10b 1
+R9
+R24
+R25
+!i113 1
+R12
+R13
+Enibble_count
+Z26 w1769000526
+R1
+R2
+R3
+R4
+Z27 8C:/CSC10/eindopdracht/nibble_count.vhd
+Z28 FC:/CSC10/eindopdracht/nibble_count.vhd
+l0
+L6
+VdS^XDe:l6zGLh[IOBEN@D2
+!s100 37MP`V8Tod`CVUW78L;Rj3
+R7
+33
+R8
+!i10b 1
+R9
+Z29 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|C:/CSC10/eindopdracht/nibble_count.vhd|
+Z30 !s107 C:/CSC10/eindopdracht/nibble_count.vhd|
+!i113 1
+R12
+R13
+Aimp
+R1
+R2
+R3
+DEx4 work 12 nibble_count 0 22 dS^XDe:l6zGLh[IOBEN@D2
+l17
+L15
+VlDH84[0zO=__bIlbShGzh0
+!s100 ObhO2IzePDmBBY0G^L5`30
+R7
+33
+R8
+!i10b 1
+R9
+R29
+R30
+!i113 1
+R12
+R13
+Epwm_generator
+R0
+R1
+R2
+R3
+R4
+R5
+R6
+l0
+L5
+VQz^KG9oB54YDHN=XG[AYV0
+!s100 ihnL@KahkfEa5Y4Ja;VmH0
+R7
+33
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+Aimp
+R1
+R2
+R3
+DEx4 work 13 pwm_generator 0 22 Qz^KG9oB54YDHN=XG[AYV0
+l20
+L17
+VAGWnNUSI6]dnN>oZZDc@Q1
+!s100 EIB@Y?z5iECIN^S9?5bXE2
+R7
+33
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+Ergb_framebuffer
+Z31 w1769174549
+R1
+R2
+R3
+R4
+Z32 8C:/CSC10/eindopdracht/rgb_framebuffer.vhd
+Z33 FC:/CSC10/eindopdracht/rgb_framebuffer.vhd
+l0
+L5
+V1PggVm:i]j2h:dUi==zeY1
+!s100 zh`Q5jWaFbf>>8T1a5[Po0
+R7
+33
+R8
+!i10b 1
+R9
+Z34 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|C:/CSC10/eindopdracht/rgb_framebuffer.vhd|
+Z35 !s107 C:/CSC10/eindopdracht/rgb_framebuffer.vhd|
+!i113 1
+R12
+R13
+Artl
+R1
+R2
+R3
+DEx4 work 15 rgb_framebuffer 0 22 1PggVm:i]j2h:dUi==zeY1
+l53
+L33
+VJ=nNoPCmnO==XNgU2Ye_l0
+!s100 INmfbKf>7>^Ug5Po?67G>0
+R7
+33
+R8
+!i10b 1
+R9
+R34
+R35
+!i113 1
+R12
+R13
+Etestbench_fsm
+Z36 w1769178008
+R1
+R2
+R3
+R4
+Z37 8C:/CSC10/eindopdracht/simulatie/FSM_tb.vhd
+Z38 FC:/CSC10/eindopdracht/simulatie/FSM_tb.vhd
+l0
+L5
+V_;@Do6K_kL07BanHUGQSk0
+!s100 IOC49^b?9<zO[Sk>:0BQ73
+R7
+33
+R17
+!i10b 1
+R18
+Z39 !s90 -reportprogress|300|-work|work|-2008|-explicit|-stats=none|C:/CSC10/eindopdracht/simulatie/FSM_tb.vhd|
+Z40 !s107 C:/CSC10/eindopdracht/simulatie/FSM_tb.vhd|
+!i113 1
+R12
+R13
+Atb
+Z41 DPx3 std 3 env 0 22 d?`1ck@NdeD@H3RZG7FgZ2
+R1
+R2
+R3
+Z42 DEx4 work 13 testbench_fsm 0 22 _;@Do6K_kL07BanHUGQSk0
+l25
+L8
+V@abLk5X[M4V^ff;=FgY<I3
+!s100 QKJ>HhV:@oLa[km>O2OUZ3
+R7
+33
+R17
+!i10b 1
+R18
+R39
+R40
+!i113 1
+R12
+R13

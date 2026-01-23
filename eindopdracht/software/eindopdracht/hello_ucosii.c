@@ -29,6 +29,7 @@
 
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "includes.h"
 #include "system.h"
 
@@ -60,6 +61,7 @@ void input_handler(void* pdata)
 		rechts_button = values & 1<<1;
 		boven_button = values & 1<<2;
 		onder_button = values & 1<<3;
+		*leds_base = *switch_base;
 		OSTimeDlyHMSM(0, 0, 1, 0);
 	}
 }
@@ -91,21 +93,23 @@ void matrix_handler(void* pdata)
 	kleuren_matrix_e matrix_buf[32][32];
 	while(1)
 	{
-		for(int i=0; i<32; i++){
-			for (j=0; i<32; j++){
-				matrixRegister[i][j] = rood;
-			}
-			if(i%8 == 0) {
+		for(int i=0; i<16; i++){
+//			for (int j=0; i<32; j++){
+//				matrix_buf[i][j] = rood;
+//			}
+//			if(i%2 == 0) {
 				*(matrixRegister+1) = 0xffffffff;
 				*(matrixRegister+2) = 0x0;
 				*(matrixRegister+3) = 0x0;
-				*matrixRegister = (i/8)<<16 | 0b100;
-			}
+				*matrixRegister = i<<16 | 0b100;
+			    OSTimeDlyHMSM(0, 0, 0, 500);
+				*matrixRegister = 0b0;
+			    OSTimeDlyHMSM(0, 0, 3, 0);
+//			}
 		}
-	    OSTimeDlyHMSM(0, 0, 3, 0);
 		for(int i=0; i<32; i++){
-			for (j=0; i<32; j++){
-				matrixRegister[i][j] = groen;
+			for (int j=0; i<32; j++){
+				matrix_buf[i][j] = groen;
 			}
 			if(i%8 == 0) {
 				*(matrixRegister+1) = 0x0;
@@ -116,8 +120,8 @@ void matrix_handler(void* pdata)
 		}
 	    OSTimeDlyHMSM(0, 0, 3, 0);
 		for(int i=0; i<32; i++){
-			for (j=0; i<32; j++){
-				matrixRegister[i][j] = blauw;
+			for (int j=0; i<32; j++){
+				matrix_buf[i][j] = blauw;
 			}
 			if(i%8 == 0) {
 				*(matrixRegister+1) = 0x0;
