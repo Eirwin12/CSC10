@@ -61,17 +61,6 @@ architecture imp of top is
 		 );
 	end component;
 	
-	--houdt bij machten van 2, was wat AI had gedaan, maar kan in principe welke waarde dat gewild wordt
-	constant brightness: natural := 32;
-	component nibble_count is
-		generic (max_count: natural);
-		port(
-			klok, reset, enable: in std_ulogic;
-			count: out std_ulogic_vector(7 downto 0);
-			count_done: out std_ulogic
-		);
-	end component;
-	
 	signal reset_matrix_s, enable_matrix_s, enable_latch_s, collumn_filled_s, row_changed, write_done_s, write_matrix_s: std_ulogic := '0';
 	signal reset_clock_s, reset_counter_s, enable_counter_s, repeated_count: std_ulogic;
 	signal reset: std_ulogic;
@@ -127,15 +116,7 @@ begin
 		enable_counter => enable_counter_s,
 		row_change => row_changed
 	);
-	 brightness_control: nibble_count
-	 generic map (max_count => brightness)
-	 port map (
-		klok => clk, 
-		reset => reset_clock_s, 
-		enable => enable_counter_s,
-		count => open,
-		count_done => repeated_count
-	);
+	
 	matrix_oe <= not enable_matrix_s;--its active low
 	matrix_lat <= enable_latch_s;
 	matrix_clk <= clk;

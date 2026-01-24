@@ -63,20 +63,21 @@ begin
 		rst => KEY(0), 
 		control_register => 32x"1",
 		switches => SW(2 downto 0),
-
+		--pin 3 en 7 worden niet toegewezen, zodat het makkelijker aansluiten is aan de led matrix
+		--pin 3 en 7 zijn namelijk GND bij de matrix.
 		matrix_r1 => GPIO_1(0),
 		matrix_g1 => GPIO_1(1),
 		matrix_b1 => GPIO_1(2),
-		matrix_r2 => GPIO_1(3),
-		matrix_g2 => GPIO_1(4),
-		matrix_b2 => GPIO_1(5),
-		matrix_addr_a => matrix_addr(0),
-		matrix_addr_b => matrix_addr(1),
-		matrix_addr_c => matrix_addr(2),
-		matrix_addr_d => matrix_addr(3),
-		matrix_clk => GPIO_1(10),
-		matrix_lat => GPIO_1(11),
-		matrix_oe  => GPIO_1(12)
+		matrix_r2 => GPIO_1(4),
+		matrix_g2 => GPIO_1(5),
+		matrix_b2 => GPIO_1(6),
+		matrix_addr_a => GPIO_1(8),
+		matrix_addr_b => GPIO_1(9),
+		matrix_addr_c => GPIO_1(10),
+		matrix_addr_d => GPIO_1(11),
+		matrix_clk => GPIO_1(12),
+		matrix_lat => GPIO_1(13),
+		matrix_oe  => GPIO_1(14)
 	);
 		
 	klok: clock_divider
@@ -91,12 +92,7 @@ begin
 	begin
 		if rising_edge(matrix_clk) then
 			LEDR(2 downto 0) <= SW(2 downto 0);
-			LEDR(6 downto 3) <= std_logic_vector(matrix_addr);
 		end if;
 	end process;
 	
-		GPIO_1(6) <= matrix_addr(1);
-		GPIO_1(7) <= matrix_addr(1);
-		GPIO_1(8) <= SW(5);
-		GPIO_1(9) <= SW(6);
 end architecture;

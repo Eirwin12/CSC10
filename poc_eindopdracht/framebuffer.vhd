@@ -36,7 +36,7 @@ architecture rtl of framebuffer is
 	--zie 8.3.4 van circuit design with vhdl hoe dit er ong. eruit ziet. 
 
 	subtype rgb is std_ulogic_vector(2 downto 0);--3 bit rgb-->1bit red, 1 bit green, 1 bit blue
-	type matrix_grid is array(31 downto 0, 31 downto 0) of rgb;
+	type matrix_grid is array(0 to 31, 0 to 31) of rgb;
 	--de makkelijker versie als alles via software gaat. 
 	type row_t is array(31 downto 0) of rgb;
 	type two_rows is array(1 downto 0) of row_t;
@@ -101,31 +101,24 @@ begin
 
 				-- Next column
 				if col_count >= 31 then
-					col_count <= (others => '0');
 					collumn_filled <= '1';
-				else
-					col_count <= col_count + 1;
 				end if;
+				col_count <= col_count + 1;
 			end if;
 		end if;
 	end process;
 	
-   process(reset, clock, leds)
-		variable row: integer range 0 to 32;
+   process(reset, leds)
+--		variable row: integer range 0 to 32;
 	begin
 	
-		row := to_integer(unsigned(address));
+--		row := to_integer(unsigned(address));
 		--read verstuurd data naar master
 		if reset then
-			framebuffer <= (others => (others => "010"));
-		elsif rising_edge(clock) then
-			for row in 0 to 31 loop
-				for collumn in 0 to 31 loop
-					framebuffer(row, collumn)(0) <= leds(0);
-					framebuffer(row, collumn)(1) <= leds(1);
-					framebuffer(row, collumn)(2) <= leds(2);
-				end loop;
-			end loop;
+			framebuffer <= (others => (others => "000"));
+--		elsif rising_edge(clock) then
+		else
+			framebuffer <= (others => (others => (leds(0), leds(1), leds(2))));
 --			if write then
 --				for collumn in 0 to 31 loop
 --					framebuffer(row, collumn)(0) <= red_vector_write(collumn);
@@ -146,5 +139,3 @@ begin
     matrix_addr_d <= std_logic(row_addr(3));
     
 end architecture rtl;
-
---software en hardware houden state van matrix bij (software mis. simpeler dan hardware)
