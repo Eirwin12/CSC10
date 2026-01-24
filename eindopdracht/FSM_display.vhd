@@ -84,7 +84,7 @@ begin
 					write_matrix <= '0';
 				when NEXT_ROW =>
 					reset_matrix <= '0';
-               enable_matrix <= '1';
+               enable_matrix <= '0';
      				enable_latch <= '1';
 					reset_clk <= '0';
 					reset_counter <= '1';

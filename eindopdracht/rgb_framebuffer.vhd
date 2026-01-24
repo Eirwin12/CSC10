@@ -45,7 +45,7 @@ architecture rtl of rgb_framebuffer is
 	type two_rows is array(1 downto 0) of row_t;
 	--temp om het makkelijker te testen
 	--signal framebuffer: matrix_grid := (others => (others => "000"));
-	signal framebuffer: matrix_grid := (31=> (others => "111"), others => (others => "111"));
+	signal framebuffer: matrix_grid := (31=> (others => "011"), others => (others => "111"));
 
 	-- Scanning signals
 	signal row_addr : unsigned(3 downto 0) := (others => '0');  -- 0-15 voor 16 rij-paren
@@ -121,7 +121,7 @@ begin
 		row := to_integer(unsigned(address));
 		--read verstuurd data naar master
 		if reset then
-			framebuffer <= (others => (others => "000"));
+			framebuffer <= (others => (others => "010"));
 		elsif rising_edge(clock) then
 			if write then
 				for collumn in 0 to 31 loop
