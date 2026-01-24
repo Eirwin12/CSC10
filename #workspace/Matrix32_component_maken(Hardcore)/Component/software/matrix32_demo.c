@@ -1,0 +1,417 @@
+/**
+ * @file matrix32_demo.c
+ * @brief Compact demo voor 32x32 RGB LED Matrix (past in 64KB RAM)
+ * @author Mitch - CSC10 Project
+ * @date 2026
+ */
+
+#include <stdio.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <string.h>
+#include <io.h>
+#include "system.h"
+#include "altera_avalon_pio_regs.h"
+
+// ============================================================================
+// Hardware Configuratie
+// ============================================================================
+
+// Matrix component base address (uit system.h na Platform Designer)
+#ifndef MATRIX32_LED_0_BASE
+    #define MATRIX32_LED_0_BASE 0x81020  // Pas aan naar jouw system.h waarde!
+#endif
+
+// KEY buttons PIO base address (uit system.h)
+#ifndef PIO_KEY_BASE
+    #define PIO_KEY_BASE 0x81040  // Pas aan naar jouw system.h waarde!
+#endif
+
+#define MATRIX_BASE MATRIX32_LED_0_BASE
+#define KEY_BASE PIO_KEY_BASE
+
+// ============================================================================
+// Register Offsets en Bit Masks
+// ============================================================================
+
+// Register offsets
+#define MATRIX32_CONTROL_REG_OFFSET    0x00
+#define MATRIX32_PATTERN_REG_OFFSET    0x04
+#define MATRIX32_FB_ADDR_REG_OFFSET    0x08
+#define MATRIX32_FB_DATA_REG_OFFSET    0x0C
+#define MATRIX32_STATUS_REG_OFFSET     0x10
+
+// Control register bits
+#define MATRIX32_CTRL_ENABLE_MASK      0x00000001
+#define MATRIX32_CTRL_MODE_MASK        0x00000002
+#define MATRIX32_CTRL_MODE_FB          0
+#define MATRIX32_CTRL_MODE_PATTERN     1
+
+// Matrix dimensions
+#define MATRIX32_WIDTH                 32
+#define MATRIX32_HEIGHT                32
+#define MATRIX32_FRAMEBUFFER_SIZE      384  // 32x32x3 bits / 8 = 384 bytes
+
+// Kleuren (3-bit RGB)
+#define COLOR_BLACK     0  // 000
+#define COLOR_BLUE      1  // 001
+#define COLOR_GREEN     2  // 010
+#define COLOR_CYAN      3  // 011
+#define COLOR_RED       4  // 100
+#define COLOR_MAGENTA   5  // 101
+#define COLOR_YELLOW    6  // 110
+#define COLOR_WHITE     7  // 111
+
+// Test patterns
+typedef enum {
+    PATTERN_CHECKERBOARD = 0,
+    PATTERN_HORIZONTAL   = 1,
+    PATTERN_VERTICAL     = 2,
+    PATTERN_ALL_ON       = 3,
+    PATTERN_RED_GRADIENT = 4,
+    PATTERN_ALL_OFF      = 7
+} matrix32_pattern_t;
+
+// ============================================================================
+// Register Access Macros
+// ============================================================================
+
+#define MATRIX32_WRITE_REG(base, offset, value) \
+    IOWR_32DIRECT((base), (offset), (value))
+
+#define MATRIX32_READ_REG(base, offset) \
+    IORD_32DIRECT((base), (offset))
+
+// ============================================================================
+// Global Variables
+// ============================================================================
+
+static uint8_t fb_cache[MATRIX32_FRAMEBUFFER_SIZE];
+static uint8_t cache_valid = 0;
+
+// ============================================================================
+// Low-Level Hardware Functions
+// ============================================================================
+
+void matrix32_write_fb_byte(uint32_t base_address, uint16_t byte_addr, uint8_t data) {
+    MATRIX32_WRITE_REG(base_address, MATRIX32_FB_ADDR_REG_OFFSET, (uint32_t)byte_addr);
+    MATRIX32_WRITE_REG(base_address, MATRIX32_FB_DATA_REG_OFFSET, (uint32_t)data);
+}
+
+void matrix32_enable(uint32_t base_address, uint8_t enable) {
+    uint32_t ctrl_reg = MATRIX32_READ_REG(base_address, MATRIX32_CONTROL_REG_OFFSET);
+
+    if (enable) {
+        ctrl_reg |= MATRIX32_CTRL_ENABLE_MASK;
+    } else {
+        ctrl_reg &= ~MATRIX32_CTRL_ENABLE_MASK;
+    }
+
+    MATRIX32_WRITE_REG(base_address, MATRIX32_CONTROL_REG_OFFSET, ctrl_reg);
+}
+
+void matrix32_set_mode(uint32_t base_address, uint8_t mode) {
+    uint32_t ctrl_reg = MATRIX32_READ_REG(base_address, MATRIX32_CONTROL_REG_OFFSET);
+
+    if (mode) {
+        ctrl_reg |= MATRIX32_CTRL_MODE_MASK;
+    } else {
+        ctrl_reg &= ~MATRIX32_CTRL_MODE_MASK;
+    }
+
+    MATRIX32_WRITE_REG(base_address, MATRIX32_CONTROL_REG_OFFSET, ctrl_reg);
+}
+
+void matrix32_set_pattern(uint32_t base_address, matrix32_pattern_t pattern) {
+    uint32_t pattern_reg = (uint32_t)pattern & 0x7;
+    MATRIX32_WRITE_REG(base_address, MATRIX32_PATTERN_REG_OFFSET, pattern_reg);
+}
+
+uint32_t matrix32_get_status(uint32_t base_address) {
+    return MATRIX32_READ_REG(base_address, MATRIX32_STATUS_REG_OFFSET);
+}
+
+// ============================================================================
+// Framebuffer Functions
+// ============================================================================
+
+void matrix32_clear(uint32_t base_address) {
+    for (uint16_t addr = 0; addr < MATRIX32_FRAMEBUFFER_SIZE; addr++) {
+        matrix32_write_fb_byte(base_address, addr, 0x00);
+        fb_cache[addr] = 0x00;
+    }
+    cache_valid = 1;
+}
+
+void matrix32_init(uint32_t base_address) {
+    memset(fb_cache, 0, MATRIX32_FRAMEBUFFER_SIZE);
+    cache_valid = 0;
+
+    MATRIX32_WRITE_REG(base_address, MATRIX32_CONTROL_REG_OFFSET, 0x00000000);
+    MATRIX32_WRITE_REG(base_address, MATRIX32_PATTERN_REG_OFFSET, 0x00000000);
+
+    matrix32_clear(base_address);
+}
+
+void matrix32_fill(uint32_t base_address, uint8_t color) {
+    uint8_t r = (color & 0x04) ? 1 : 0;
+    uint8_t g = (color & 0x02) ? 1 : 0;
+    uint8_t b = (color & 0x01) ? 1 : 0;
+
+    uint8_t r_byte = r ? 0xFF : 0x00;
+    uint8_t g_byte = g ? 0xFF : 0x00;
+    uint8_t b_byte = b ? 0xFF : 0x00;
+
+    // R channel (bytes 0-127)
+    for (uint16_t addr = 0; addr < 128; addr++) {
+        matrix32_write_fb_byte(base_address, addr, r_byte);
+        fb_cache[addr] = r_byte;
+    }
+
+    // G channel (bytes 128-255)
+    for (uint16_t addr = 128; addr < 256; addr++) {
+        matrix32_write_fb_byte(base_address, addr, g_byte);
+        fb_cache[addr] = g_byte;
+    }
+
+    // B channel (bytes 256-383)
+    for (uint16_t addr = 256; addr < 384; addr++) {
+        matrix32_write_fb_byte(base_address, addr, b_byte);
+        fb_cache[addr] = b_byte;
+    }
+
+    cache_valid = 1;
+}
+
+void matrix32_set_pixel(uint32_t base_address, uint8_t x, uint8_t y,
+                        uint8_t r, uint8_t g, uint8_t b) {
+    if (x >= MATRIX32_WIDTH || y >= MATRIX32_HEIGHT) {
+        return;
+    }
+
+    uint16_t pixel_index = y * MATRIX32_WIDTH + x;
+    uint16_t byte_addr = pixel_index / 8;
+    uint8_t bit_offset = pixel_index % 8;
+    uint8_t bit_mask = 1 << bit_offset;
+
+    // R channel
+    uint8_t r_byte = fb_cache[byte_addr];
+    if (r) {
+        r_byte |= bit_mask;
+    } else {
+        r_byte &= ~bit_mask;
+    }
+    matrix32_write_fb_byte(base_address, byte_addr, r_byte);
+    fb_cache[byte_addr] = r_byte;
+
+    // G channel
+    uint8_t g_byte = fb_cache[128 + byte_addr];
+    if (g) {
+        g_byte |= bit_mask;
+    } else {
+        g_byte &= ~bit_mask;
+    }
+    matrix32_write_fb_byte(base_address, 128 + byte_addr, g_byte);
+    fb_cache[128 + byte_addr] = g_byte;
+
+    // B channel
+    uint8_t b_byte = fb_cache[256 + byte_addr];
+    if (b) {
+        b_byte |= bit_mask;
+    } else {
+        b_byte &= ~bit_mask;
+    }
+    matrix32_write_fb_byte(base_address, 256 + byte_addr, b_byte);
+    fb_cache[256 + byte_addr] = b_byte;
+
+    cache_valid = 1;
+}
+
+void matrix32_set_pixel_color(uint32_t base_address, uint8_t x, uint8_t y, uint8_t color) {
+    uint8_t r = (color & 0x04) ? 1 : 0;
+    uint8_t g = (color & 0x02) ? 1 : 0;
+    uint8_t b = (color & 0x01) ? 1 : 0;
+
+    matrix32_set_pixel(base_address, x, y, r, g, b);
+}
+
+uint8_t matrix32_get_pixel(uint32_t base_address, uint8_t x, uint8_t y) {
+    if (x >= MATRIX32_WIDTH || y >= MATRIX32_HEIGHT) {
+        return 0;
+    }
+
+    uint16_t pixel_index = y * MATRIX32_WIDTH + x;
+    uint16_t byte_addr = pixel_index / 8;
+    uint8_t bit_offset = pixel_index % 8;
+    uint8_t bit_mask = 1 << bit_offset;
+
+    uint8_t r = (fb_cache[byte_addr] & bit_mask) ? 1 : 0;
+    uint8_t g = (fb_cache[128 + byte_addr] & bit_mask) ? 1 : 0;
+    uint8_t b = (fb_cache[256 + byte_addr] & bit_mask) ? 1 : 0;
+
+    return (r << 2) | (g << 1) | b;
+}
+
+// ============================================================================
+// Drawing Functions
+// ============================================================================
+
+void matrix32_draw_hline(uint32_t base_address, uint8_t x0, uint8_t x1, uint8_t y, uint8_t color) {
+    if (x1 < x0) {
+        uint8_t temp = x0;
+        x0 = x1;
+        x1 = temp;
+    }
+
+    for (uint8_t x = x0; x <= x1 && x < MATRIX32_WIDTH; x++) {
+        matrix32_set_pixel_color(base_address, x, y, color);
+    }
+}
+
+void matrix32_draw_vline(uint32_t base_address, uint8_t x, uint8_t y0, uint8_t y1, uint8_t color) {
+    if (y1 < y0) {
+        uint8_t temp = y0;
+        y0 = y1;
+        y1 = temp;
+    }
+
+    for (uint8_t y = y0; y <= y1 && y < MATRIX32_HEIGHT; y++) {
+        matrix32_set_pixel_color(base_address, x, y, color);
+    }
+}
+
+void matrix32_draw_rect(uint32_t base_address, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t color) {
+    matrix32_draw_hline(base_address, x, x + w - 1, y, color);
+    matrix32_draw_hline(base_address, x, x + w - 1, y + h - 1, color);
+    matrix32_draw_vline(base_address, x, y, y + h - 1, color);
+    matrix32_draw_vline(base_address, x + w - 1, y, y + h - 1, color);
+}
+
+void matrix32_fill_rect(uint32_t base_address, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t color) {
+    for (uint8_t dy = 0; dy < h && (y + dy) < MATRIX32_HEIGHT; dy++) {
+        matrix32_draw_hline(base_address, x, x + w - 1, y + dy, color);
+    }
+}
+
+// ============================================================================
+// Debug Functions
+// ============================================================================
+
+void matrix32_print_info(uint32_t base_address) {
+    uint32_t control = MATRIX32_READ_REG(base_address, MATRIX32_CONTROL_REG_OFFSET);
+    uint32_t pattern = MATRIX32_READ_REG(base_address, MATRIX32_PATTERN_REG_OFFSET);
+    uint32_t status = matrix32_get_status(base_address);
+
+    printf("\n=== Matrix32 LED Status ===\n");
+    printf("Base Address: 0x%08X\n", (unsigned int)base_address);
+    printf("\nRegisters:\n");
+    printf("  CONTROL (0x00): 0x%08X\n", (unsigned int)control);
+    printf("  PATTERN (0x04): 0x%08X\n", (unsigned int)pattern);
+    printf("  STATUS  (0x10): 0x%08X\n", (unsigned int)status);
+    printf("\nDecoded Status:\n");
+    printf("  Enabled: %s\n", (status & 0x01) ? "YES" : "NO");
+    printf("  Mode: %s\n", (status & 0x02) ? "PATTERN" : "FRAMEBUFFER");
+    printf("  Pattern: %u\n", (unsigned int)((status >> 2) & 0x07));
+    printf("  Cache Valid: %s\n", cache_valid ? "YES" : "NO");
+    printf("===========================\n\n");
+}
+
+// ============================================================================
+// Demo Functions
+// ============================================================================
+
+void demo_single_pixel(void) {
+    matrix32_clear(MATRIX_BASE);
+    matrix32_set_pixel(MATRIX_BASE, 16, 16, 1, 0, 0);
+    usleep(2000000);
+    matrix32_set_pixel(MATRIX_BASE, 16, 16, 0, 0, 0);
+    usleep(1000000);
+}
+
+void demo_rgb_colors(void) {
+    matrix32_clear(MATRIX_BASE);
+    matrix32_set_pixel(MATRIX_BASE, 5, 5, 1, 0, 0);
+    matrix32_set_pixel(MATRIX_BASE, 15, 5, 0, 1, 0);
+    matrix32_set_pixel(MATRIX_BASE, 25, 5, 0, 0, 1);
+    matrix32_set_pixel(MATRIX_BASE, 15, 15, 1, 1, 1);
+    usleep(3000000);
+}
+
+void demo_fill_colors(void) {
+    for (uint8_t color = 1; color < 8; color++) {
+        matrix32_fill(MATRIX_BASE, color);
+        usleep(800000);
+    }
+    matrix32_fill_rect(MATRIX_BASE, 12, 12, 8, 8, COLOR_YELLOW);
+    usleep(1500000);
+}
+
+void demo_bouncing_pixel(void) {
+    matrix32_clear(MATRIX_BASE);
+    int8_t x = 0, y = 0;
+    int8_t dx = 1, dy = 1;
+    uint8_t color_idx = COLOR_RED;
+
+    for (int i = 0; i < 150; i++) {
+        matrix32_set_pixel_color(MATRIX_BASE, x, y, COLOR_BLACK);
+        x += dx;
+        y += dy;
+        if (x <= 0 || x >= 31) { dx = -dx; color_idx = (color_idx % 7) + 1; }
+        if (y <= 0 || y >= 31) { dy = -dy; color_idx = (color_idx % 7) + 1; }
+        matrix32_set_pixel_color(MATRIX_BASE, x, y, color_idx);
+        usleep(40000);
+    }
+}
+
+void demo_gradients(void) {
+    for (uint8_t y = 0; y < 32; y++) {
+        matrix32_draw_hline(MATRIX_BASE, 0, 31, y, (y < 16) ? COLOR_RED : COLOR_GREEN);
+    }
+    usleep(1500000);
+    for (uint8_t x = 0; x < 32; x++) {
+        matrix32_draw_vline(MATRIX_BASE, x, 0, 31, (x < 16) ? COLOR_BLUE : COLOR_YELLOW);
+    }
+    usleep(1500000);
+}
+
+void demo_checkerboard(void) {
+    for (uint8_t y = 0; y < 32; y++) {
+        for (uint8_t x = 0; x < 32; x++) {
+            matrix32_set_pixel_color(MATRIX_BASE, x, y, ((x + y) % 2 == 0) ? COLOR_WHITE : COLOR_BLACK);
+        }
+    }
+    usleep(1500000);
+}
+
+void demo_test_patterns(void) {
+    matrix32_set_mode(MATRIX_BASE, MATRIX32_CTRL_MODE_PATTERN);
+    for (uint8_t pattern = 0; pattern < 5; pattern++) {
+        matrix32_set_pattern(MATRIX_BASE, (matrix32_pattern_t)pattern);
+        usleep(1500000);
+    }
+    matrix32_set_mode(MATRIX_BASE, MATRIX32_CTRL_MODE_FB);
+}
+
+// ============================================================================
+// Main Function
+// ============================================================================
+
+int main(void) {
+    printf("Matrix32 LED Demo\n");
+
+    matrix32_init(MATRIX_BASE);
+    matrix32_set_mode(MATRIX_BASE, MATRIX32_CTRL_MODE_FB);
+    matrix32_enable(MATRIX_BASE, 1);
+
+    while (1) {
+        demo_single_pixel();
+        demo_rgb_colors();
+        demo_fill_colors();
+        demo_bouncing_pixel();
+        demo_gradients();
+        demo_checkerboard();
+        demo_test_patterns();
+    }
+
+    return 0;
+}

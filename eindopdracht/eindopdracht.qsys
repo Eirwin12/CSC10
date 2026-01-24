@@ -21,7 +21,7 @@
    {
       datum baseAddress
       {
-         value = "532552";
+         value = "532616";
          type = "String";
       }
    }
@@ -78,6 +78,14 @@
          type = "int";
       }
    }
+   element performance_counter_0.control_slave
+   {
+      datum baseAddress
+      {
+         value = "532480";
+         type = "String";
+      }
+   }
    element pio_buttons
    {
       datum _sortIndex
@@ -90,7 +98,7 @@
    {
       datum baseAddress
       {
-         value = "532528";
+         value = "532592";
          type = "String";
       }
    }
@@ -106,7 +114,7 @@
    {
       datum baseAddress
       {
-         value = "532512";
+         value = "532576";
          type = "String";
       }
    }
@@ -138,7 +146,7 @@
    {
       datum baseAddress
       {
-         value = "532544";
+         value = "532608";
          type = "String";
       }
    }
@@ -154,7 +162,7 @@
    {
       datum baseAddress
       {
-         value = "532480";
+         value = "532544";
          type = "String";
       }
    }
@@ -228,7 +236,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="20" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='performance_counter_0.control_slave' start='0x0' end='0x40' /><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='rgb_framebuffer_0.avalon_slave' start='0x80000' end='0x81000' /><slave name='Processor_Nios.jtag_debug_module' start='0x81800' end='0x82000' /><slave name='timer_0.s1' start='0x82000' end='0x82020' /><slave name='pio_switches.s1' start='0x82020' end='0x82030' /><slave name='pio_buttons.s1' start='0x82030' end='0x82040' /><slave name='sysid_qsys_0.control_slave' start='0x82040' end='0x82048' /><slave name='DEBUG.avalon_jtag_slave' start='0x82048' end='0x82050' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='rgb_framebuffer_0.avalon_slave' start='0x80000' end='0x81000' /><slave name='Processor_Nios.jtag_debug_module' start='0x81800' end='0x82000' /><slave name='performance_counter_0.control_slave' start='0x82000' end='0x82040' /><slave name='timer_0.s1' start='0x82040' end='0x82060' /><slave name='pio_switches.s1' start='0x82060' end='0x82070' /><slave name='pio_buttons.s1' start='0x82070' end='0x82080' /><slave name='sysid_qsys_0.control_slave' start='0x82080' end='0x82088' /><slave name='DEBUG.avalon_jtag_slave' start='0x82088' end='0x82090' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -456,7 +464,7 @@
    start="Processor_Nios.data_master"
    end="DEBUG.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082048" />
+  <parameter name="baseAddress" value="0x00082088" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -474,7 +482,7 @@
    start="Processor_Nios.data_master"
    end="sysid_qsys_0.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082040" />
+  <parameter name="baseAddress" value="0x00082080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -483,7 +491,7 @@
    start="Processor_Nios.data_master"
    end="performance_counter_0.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x00082000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -510,7 +518,7 @@
    start="Processor_Nios.data_master"
    end="pio_buttons.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082030" />
+  <parameter name="baseAddress" value="0x00082070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -519,7 +527,7 @@
    start="Processor_Nios.data_master"
    end="pio_switches.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082020" />
+  <parameter name="baseAddress" value="0x00082060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -528,7 +536,7 @@
    start="Processor_Nios.data_master"
    end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00082000" />
+  <parameter name="baseAddress" value="0x00082040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection

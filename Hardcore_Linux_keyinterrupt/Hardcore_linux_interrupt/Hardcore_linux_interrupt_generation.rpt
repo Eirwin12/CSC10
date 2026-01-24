@@ -1,0 +1,72 @@
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\Users\mitch\Documents\GitHub\CSC10\Hardcore_Linux_keyinterrupt\Hardcore_linux_interrupt.qsys --synthesis=VHDL --output-directory=C:\Users\mitch\Documents\GitHub\CSC10\Hardcore_Linux_keyinterrupt\Hardcore_linux_interrupt\synthesis --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading Hardcore_Linux_keyinterrupt/Hardcore_linux_interrupt.qsys
+Progress: Reading input file
+Progress: Adding PIO_KEY [altera_avalon_pio 18.1]
+Progress: Parameterizing module PIO_KEY
+Progress: Adding PIO_LED [altera_avalon_pio 18.1]
+Progress: Parameterizing module PIO_LED
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding hps_0 [altera_hps 18.1]
+Progress: Parameterizing module hps_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: Hardcore_linux_interrupt.PIO_KEY: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: Hardcore_linux_interrupt.hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: Hardcore_linux_interrupt.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Warning: Hardcore_linux_interrupt.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: Hardcore_linux_interrupt.hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
+Warning: Hardcore_linux_interrupt.hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: Hardcore_linux_interrupt: Generating Hardcore_linux_interrupt "Hardcore_linux_interrupt" for QUARTUS_SYNTH
+Warning: hps_0.f2h_irq0: Cannot connect clock for irq_mapper.sender
+Warning: hps_0.f2h_irq0: Cannot connect reset for irq_mapper.sender
+Warning: hps_0.f2h_irq1: Cannot connect clock for irq_mapper_001.sender
+Warning: hps_0.f2h_irq1: Cannot connect reset for irq_mapper_001.sender
+Info: PIO_KEY: Starting RTL generation for module 'Hardcore_linux_interrupt_PIO_KEY'
+Info: PIO_KEY:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Hardcore_linux_interrupt_PIO_KEY --dir=C:/Users/mitch/AppData/Local/Temp/alt0475_2763315061889077111.dir/0002_PIO_KEY_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0475_2763315061889077111.dir/0002_PIO_KEY_gen//Hardcore_linux_interrupt_PIO_KEY_component_configuration.pl  --do_build_sim=0  ]
+Info: PIO_KEY: Done RTL generation for module 'Hardcore_linux_interrupt_PIO_KEY'
+Info: PIO_KEY: "Hardcore_linux_interrupt" instantiated altera_avalon_pio "PIO_KEY"
+Info: PIO_LED: Starting RTL generation for module 'Hardcore_linux_interrupt_PIO_LED'
+Info: PIO_LED:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Hardcore_linux_interrupt_PIO_LED --dir=C:/Users/mitch/AppData/Local/Temp/alt0475_2763315061889077111.dir/0003_PIO_LED_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/mitch/AppData/Local/Temp/alt0475_2763315061889077111.dir/0003_PIO_LED_gen//Hardcore_linux_interrupt_PIO_LED_component_configuration.pl  --do_build_sim=0  ]
+Info: PIO_LED: Done RTL generation for module 'Hardcore_linux_interrupt_PIO_LED'
+Info: PIO_LED: "Hardcore_linux_interrupt" instantiated altera_avalon_pio "PIO_LED"
+Info: hps_0: "Running  for module: hps_0"
+Info: hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Warning: hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
+Warning: hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: hps_0: "Hardcore_linux_interrupt" instantiated altera_hps "hps_0"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_0: "Hardcore_linux_interrupt" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: irq_mapper: "Hardcore_linux_interrupt" instantiated altera_irq_mapper "irq_mapper"
+Info: irq_mapper_001: "Hardcore_linux_interrupt" instantiated altera_irq_mapper "irq_mapper_001"
+Info: rst_controller: "Hardcore_linux_interrupt" instantiated altera_reset_controller "rst_controller"
+Info: fpga_interfaces: "hps_0" instantiated altera_interface_generator "fpga_interfaces"
+Info: hps_io: "hps_0" instantiated altera_hps_io "hps_io"
+Info: PIO_LED_s1_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "PIO_LED_s1_translator"
+Info: hps_0_h2f_lw_axi_master_agent: "mm_interconnect_0" instantiated altera_merlin_axi_master_ni "hps_0_h2f_lw_axi_master_agent"
+Info: PIO_LED_s1_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "PIO_LED_s1_agent"
+Info: PIO_LED_s1_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "PIO_LED_s1_agent_rsp_fifo"
+Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
+Info: router_002: "mm_interconnect_0" instantiated altera_merlin_router "router_002"
+Info: hps_0_h2f_lw_axi_master_wr_limiter: "mm_interconnect_0" instantiated altera_merlin_traffic_limiter "hps_0_h2f_lw_axi_master_wr_limiter"
+Info: Reusing file C:/Users/mitch/Documents/GitHub/CSC10/Hardcore_Linux_keyinterrupt/Hardcore_linux_interrupt/synthesis/submodules/altera_avalon_sc_fifo.v
+Info: PIO_LED_s1_burst_adapter: "mm_interconnect_0" instantiated altera_merlin_burst_adapter "PIO_LED_s1_burst_adapter"
+Info: Reusing file C:/Users/mitch/Documents/GitHub/CSC10/Hardcore_Linux_keyinterrupt/Hardcore_linux_interrupt/synthesis/submodules/altera_merlin_address_alignment.sv
+Info: Reusing file C:/Users/mitch/Documents/GitHub/CSC10/Hardcore_Linux_keyinterrupt/Hardcore_linux_interrupt/synthesis/submodules/altera_avalon_st_pipeline_base.v
+Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/mitch/Documents/GitHub/CSC10/Hardcore_Linux_keyinterrupt/Hardcore_linux_interrupt/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: border: "hps_io" instantiated altera_interface_generator "border"
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: Hardcore_linux_interrupt: Done "Hardcore_linux_interrupt" with 25 modules, 82 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

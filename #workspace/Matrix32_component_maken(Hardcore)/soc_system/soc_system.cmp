@@ -1,0 +1,21 @@
+	component soc_system is
+		port (
+			clk_clk             : in  std_logic                    := 'X';             -- clk
+			key_external_export : in  std_logic_vector(3 downto 0) := (others => 'X'); -- export
+			matrix_external_r1  : out std_logic;                                       -- r1
+			matrix_external_g1  : out std_logic;                                       -- g1
+			matrix_external_b1  : out std_logic;                                       -- b1
+			matrix_external_r2  : out std_logic;                                       -- r2
+			matrix_external_g2  : out std_logic;                                       -- g2
+			matrix_external_b2  : out std_logic;                                       -- b2
+			matrix_external_a   : out std_logic;                                       -- a
+			matrix_external_b   : out std_logic;                                       -- b
+			matrix_external_c   : out std_logic;                                       -- c
+			matrix_external_d   : out std_logic;                                       -- d
+			matrix_external_clk : out std_logic;                                       -- clk
+			matrix_external_lat : out std_logic;                                       -- lat
+			matrix_external_oe  : out std_logic;                                       -- oe
+			reset_reset_n       : in  std_logic                    := 'X'              -- reset_n
+		);
+	end component soc_system;
+

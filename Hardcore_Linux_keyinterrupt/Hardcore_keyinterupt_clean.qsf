@@ -1,0 +1,73 @@
+# -------------------------------------------------------------------------- #
+# Quartus Prime Project Settings for Hardcore_keyinterrupt
+# DE1-SoC Board met HPS Linux Kernel Module voor KEY/LED interrupt handling
+# -------------------------------------------------------------------------- #
+
+# Device Settings
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEMA5F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY hps_demo_full
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "09:44:33  JANUARY 22, 2026"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name BOARD "DE1-SoC Board"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+
+# ============================================================================
+# PIN ASSIGNMENTS voor DE1-SoC - ALLEEN FPGA PINS
+# ============================================================================
+
+# Clock Input (50 MHz)
+set_location_assignment PIN_AF14 -to CLOCK_50
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK_50
+
+# KEY Pushbuttons (active low)
+set_location_assignment PIN_AA14 -to KEY[0]
+set_location_assignment PIN_AA15 -to KEY[1]
+set_location_assignment PIN_W15 -to KEY[2]
+set_location_assignment PIN_Y16 -to KEY[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[3]
+
+# LEDR (Red LEDs)
+set_location_assignment PIN_V16 -to LEDR[0]
+set_location_assignment PIN_W16 -to LEDR[1]
+set_location_assignment PIN_V17 -to LEDR[2]
+set_location_assignment PIN_V18 -to LEDR[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[3]
+
+# ============================================================================
+# DESIGN FILES
+# ============================================================================
+
+# Platform Designer QIP file
+set_global_assignment -name QIP_FILE Hardcore_linux_interrupt/synthesis/Hardcore_linux_interrupt.qip
+
+# Top-level VHDL file
+set_global_assignment -name VHDL_FILE hps_demo_full.vhd
+
+# ============================================================================
+# PARTITION ASSIGNMENTS
+# ============================================================================
+
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+
+# ============================================================================
+# CRITICAL: HPS pin assignments worden NIET handmatig toegewezen!
+# De HPS component in Platform Designer beheert de HPS I/O automatisch.
+# Quartus zal de HPS pins automatisch toewijzen tijdens compilatie.
+# Voeg GEEN set_location_assignment toe voor HPS_* signalen!
+# ============================================================================
