@@ -110,7 +110,7 @@ begin
 		end if;
 	end process;
 	
-   process(reset, clock)
+   process(reset, clock, leds)
 		variable row: integer range 0 to 32;
 	begin
 	

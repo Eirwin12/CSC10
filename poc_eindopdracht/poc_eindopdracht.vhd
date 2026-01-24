@@ -70,10 +70,10 @@ begin
 		matrix_r2 => GPIO_1(3),
 		matrix_g2 => GPIO_1(4),
 		matrix_b2 => GPIO_1(5),
-		matrix_addr_a => matrix_addr(3),
-		matrix_addr_b => matrix_addr(2),
-		matrix_addr_c => matrix_addr(1),
-		matrix_addr_d => matrix_addr(0),
+		matrix_addr_a => matrix_addr(0),
+		matrix_addr_b => matrix_addr(1),
+		matrix_addr_c => matrix_addr(2),
+		matrix_addr_d => matrix_addr(3),
 		matrix_clk => GPIO_1(10),
 		matrix_lat => GPIO_1(11),
 		matrix_oe  => GPIO_1(12)
@@ -95,8 +95,8 @@ begin
 		end if;
 	end process;
 	
-		GPIO_1(6) <= '0';
-		GPIO_1(7) <= '0';
-		GPIO_1(8) <= '0';
-		GPIO_1(9) <= '0';
+		GPIO_1(6) <= matrix_addr(1);
+		GPIO_1(7) <= matrix_addr(1);
+		GPIO_1(8) <= SW(5);
+		GPIO_1(9) <= SW(6);
 end architecture;
