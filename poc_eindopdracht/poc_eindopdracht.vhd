@@ -23,13 +23,11 @@ end;
 
 architecture imp of poc_eindopdracht is
 	
-	component matrix_top is
+	component top is
 		port (
         clk, rst: in std_ulogic;
 		  control_register	: inout std_logic_vector(31 downto 0);
-		  red_vector_write	: in std_logic_vector(31 downto 0);
-		  blue_vector_write	: in std_logic_vector(31 downto 0);
-		  green_vector_write	: in std_logic_vector(31 downto 0);
+		  switches: in std_logic_vector(2 downto 0);
 		  
 		  matrix_r1     : out std_logic;
 		  matrix_g1     : out std_logic;
@@ -57,15 +55,14 @@ architecture imp of poc_eindopdracht is
 		);
 	end component;
 	signal matrix_clk: std_ulogic;
+	signal matrix_addr: std_ulogic_vector(3 downto 0);
 begin
-	matrix_com: matrix_top
+	matrix_com: top
 	port map(
 		clk => matrix_clk,
 		rst => KEY(0), 
 		control_register => 32x"1",
-		red_vector_write   => 32x"0",
-		green_vector_write => 32x"0",
-		blue_vector_write  => 32x"0",
+		switches => SW(2 downto 0),
 
 		matrix_r1 => GPIO_1(0),
 		matrix_g1 => GPIO_1(1),
@@ -73,21 +70,33 @@ begin
 		matrix_r2 => GPIO_1(3),
 		matrix_g2 => GPIO_1(4),
 		matrix_b2 => GPIO_1(5),
-		matrix_addr_a => GPIO_1(6),
-		matrix_addr_b => GPIO_1(7),
-		matrix_addr_c => GPIO_1(8),
-		matrix_addr_d => GPIO_1(9),
+		matrix_addr_a => matrix_addr(3),
+		matrix_addr_b => matrix_addr(2),
+		matrix_addr_c => matrix_addr(1),
+		matrix_addr_d => matrix_addr(0),
 		matrix_clk => GPIO_1(10),
 		matrix_lat => GPIO_1(11),
 		matrix_oe  => GPIO_1(12)
-		);
+	);
 		
-		klok: clock_divider
-		generic map (
-			divisor => 50)
-		port map (
-			input_clock => clock_50,
-			reset => key(0),
-			output_clock => matrix_clk
-		);
+	klok: clock_divider
+	generic map (
+		divisor => 50)
+	port map (
+		input_clock => clock_50,
+		reset => key(0),
+		output_clock => matrix_clk
+	);
+	process(matrix_clk)
+	begin
+		if rising_edge(matrix_clk) then
+			LEDR(2 downto 0) <= SW(2 downto 0);
+			LEDR(6 downto 3) <= std_logic_vector(matrix_addr);
+		end if;
+	end process;
+	
+		GPIO_1(6) <= '0';
+		GPIO_1(7) <= '0';
+		GPIO_1(8) <= '0';
+		GPIO_1(9) <= '0';
 end architecture;

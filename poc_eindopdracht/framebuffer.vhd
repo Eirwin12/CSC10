@@ -6,10 +6,7 @@ entity framebuffer is
 	port (
 		clock           : in  std_logic;
 		reset           : in  std_logic;
-	  
-	  red_vector_write	: in std_logic_vector(31 downto 0);
-	  blue_vector_write	: in std_logic_vector(31 downto 0);
-	  green_vector_write	: in std_logic_vector(31 downto 0);
+	  leds : in std_logic_vector(2 downto 0);
 	  address			: in std_logic_vector(4 downto 0);
 	  write           : in std_logic;
 	  write_done      : out std_logic;
@@ -45,7 +42,7 @@ architecture rtl of framebuffer is
 	type two_rows is array(1 downto 0) of row_t;
 	--temp om het makkelijker te testen
 	--signal framebuffer: matrix_grid := (others => (others => "000"));
-	signal framebuffer: matrix_grid := (31=> (others => "011"), others => (others => "111"));
+	signal framebuffer: matrix_grid := (31=> (others => "001"), others => (others => "011"));
 
 	-- Scanning signals
 	signal row_addr : unsigned(3 downto 0) := (others => '0');  -- 0-15 voor 16 rij-paren
@@ -53,8 +50,7 @@ architecture rtl of framebuffer is
  
 begin
     
-	--alvast invullen zodat het voor mij duidelijk is. 
-	process(reset, clock, enable_matrix, change_row)
+	process(reset, clock, enable_matrix, change_row, framebuffer)
 		variable upper_row : integer range 0 to 31;
 		variable lower_row : integer range 0 to 31;
 
@@ -114,7 +110,7 @@ begin
 		end if;
 	end process;
 	
-   process(reset, clock, write, address, framebuffer)
+   process(reset, clock)
 		variable row: integer range 0 to 32;
 	begin
 	
@@ -123,17 +119,24 @@ begin
 		if reset then
 			framebuffer <= (others => (others => "010"));
 		elsif rising_edge(clock) then
-			if write then
+			for row in 0 to 31 loop
 				for collumn in 0 to 31 loop
-					framebuffer(row, collumn)(0) <= red_vector_write(collumn);
-					framebuffer(row, collumn)(1) <= green_vector_write(collumn);
-					framebuffer(row, collumn)(2) <= blue_vector_write(collumn);
+					framebuffer(row, collumn)(0) <= leds(0);
+					framebuffer(row, collumn)(1) <= leds(1);
+					framebuffer(row, collumn)(2) <= leds(2);
 				end loop;
-				--let FSM know write is done. 
-				write_done <= '1';
-			else
-				write_done <= '0';
-			end if;
+			end loop;
+--			if write then
+--				for collumn in 0 to 31 loop
+--					framebuffer(row, collumn)(0) <= red_vector_write(collumn);
+--					framebuffer(row, collumn)(1) <= green_vector_write(collumn);
+--					framebuffer(row, collumn)(2) <= blue_vector_write(collumn);
+--				end loop;
+--				--let FSM know write is done. 
+--				write_done <= '1';
+--			else
+--				write_done <= '0';
+--			end if;
 		end if;
 	end process;
     -- Output assignments
