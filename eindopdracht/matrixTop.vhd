@@ -65,17 +65,6 @@ architecture imp of matrix_top is
 		 );
 	end component;
 	
-	component clock_divider is
-		generic(
-			divisor: natural--deling om van 50MHz naar 1Hz
-		);
-		port(
-			input_clock: in std_ulogic;
-			reset: in std_ulogic;
-			output_clock: out std_ulogic
-		);
-	end component;
-	
 	--houdt bij machten van 2, was wat AI had gedaan, maar kan in principe welke waarde dat gewild wordt
 	constant brightness: natural := 32;
 	component nibble_count is
@@ -144,15 +133,6 @@ begin
 		enable_counter => enable_counter_s,
 		row_change => row_changed
 	);
-	
-	 matrix_clock: clock_divider
-	 generic map (
-		divisor => 25)
-	 port map (
-		input_clock => clk,
-		reset => reset_clock_s,
-		output_clock =>matrix_clk
-	 );
 	 brightness_control: nibble_count
 	 generic map (max_count => brightness)
 	 port map (
@@ -162,6 +142,7 @@ begin
 		count => open,
 		count_done => repeated_count
 	);
-	matrix_oe <= enable_matrix_s;
+	matrix_oe <= not enable_matrix_s;--its active low
 	matrix_lat <= enable_latch_s;
+	matrix_clk <= clk;
 end architecture;

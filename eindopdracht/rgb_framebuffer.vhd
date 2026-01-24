@@ -43,8 +43,9 @@ architecture rtl of rgb_framebuffer is
 	--de makkelijker versie als alles via software gaat. 
 	type row_t is array(31 downto 0) of rgb;
 	type two_rows is array(1 downto 0) of row_t;
-
-	signal framebuffer: matrix_grid := (others => (others => "000"));
+	--temp om het makkelijker te testen
+	--signal framebuffer: matrix_grid := (others => (others => "000"));
+	signal framebuffer: matrix_grid := (31=> (others => "111"), others => (others => "111"));
 
 	-- Scanning signals
 	signal row_addr : unsigned(3 downto 0) := (others => '0');  -- 0-15 voor 16 rij-paren
@@ -69,6 +70,13 @@ begin
 		if reset then 
 			row_addr <= (others => '0');
 			col_count <= (others => '0');
+			matrix_r1 <= '0';
+			matrix_g1 <= '0';
+			matrix_b1 <= '0';
+
+			matrix_r2 <= '0';
+			matrix_g2 <= '0';
+			matrix_b2 <= '0';
 		elsif rising_edge(clock) then
 			if change_row then
 				if row_addr >= 5x"f" then

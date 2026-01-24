@@ -15,7 +15,7 @@ end fsm_display;
 architecture behavior of fsm_display is
 	--hier moet eigenlijk 2/4 states erbij
 	--1 voor lezen, 1 voor schrijven. dubbel om terug te gaan naar de juiste state (of extra input/geheugen?
-   type state_type is (IDLE, SHIFT_ROW, BRIGHTNESS_ADJUST, GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST, NEXT_ROW);
+   type state_type is (IDLE, SHIFT_ROW, GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST, NEXT_ROW);
 	signal pr_state, nx_state: state_type;
 	
 begin
@@ -43,23 +43,15 @@ begin
 				  end if;
 				when SHIFT_ROW =>
 				  if collumn_filled then
-					 nx_state <= BRIGHTNESS_ADJUST;
+					 nx_state <= NEXT_ROW;
 				  else
 					 nx_state <= SHIFT_ROW;
 				  end if;
-				when BRIGHTNESS_ADJUST =>
-					 if write = '1' and write_done = '0' then 
-						nx_state <= GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST;
-					 elsif timer_repeated then
-						nx_state <= SHIFT_ROW;
-					 else
-						nx_state <= BRIGHTNESS_ADJUST;
-					 end if;
 				when NEXT_ROW =>
 					nx_state <= SHIFT_ROW;
 				when GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST =>
 					 if write_done then
-						nx_state <= BRIGHTNESS_ADJUST;
+						nx_state <= SHIFT_ROW;
 					 else
 						nx_state <= GET_NEW_VALUE_TO_BRIGHTNESS_ADJUST;
 					 end if;
@@ -90,21 +82,10 @@ begin
 					enable_counter <= '0';
 					row_change <= '0';
 					write_matrix <= '0';
-					
-				when BRIGHTNESS_ADJUST =>
-					reset_matrix <= '0';
-               				enable_matrix <= '1';
-              	 			enable_latch <= '1';
-					reset_clk <= '0';
-					reset_counter <= '0';
-					enable_counter <= '1';
-					row_change <= '0';
-					write_matrix <= '0';
-					
 				when NEXT_ROW =>
 					reset_matrix <= '0';
-               				enable_matrix <= '1';
-               				enable_latch <= '1';
+               enable_matrix <= '1';
+     				enable_latch <= '1';
 					reset_clk <= '0';
 					reset_counter <= '1';
 					enable_counter <= '0';

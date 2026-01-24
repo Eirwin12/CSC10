@@ -30,15 +30,17 @@ architecture testbench of rgb_framebuffer is
 		  matrix_addr_a : out std_logic;
 		  matrix_addr_b : out std_logic;
 		  matrix_addr_c : out std_logic;
-		  matrix_addr_d : out std_logic
+		  matrix_addr_d : out std_logic;
+	  	  matrix_latch  : out std_ulogic;
 		);
 	end component;
-	signal clock_tb, reset_tb: std_logic;
+	signal clock_tb, reset_tb: std_logic:= '0';
 	signal red_vector, blue_vector, green_vector: std_logic_vector(31 downto 0);
 	signal address_tb: std_logic_vector(4 downto 0);
 	signal write_tb, write_done_tb, collumn_filled_tb, change_row_tb, enable_matrix_tb: std_logic;
 	signal matrix_r1_tb, matrix_g1_tb, matrix_b1_tb, matrix_r2_tb, matrix_G2_tb, matrix_B2_tb: std_logic;
-	signal matrix_addr_a_tb, matrix_addr_b_tb, matrix_addr_c_tb, matrix_addr_d_tb, 
+	signal matrix_addr_a_tb, matrix_addr_b_tb, matrix_addr_c_tb, matrix_addr_d_tb: std_logic;
+	constant clock_cycle: time := 20 ns;
 begin
 	dut: rgb_framebuffer
 	port map(
@@ -66,10 +68,13 @@ begin
 		  matrix_addr_c => matrix_addr_c_tb, 
 		  matrix_addr_d => matrix_addr_d_tb
 	);
-
+	clock_tb <= clock_tb xor '1' after clock_cycle/2;
 	process
 	begin
-
+		enable_matrix_tb <= '1';
+		--enable the matrix en check de output. 
+		for i in 0 to 31 loop
+			assert 
 		report "Test completed.";
 		std.env.stop;
 	end process;
