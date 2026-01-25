@@ -6,10 +6,10 @@ entity matrix_top is
 	port (
         clk, rst: in std_ulogic;
 		  control_register	: in std_logic_vector(31 downto 0);
-		  
 		  red_vector_write	: in std_logic_vector(31 downto 0);
 		  blue_vector_write	: in std_logic_vector(31 downto 0);
 		  green_vector_write	: in std_logic_vector(31 downto 0);
+		  status_register    : out std_logic_vector(31 downto 0);
 		  
 		  matrix_r1     : out std_logic;
 		  matrix_g1     : out std_logic;
@@ -57,11 +57,9 @@ architecture imp of matrix_top is
 	component fsm_display is
 		port (
 			  clk, rst: in std_ulogic;
-			  start_button, timer_repeated, collumn_filled, write, write_done: in std_ulogic;
+			  start_button, collumn_filled, write, write_done: in std_ulogic;
 			  --matrix outputs
-			  reset_matrix, enable_matrix, enable_latch, row_change, write_matrix: out std_ulogic;
-			  --external unit outputs. 
-			  reset_clk, reset_counter, enable_counter: out std_ulogic
+			  reset_matrix, enable_matrix, enable_latch, row_change, write_matrix: out std_ulogic
 		 );
 	end component;
 	
@@ -77,7 +75,6 @@ architecture imp of matrix_top is
 	end component;
 	
 	signal reset_matrix_s, enable_matrix_s, enable_latch_s, collumn_filled_s, row_changed, write_done_s, write_matrix_s: std_ulogic := '0';
-	signal reset_clock_s, reset_counter_s, enable_counter_s, repeated_count: std_ulogic;
 	signal reset: std_ulogic;
 	
 	constant CONTROL_START_BIT: natural := 0;
@@ -92,7 +89,6 @@ begin
 	port map(
 		clock => clk,
 		reset => reset_matrix_s,
-	  
 	  red_vector_write => red_vector_write,
 	  blue_vector_write => blue_vector_write,
 	  green_vector_write => green_vector_write,
@@ -102,7 +98,7 @@ begin
 	  collumn_filled => collumn_filled_s,
 	  change_row => row_changed,
 	  enable_matrix => enable_matrix_s,
-		-- RGB Matrix Output Conduit
+	  
 		matrix_r1 => matrix_r1,
 		matrix_g1 => matrix_g1,
 		matrix_b1 => matrix_b1,
@@ -114,12 +110,12 @@ begin
 		matrix_addr_c => matrix_addr_c,
 		matrix_addr_d => matrix_addr_d
 	);
+	
 	fsm: fsm_display
 	port map (
 		clk => clk,
 		rst => reset,
 		start_button => control_register(CONTROL_START_BIT),
-		timer_repeated => repeated_count,
 		collumn_filled => collumn_filled_s,
 		write => control_register(CONTROL_WRITE_BIT),
 		write_done => write_done_s,
@@ -128,21 +124,11 @@ begin
 		reset_matrix => reset_matrix_s,
 		enable_matrix => enable_matrix_s,
 		enable_latch => enable_latch_s,
-		reset_clk => reset_clock_s,
-		reset_counter => reset_counter_s,
-		enable_counter => enable_counter_s,
 		row_change => row_changed
 	);
-	 brightness_control: nibble_count
-	 generic map (max_count => brightness)
-	 port map (
-		klok => clk, 
-		reset => reset_clock_s, 
-		enable => enable_counter_s,
-		count => open,
-		count_done => repeated_count
-	);
+
 	matrix_oe <= not enable_matrix_s;--its active low
 	matrix_lat <= enable_latch_s;
 	matrix_clk <= clk;
+	status_register <= (0 => enable_matrix_s, 1 => write_done_s, others => '0');
 end architecture;

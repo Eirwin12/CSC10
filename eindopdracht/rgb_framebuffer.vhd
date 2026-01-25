@@ -40,12 +40,7 @@ architecture rtl of rgb_framebuffer is
 
 	subtype rgb is std_ulogic_vector(2 downto 0);--3 bit rgb-->1bit red, 1 bit green, 1 bit blue
 	type matrix_grid is array(31 downto 0, 31 downto 0) of rgb;
-	--de makkelijker versie als alles via software gaat. 
-	type row_t is array(31 downto 0) of rgb;
-	type two_rows is array(1 downto 0) of row_t;
-	--temp om het makkelijker te testen
-	--signal framebuffer: matrix_grid := (others => (others => "000"));
-	signal framebuffer: matrix_grid := (31=> (others => "011"), others => (others => "111"));
+	signal framebuffer: matrix_grid := (others => (others => "000"));
 
 	-- Scanning signals
 	signal row_addr : unsigned(3 downto 0) := (others => '0');  -- 0-15 voor 16 rij-paren
@@ -77,15 +72,11 @@ begin
 			matrix_r2 <= '0';
 			matrix_g2 <= '0';
 			matrix_b2 <= '0';
+			collumn_filled <= '0';
 		elsif rising_edge(clock) then
-			if change_row then
-				if row_addr >= 5x"f" then
-					row_addr <= (others => '0');
-				else
-					row_addr <= row_addr+1;
-				end if;
-				collumn_filled <= '0';
-			elsif enable_matrix then
+			collumn_filled <= '0';
+			row_addr <= row_addr+1;
+			if enable_matrix then
 				-- Calculate addresses voor current column en row
 				upper_row := to_integer(row_addr);              -- 0-7
 				lower_row := to_integer(row_addr) + LOWER_ROW_OFFSET;         -- 16-23
@@ -105,23 +96,23 @@ begin
 
 				-- Next column
 				if col_count >= 31 then
-					col_count <= (others => '0');
+					--last written value is valid for signals in process
+					--only set collumn_filled high when this condition is met
 					collumn_filled <= '1';
-				else
-					col_count <= col_count + 1;
 				end if;
+				col_count <= col_count + 1;
 			end if;
 		end if;
 	end process;
 	
-   process(reset, clock, write, address, framebuffer)
-		variable row: integer range 0 to 32;
+   process(reset, clock, write, address)
+		variable row: integer range 0 to 31;
 	begin
 	
 		row := to_integer(unsigned(address));
 		--read verstuurd data naar master
 		if reset then
-			framebuffer <= (others => (others => "010"));
+			framebuffer <= (others => (others => "000"));
 		elsif rising_edge(clock) then
 			if write then
 				for collumn in 0 to 31 loop

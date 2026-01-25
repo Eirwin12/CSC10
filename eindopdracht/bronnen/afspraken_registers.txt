@@ -1,10 +1,8 @@
-register 0, 1 en 2 zijn 'write' registers. code mag hiernaartoe schrijven en lezen
+register 0 is control register, zie registers verderop.
+registers 1, 2 en 3 zijn 'write' registers. schrijf hier R, G en B waarde van 1 hele regel. 
+register 4 is een read register. hier wordt de status weergeven (zie verderop)
 
-register 4, 5 en 6 zijn 'read' registers. code mag NIET hier schrijven. wel lezen
-register 4, 5 en 6 wordt geschreven door de hardware
-
-register 3 is de controle register het beschrijft wanneer wel en wanneer niet gelezen kan worden. 
-
+control register
 MSB
 ------------------------------------------------
 |x||x||x||x||x||x||x||x||x||x||x||x||0||0||0||0|
@@ -20,3 +18,11 @@ bit 0: start
 bit 1: reset
 bit 2: software wil een rij schrijven. 
 als deze bits hoog => uitgevoerd. 
+
+status register
+LSB
+------------------------------------------------
+|x||x||x||x||x||x||x||x||x||x||x||x||x||x||0||0|
+------------------------------------------------
+bit 0: matrix is enabled
+bit 1: write is klaar. mag write bit in control laag zetten voor volgende write.

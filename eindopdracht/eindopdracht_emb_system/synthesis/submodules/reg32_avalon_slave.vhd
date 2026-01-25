@@ -10,7 +10,7 @@ entity reg32_avalon_interface is
 		readdata : out std_logic_vector(31 downto 0);
 		writedata : in std_logic_vector(31 downto 0);
 		byteenable : in std_logic_vector(3 downto 0);
-		address    : in std_logic_vector(1 downto 0);
+		address    : in std_logic_vector(2 downto 0);
 		Q_export : out std_logic_vector(31 downto 0)
 	);
 end reg32_avalon_interface;
@@ -18,8 +18,10 @@ end reg32_avalon_interface;
 architecture rtl of reg32_avalon_interface is
 	constant AMOUNT_REGISTERS: natural := 4;
 	constant LAST_REGISTER_INDEX: natural := AMOUNT_REGISTERS-1;
+	alias STATUS_REGISTER is LAST_REGISTER_INDEX;
 	type registers is array (0 to AMOUNT_REGISTERS-1) of std_logic_vector(31 downto 0);
 	signal regs: registers;
+	signal status_reg: std_logic_vector(31 downto 0);
 	
 	component matrix_top is
 		port (
@@ -28,6 +30,7 @@ architecture rtl of reg32_avalon_interface is
 		  red_vector_write	: in std_logic_vector(31 downto 0);
 		  blue_vector_write	: in std_logic_vector(31 downto 0);
 		  green_vector_write	: in std_logic_vector(31 downto 0);
+		  status_register    : out std_logic_vector(31 downto 0);
 		  
 		  matrix_r1     : out std_logic;
 		  matrix_g1     : out std_logic;
@@ -58,7 +61,11 @@ begin
 			if chipselect then
 				address_value := to_integer(unsigned(address));
 				if read then
-					readdata <= regs(address_value);
+					if address_value = 5 then
+						readdata <= status_reg;
+					else
+						readdata <= regs(address_value);
+					end if;
 				elsif write then
 					if byteenable(0) then
 						regs(address_value)(7 downto 0) <= writedata(7 downto 0);
@@ -86,6 +93,7 @@ begin
 		red_vector_write   => regs(1),
 		green_vector_write => regs(2),
 		blue_vector_write  => regs(3),
+		status_register => status_reg,
 
 		matrix_r1 => export_matrix(0),
 		matrix_g1 => export_matrix(1),
