@@ -4,7 +4,7 @@
  * Machine generated for CPU 'Processor_Nios' in SOPC Builder design 'eindopdracht'
  * SOPC Builder design path: ../../eindopdracht.sopcinfo
  *
- * Generated: Fri Jan 23 12:42:50 CET 2026
+ * Generated: Sun Jan 25 13:17:13 CET 2026
  */
 
 /*
@@ -139,7 +139,7 @@
  */
 
 #define ALT_MODULE_CLASS_JTAG_DEBUG altera_avalon_jtag_uart
-#define JTAG_DEBUG_BASE 0x810a8
+#define JTAG_DEBUG_BASE 0x810b8
 #define JTAG_DEBUG_IRQ 0
 #define JTAG_DEBUG_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_DEBUG_NAME "/dev/JTAG_DEBUG"
@@ -196,19 +196,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/JTAG_DEBUG"
-#define ALT_STDERR_BASE 0x810a8
+#define ALT_STDERR_BASE 0x810b8
 #define ALT_STDERR_DEV JTAG_DEBUG
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/JTAG_DEBUG"
-#define ALT_STDIN_BASE 0x810a8
+#define ALT_STDIN_BASE 0x810b8
 #define ALT_STDIN_DEV JTAG_DEBUG
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/JTAG_DEBUG"
-#define ALT_STDOUT_BASE 0x810a8
+#define ALT_STDOUT_BASE 0x810b8
 #define ALT_STDOUT_DEV JTAG_DEBUG
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -232,11 +232,11 @@
  */
 
 #define ALT_MODULE_CLASS_led_matrix_0 32x32_led_matrix
-#define LED_MATRIX_0_BASE 0x81090
+#define LED_MATRIX_0_BASE 0x81060
 #define LED_MATRIX_0_IRQ -1
 #define LED_MATRIX_0_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define LED_MATRIX_0_NAME "/dev/led_matrix_0"
-#define LED_MATRIX_0_SPAN 16
+#define LED_MATRIX_0_SPAN 32
 #define LED_MATRIX_0_TYPE "32x32_led_matrix"
 
 
@@ -261,7 +261,7 @@
  */
 
 #define ALT_MODULE_CLASS_pio_buttons altera_avalon_pio
-#define PIO_BUTTONS_BASE 0x81080
+#define PIO_BUTTONS_BASE 0x810a0
 #define PIO_BUTTONS_BIT_CLEARING_EDGE_REGISTER 0
 #define PIO_BUTTONS_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define PIO_BUTTONS_CAPTURE 1
@@ -288,7 +288,7 @@
  */
 
 #define ALT_MODULE_CLASS_pio_leds altera_avalon_pio
-#define PIO_LEDS_BASE 0x81060
+#define PIO_LEDS_BASE 0x81080
 #define PIO_LEDS_BIT_CLEARING_EDGE_REGISTER 0
 #define PIO_LEDS_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define PIO_LEDS_CAPTURE 0
@@ -315,7 +315,7 @@
  */
 
 #define ALT_MODULE_CLASS_pio_switches altera_avalon_pio
-#define PIO_SWITCHES_BASE 0x81070
+#define PIO_SWITCHES_BASE 0x81090
 #define PIO_SWITCHES_BIT_CLEARING_EDGE_REGISTER 0
 #define PIO_SWITCHES_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define PIO_SWITCHES_CAPTURE 0
@@ -342,13 +342,13 @@
  */
 
 #define ALT_MODULE_CLASS_sysid_qsys_0 altera_avalon_sysid_qsys
-#define SYSID_QSYS_0_BASE 0x810a0
+#define SYSID_QSYS_0_BASE 0x810b0
 #define SYSID_QSYS_0_ID 0
 #define SYSID_QSYS_0_IRQ -1
 #define SYSID_QSYS_0_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_QSYS_0_NAME "/dev/sysid_qsys_0"
 #define SYSID_QSYS_0_SPAN 8
-#define SYSID_QSYS_0_TIMESTAMP 1769088336
+#define SYSID_QSYS_0_TIMESTAMP 1769343049
 #define SYSID_QSYS_0_TYPE "altera_avalon_sysid_qsys"
 
 

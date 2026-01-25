@@ -38,9 +38,12 @@ architecture rtl of rgb_framebuffer is
 	--is een 2D matrix overzichtelijker.
 	--zie 8.3.4 van circuit design with vhdl hoe dit er ong. eruit ziet. 
 
-	subtype rgb is std_ulogic_vector(2 downto 0);--3 bit rgb-->1bit red, 1 bit green, 1 bit blue
-	type matrix_grid is array(31 downto 0, 31 downto 0) of rgb;
-	signal framebuffer: matrix_grid := (others => (others => "000"));
+	subtype color_vector is std_ulogic_vector(31 downto 0);--3 bit rgb-->1bit red, 1 bit green, 1 bit blue
+	type rgb is array(2 downto 0) of color_vector;
+	type matrix_grid2 is array(31 downto 0) of rgb;
+--	sybtype rgb is std_ulogic_vector(2 downto 0);
+--	type matrix_grid is array(31 downto 0, 31 downto 0) of rgb;
+	signal framebuffer: matrix_grid2 := (others => (others => (others => '0')));
 
 	-- Scanning signals
 	signal row_addr : unsigned(3 downto 0) := (others => '0');  -- 0-15 voor 16 rij-paren
@@ -74,9 +77,10 @@ begin
 			matrix_b2 <= '0';
 			collumn_filled <= '0';
 		elsif rising_edge(clock) then
-			collumn_filled <= '0';
-			row_addr <= row_addr+1;
-			if enable_matrix then
+			if change_row then
+				row_addr <= row_addr+1;
+				collumn_filled <= '0';
+			elsif enable_matrix then
 				-- Calculate addresses voor current column en row
 				upper_row := to_integer(row_addr);              -- 0-7
 				lower_row := to_integer(row_addr) + LOWER_ROW_OFFSET;         -- 16-23
@@ -86,13 +90,13 @@ begin
 				pixel_addr2 := (lower_row, to_integer(col_count));
 
 				--verstuur de pixels naar de matrix toe. 
-				matrix_r1 <= framebuffer(pixel_addr1(0), pixel_addr1(1))(0);
-				matrix_g1 <= framebuffer(pixel_addr1(0), pixel_addr1(1))(1);
-				matrix_b1 <= framebuffer(pixel_addr1(0), pixel_addr1(1))(2);
+				matrix_r1 <= framebuffer(pixel_addr1(0))(0)(pixel_addr1(1));
+				matrix_g1 <= framebuffer(pixel_addr1(0))(1)(pixel_addr1(1));
+				matrix_b1 <= framebuffer(pixel_addr1(0))(2)(pixel_addr1(1));
 
-				matrix_r2 <= framebuffer(pixel_addr2(0), pixel_addr2(1))(0);
-				matrix_g2 <= framebuffer(pixel_addr2(0), pixel_addr2(1))(1);
-				matrix_b2 <= framebuffer(pixel_addr2(0), pixel_addr2(1))(2);
+				matrix_r2 <= framebuffer(pixel_addr2(0))(0)(pixel_addr2(1));
+				matrix_g2 <= framebuffer(pixel_addr2(0))(1)(pixel_addr2(1));
+				matrix_b2 <= framebuffer(pixel_addr2(0))(2)(pixel_addr2(1));
 
 				-- Next column
 				if col_count >= 31 then
@@ -107,21 +111,27 @@ begin
 	
    process(reset, clock, write, address)
 		variable row: integer range 0 to 31;
+		variable col: integer range 0 to 31;
 	begin
 	
 		row := to_integer(unsigned(address));
 		--read verstuurd data naar master
 		if reset then
-			framebuffer <= (others => (others => "000"));
-		elsif rising_edge(clock) then
-			if write then
-				for collumn in 0 to 31 loop
-					framebuffer(row, collumn) <= (red_vector_write(collumn), green_vector_write(collumn), blue_vector_write(collumn));
-				end loop;
-				write_done <= '1';
-			else
-				write_done <= '0';
-			end if;
+			framebuffer <= (others => (others => (others => '0')));
+			write_done <= '0';
+--		elsif rising_edge(clock) then
+--		elsif write = '1' then
+		else
+			framebuffer(row)(0) <= std_ulogic_vector(red_vector_write);
+			framebuffer(row)(1) <= std_ulogic_vector(green_vector_write);
+			framebuffer(row)(2) <= std_ulogic_vector(blue_vector_write);
+--		else
+--			for collumn in 0 to 31 loop
+--				framebuffer(row)(collumn) <= (red_vector_write(collumn), green_vector_write(collumn), blue_vector_write(collumn));
+--			end loop;
+			write_done <= '1';
+--		else
+--			write_done <= '0';
 		end if;
 	end process;
     -- Output assignments

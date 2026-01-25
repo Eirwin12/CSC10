@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>23-jan-2026 12:43:08</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1769168588037</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>25-jan-2026 13:17:13</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1769343433298</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\CSC10\eindopdracht\software\eindopdracht_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\eindopdracht.sopcinfo</SopcDesignFile>
@@ -1757,38 +1757,38 @@
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>led_matrix_0</slaveDescriptor>
+                <addressRange>0x00081060 - 0x0008107F</addressRange>
+                <addressSpan>32</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>pio_leds</slaveDescriptor>
-                <addressRange>0x00081060 - 0x0008106F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>pio_switches</slaveDescriptor>
-                <addressRange>0x00081070 - 0x0008107F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>pio_buttons</slaveDescriptor>
                 <addressRange>0x00081080 - 0x0008108F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>led_matrix_0</slaveDescriptor>
+                <slaveDescriptor>pio_switches</slaveDescriptor>
                 <addressRange>0x00081090 - 0x0008109F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>pio_buttons</slaveDescriptor>
+                <addressRange>0x000810A0 - 0x000810AF</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>sysid_qsys_0</slaveDescriptor>
-                <addressRange>0x000810A0 - 0x000810A7</addressRange>
+                <addressRange>0x000810B0 - 0x000810B7</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>JTAG_DEBUG</slaveDescriptor>
-                <addressRange>0x000810A8 - 0x000810AF</addressRange>
+                <addressRange>0x000810B8 - 0x000810BF</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

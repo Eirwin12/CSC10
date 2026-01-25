@@ -21,7 +21,7 @@
    {
       datum baseAddress
       {
-         value = "528552";
+         value = "528568";
          type = "String";
       }
    }
@@ -62,14 +62,6 @@
          type = "String";
       }
    }
-   element a_32x32_led_matrix_0
-   {
-      datum _sortIndex
-      {
-         value = "10";
-         type = "int";
-      }
-   }
    element clk_0
    {
       datum _sortIndex
@@ -91,6 +83,22 @@
       datum _originalDeviceFamily
       {
          value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element led_matrix_0
+   {
+      datum _sortIndex
+      {
+         value = "10";
+         type = "int";
+      }
+   }
+   element led_matrix_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "528480";
          type = "String";
       }
    }
@@ -122,7 +130,7 @@
    {
       datum baseAddress
       {
-         value = "528512";
+         value = "528544";
          type = "String";
       }
    }
@@ -138,7 +146,7 @@
    {
       datum baseAddress
       {
-         value = "528480";
+         value = "528512";
          type = "String";
       }
    }
@@ -154,7 +162,7 @@
    {
       datum baseAddress
       {
-         value = "528496";
+         value = "528528";
          type = "String";
       }
    }
@@ -170,7 +178,7 @@
    {
       datum baseAddress
       {
-         value = "528544";
+         value = "528560";
          type = "String";
       }
    }
@@ -214,7 +222,7 @@
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface
    name="matrix_output"
-   internal="a_32x32_led_matrix_0.conduit_end"
+   internal="led_matrix_0.conduit_end"
    type="conduit"
    dir="end" />
  <interface
@@ -265,7 +273,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="20" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='a_32x32_led_matrix_0.avalon_slave_0' start='0x0' end='0x20' /><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='performance_checker_0.control_slave' start='0x81000' end='0x81040' /><slave name='timer_0.s1' start='0x81040' end='0x81060' /><slave name='pio_leds.s1' start='0x81060' end='0x81070' /><slave name='pio_switches.s1' start='0x81070' end='0x81080' /><slave name='pio_buttons.s1' start='0x81080' end='0x81090' /><slave name='sysid_qsys_0.control_slave' start='0x810A0' end='0x810A8' /><slave name='JTAG_DEBUG.avalon_jtag_slave' start='0x810A8' end='0x810B0' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='performance_checker_0.control_slave' start='0x81000' end='0x81040' /><slave name='timer_0.s1' start='0x81040' end='0x81060' /><slave name='led_matrix_0.avalon_slave_0' start='0x81060' end='0x81080' /><slave name='pio_leds.s1' start='0x81080' end='0x81090' /><slave name='pio_switches.s1' start='0x81090' end='0x810A0' /><slave name='pio_buttons.s1' start='0x810A0' end='0x810B0' /><slave name='sysid_qsys_0.control_slave' start='0x810B0' end='0x810B8' /><slave name='JTAG_DEBUG.avalon_jtag_slave' start='0x810B8' end='0x810C0' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -414,17 +422,13 @@
   <parameter name="useShallowMemBlocks" value="false" />
   <parameter name="writable" value="true" />
  </module>
- <module
-   name="a_32x32_led_matrix_0"
-   kind="32x32_led_matrix"
-   version="1.2"
-   enabled="1" />
  <module name="clk_0" kind="clock_source" version="18.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
+ <module name="led_matrix_0" kind="32x32_led_matrix" version="1.2" enabled="1" />
  <module
    name="performance_checker_0"
    kind="altera_avalon_performance_counter"
@@ -507,16 +511,16 @@
    start="Processor_Nios.data_master"
    end="JTAG_DEBUG.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000810a8" />
+  <parameter name="baseAddress" value="0x000810b8" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="18.1"
    start="Processor_Nios.data_master"
-   end="a_32x32_led_matrix_0.avalon_slave_0">
+   end="led_matrix_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x00081060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -525,7 +529,7 @@
    start="Processor_Nios.data_master"
    end="sysid_qsys_0.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000810a0" />
+  <parameter name="baseAddress" value="0x000810b0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -561,7 +565,7 @@
    start="Processor_Nios.data_master"
    end="pio_buttons.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081080" />
+  <parameter name="baseAddress" value="0x000810a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -570,7 +574,7 @@
    start="Processor_Nios.data_master"
    end="pio_switches.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081070" />
+  <parameter name="baseAddress" value="0x00081090" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -588,7 +592,7 @@
    start="Processor_Nios.data_master"
    end="pio_leds.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081060" />
+  <parameter name="baseAddress" value="0x00081080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -630,7 +634,7 @@
    kind="clock"
    version="18.1"
    start="clk_0.clk"
-   end="a_32x32_led_matrix_0.clock_sink" />
+   end="led_matrix_0.clock_sink" />
  <connection
    kind="interrupt"
    version="18.1"
@@ -663,7 +667,7 @@
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
-   end="a_32x32_led_matrix_0.clock_reset" />
+   end="led_matrix_0.clock_reset" />
  <connection
    kind="reset"
    version="18.1"

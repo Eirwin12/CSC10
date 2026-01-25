@@ -84,7 +84,7 @@ architecture imp of matrix_top is
 	constant ADDRESS_UPPER_BOUND: natural := 20;
 	constant ADDRESS_LOWER_BOUND: natural := 16;
 begin
-	reset <= rst and control_register(CONTROL_RESET_BIT);
+	reset <= rst or control_register(CONTROL_RESET_BIT);
 	matrix_com: rgb_framebuffer
 	port map(
 		clock => clk,

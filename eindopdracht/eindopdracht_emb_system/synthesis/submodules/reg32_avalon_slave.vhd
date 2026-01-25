@@ -61,7 +61,7 @@ begin
 			if chipselect then
 				address_value := to_integer(unsigned(address));
 				if read then
-					if address_value = 5 then
+					if address_value = 4 then
 						readdata <= status_reg;
 					else
 						readdata <= regs(address_value);
