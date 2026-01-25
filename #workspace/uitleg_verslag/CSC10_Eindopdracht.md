@@ -1,63 +1,67 @@
-# Samenvatting
+# CSC10 Eindopdracht
 
+## Samenvatting
 
-# Inhoudsopgave
+Dit verslag beschrijft de implementatie van een 32x32 RGB LED-matrix die wordt aangestuurd door een FPGA op een DE1-SoC bordje. De opdracht is opgesplitst in twee delen: de eerste deelopdracht richt zich op het aansturen van de matrix met een Nios II softcore-processor, terwijl de tweede deelopdracht gebruikmaakt van de hard processor (HPS) van de Cyclone V SoC FPGA om de matrix aan te sturen onder een Linux-omgeving.
 
+## Inhoudsopgave
 
+## Inleiding
 
-# Inleiding
+### Contextopdracht
 
-## Contextodpracht
+### Aanpak
 
-## Aanpak
+Voor de aanpak is begonnen met het definiëren van de pinnen die de verbinding tussen de matrix en de FPGA mogelijk maken. Daarna is een ModelSim-project aangemaakt waarin de VHDL-code wordt gesimuleerd om te controleren of de LED-matrix correct wordt aangestuurd. Vervolgens is in Platform Designer een eigen component aangemaakt die de registers bevat om de LED-matrix aan te sturen. Daarna is een top-leveldesign gemaakt waarin alle koppelingen worden aangebracht, zodat de FPGA de LED-matrix kan aansturen. Hierna is een Nios II-project aangemaakt om via de BSP de FPGA in C-code aan te sturen.
 
-Voor de aanpak is er begonnen bij het definiëren van de pinnen die de verbinding tussen de matrix en FPGA mogelijk maakt. Daarna is er een modelsim project aangemaakt waarin de VHDL code wordt gesimuleerd om te controleren of de LED matrix correct wordt aangestuurd. Vervolgens is er in Platform Designer de eigen component aangemaakt die de registers bevat om de LED matrix aan te sturen. Vervolgens is er een top level design gemaakt waarin alle kopppelingen worden gemaakt om ervoor te zorgen dat de FPGA de LED matrix kan aansturen. Hierna is er een Nios II project aangemaakt om via de BSP de FPGA in c code aan te sturen. 
+Voor de hardcoreversie is begonnen met het kopiëren van de softcore-projectbestanden. Vervolgens is in Platform Designer de HPS geconfigureerd om toegang te krijgen tot de registers van de matrix. Daarna is het top-leveldesign aangepast om de HPS te integreren met wat in de softcore-implementatie is aangemaakt. Vervolgens is alles geconfigureerd en gecompileerd, is alles overgezet naar de microSD-kaart en is begonnen met het schrijven van de userspace-applicatie, zoals bij de softcoreversie.
 
-Voor de hardcore versie is er begonnen met het kopiëren van de softcore project files. Vervolgens is er in Platform Designer de HPS geconfigureerd om toegang te krijgen tot de registers van de matrix. Daarna is de top level design aangepast om de HPS te intergreren met wat in de softcore is aangemaakt. Vervolgens is alles geconfigureerd en gecompileerd en alles over gezet naar de micro sd kaart en is er begonnen aan het schrijven van de user space applicatie zoals bij de softcore versie. 
+## Deelopdracht 1 (Hardware)
 
+### ModelSim-simulatie
 
+Voordat er werd begonnen met de hardware-implementatie is een ModelSim-project aangemaakt om de VHDL-code te simuleren. Dit is gedaan om te controleren of de LED-matrix correct wordt aangestuurd door de VHDL-code. De testbench bestaat uit het genereren van een kloksignaal en het instellen van de reset. Daarna wordt er een eenvoudige patroon gegenereerd dat over de matrix wordt weergegeven. Hieronder is een screenshot te zien van de simulatie in ModelSim:
+![ModelSim-simulatie](images/modelsim_simulatie.png)
 
-# Deelopdracht 1 (Hardware)
+#### Werking 32x32 RGB LED-matrix
 
-## Modelsim simulatie
+De PCB bevat 12 LED-driverchips. Je kunt ze zien als shiftregisters zoals een 74HC595, alleen hebben ze 16 uitgangen en sturen ze met constante stroom. Samen leveren ze 12 x 16 = 192 uitgangen. Dat is handig, want één scanstap van de matrix gebruikt precies 192 signalen: 64 pixels tegelijk, elk met R, G en B (64 x 3 = 192).
 
-Voor dat er begonnen werd met de hardware implementatie is er een Modelsim project aangemaakt om de VHDL code te simuleren. Dit om te controleren of de LED matrix correct wordt aangestuurd door de VHDL code. 
+Met de adreslijnen A, B en C kiest de controller welke van de 8 secties op dat moment actief is. Zodra die selectie is gemaakt, wordt 192 bits (24 bytes) aan beelddata uitgeklokt en met de latch vastgezet. Daarna gaat de controller door naar de volgende sectie, tot alle 8 secties zijn geweest, en begint de cyclus opnieuw bij sectie 0.
 
-### Werking 32x32 RGB LED Matrix
+### Hardware
 
+### VHDL-code
 
+### Platform Designer
 
-## Hardware
+### Top-leveldesign
 
-## VHDL code
+### Nios II-software
 
-## Platform Designer
+## Deelopdracht 2 (Hardcore)
 
-## Top level design
+Nadat we de softcore-implementatie hebben voltooid, gaan we de hardcore HPS (Hard Processor System) van de Cyclone V SoC FPGA gebruiken om de 32x32 LED-matrix aan te sturen. Dit vereist het opzetten van een Linux-omgeving op de HPS. Voordat we begonnen aan dit deel is het werkende softcore-projectbestand gekopieerd, zodat de benodigde bestanden beschikbaar waren voor de hardcore-implementatie. In principe hoeft dan alleen de processor te worden vervangen: van de Nios naar de hard processor.
 
-## Nios II software
+### Platform Designer-configuratie
 
-# Deelodpracht 2 (Hardcore)
+Wat als eerste gedaan moest worden, is het omzetten van de schakelaars op de achterkant, zodat Linux kan booten. Vervolgens hebben we in Platform Designer de HPS geconfigureerd met de preset "DE1-SoC bordje CSC10", die is meegeleverd bij stap 1 van week 3. Hierbij moest ik er ook op letten dat de "device family" op Cyclone V SoC stond en de "Device" op "5CSEMA5F31C6".
 
-Na dat we de softcore implementatie hebben voltooid, gaan we nu de hardcore HPS (Hard Processor System) van de Cyclone V SoC FPGA gebruiken om de Matrix32 LED controller aan te sturen. Dit vereist het opzetten van een Linux-omgeving op de HPS en het ontwikkelen van een kernelmodule om te communiceren met de LED controller. Voordat we bgeonnen waren aan dit deel heb ik de werkende softcore project file gekopieerd om zo de benodigde bestanden te hebben voor de hardcore implementatie.
+Daarna is de HPS-to-FPGA Lightweight Bridge toegevoegd en is de FPGA-to-HPS interrupt aangezet. Hetgeen is gebleven is de Matrix32 LED-controllercomponent die bij de softcore-implementatie is aangemaakt, en de pio_keys-component die de knoppen op het bord mogelijk maakt.
 
-## Platform Designer Configuratie
+Vervolgens zijn alle stappen uit opdracht 3.9 tot en met 3.17 van de weekopdrachten doorlopen om de HPS zo te configureren dat deze toegang heeft tot de registers van de LED-controller. Hieronder staat een afbeelding van de Platform Designer-configuratie:
+![Platform Designer HPS-configuratie](images/platform_designer_hps_config.png)
 
-Wat als eerst gedaan moest worden is de switches op de achterkant omzetten zodat de linux geboot kan worden. Vervolgens hebben in platform designer de HPS geconfigureerd met de preset "DE1-SoC bordje CSC10" die is meegeleverd bij Stap 1 bij week 3. Hierbij moest ik ook opletten dat de "device family" op Cyclone V SoC stond en de "Device" op "5CSEMA5F31C6".
+Hierna konden we in Platform Designer alles laten genereren en konden we de "Instantiation Template" gebruiken om het top-level design aan te passen.
 
-Daarna is de HPS-to-FPGA Lightweight bridge toegevoeg en is de FPGA-to-HPS interupt aangezet. Het gene wat is gebleven is de Matrix 32 LED controller component die ik bij de softcore implementatie heb gemaakt en de pio_keys component die de knoppen op het bordje mogelijk maakt.
+### Hardcore Linux-setup
 
-Vervolgens zijn alle stappen die in opdracht 3.9 tot 3.17 van de week opdrachten doorlopen om de HPS te configureren zodat die toegang heeft tot de registers van de LED controller. Hieronder een foto van de platform designer configuratie:
-![Platform Designer HPS Configuratie](images/platform_designer_hps_config.png)
+Vervolgens moest de Linux-omgeving op de HPS worden opgezet. Dit is gedaan door de stappen uit week 3 te volgen, waarbij de juiste rbf bestand en device tree blobs (DTB) wordt gebruikt om de FPGA te configureren bij het opstarten van Linux.
 
-Hierna konden we in platform desginer alles laten genereren en konden we de "Instatiation Template" gebruiken om de top level design aan te passen.
+## Conclusie
 
-## aanpasing top level design
+De resultaten van zowel de softcore- als de hardcore-implementatie zijn grotendeels succesvol. In beide gevallen is de 32x32 RGB LED-matrix correct aangestuurd en worden de gewenste patronen weergegeven. Alleen KEY0 werkte niet, omdat deze in de configuratie was gekoppeld aan de reset.
 
-Na dat alles is geconfigureerd in Platform Designer is de top level design aangepast om de HPS te integreren met de Matrix32 LED controller. 
+De softcore-implementatie vormde een goede basis om de werking van de matrix te doorgronden. Uiteindelijk is het doel bereikt: een functionerende 32x32 RGB LED-matrix die kan worden aangestuurd via zowel een Nios II-processor als de HPS van de Cyclone V SoC FPGA.
 
-## Hardcore Linux Setup
-
-## User space 
-
-## Kernel Module
+In de zipmap is een video toegevoegd waarin zowel de softcore- als de hardcore-implementatie in actie te zien is.
