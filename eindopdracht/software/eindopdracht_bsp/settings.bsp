@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>25-jan-2026 13:17:13</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1769343433298</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>25-jan-2026 16:18:07</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1769354287465</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\CSC10\eindopdracht\software\eindopdracht_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\eindopdracht.sopcinfo</SopcDesignFile>
@@ -1751,16 +1751,16 @@
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>timer_0</slaveDescriptor>
+                <slaveDescriptor>matrix_framebuffer_ai_0</slaveDescriptor>
                 <addressRange>0x00081040 - 0x0008105F</addressRange>
                 <addressSpan>32</addressSpan>
-                <attributes>timer</attributes>
+                <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>led_matrix_0</slaveDescriptor>
+                <slaveDescriptor>timer_0</slaveDescriptor>
                 <addressRange>0x00081060 - 0x0008107F</addressRange>
                 <addressSpan>32</addressSpan>
-                <attributes/>
+                <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>pio_leds</slaveDescriptor>

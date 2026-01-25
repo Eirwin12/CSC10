@@ -4,7 +4,7 @@
  * Machine generated for CPU 'Processor_Nios' in SOPC Builder design 'eindopdracht'
  * SOPC Builder design path: ../../eindopdracht.sopcinfo
  *
- * Generated: Sun Jan 25 13:17:13 CET 2026
+ * Generated: Sun Jan 25 16:18:08 CET 2026
  */
 
 /*
@@ -123,7 +123,6 @@
  *
  */
 
-#define __32X32_LED_MATRIX
 #define __ALTERA_AVALON_JTAG_UART
 #define __ALTERA_AVALON_ONCHIP_MEMORY2
 #define __ALTERA_AVALON_PERFORMANCE_COUNTER
@@ -131,6 +130,7 @@
 #define __ALTERA_AVALON_SYSID_QSYS
 #define __ALTERA_AVALON_TIMER
 #define __ALTERA_NIOS2_QSYS
+#define __MATRIX_FRAMEBUFFER_AI
 
 
 /*
@@ -227,17 +227,17 @@
 
 
 /*
- * led_matrix_0 configuration
+ * matrix_framebuffer_ai_0 configuration
  *
  */
 
-#define ALT_MODULE_CLASS_led_matrix_0 32x32_led_matrix
-#define LED_MATRIX_0_BASE 0x81060
-#define LED_MATRIX_0_IRQ -1
-#define LED_MATRIX_0_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define LED_MATRIX_0_NAME "/dev/led_matrix_0"
-#define LED_MATRIX_0_SPAN 32
-#define LED_MATRIX_0_TYPE "32x32_led_matrix"
+#define ALT_MODULE_CLASS_matrix_framebuffer_ai_0 matrix_framebuffer_ai
+#define MATRIX_FRAMEBUFFER_AI_0_BASE 0x81040
+#define MATRIX_FRAMEBUFFER_AI_0_IRQ -1
+#define MATRIX_FRAMEBUFFER_AI_0_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define MATRIX_FRAMEBUFFER_AI_0_NAME "/dev/matrix_framebuffer_ai_0"
+#define MATRIX_FRAMEBUFFER_AI_0_SPAN 32
+#define MATRIX_FRAMEBUFFER_AI_0_TYPE "matrix_framebuffer_ai"
 
 
 /*
@@ -348,7 +348,7 @@
 #define SYSID_QSYS_0_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_QSYS_0_NAME "/dev/sysid_qsys_0"
 #define SYSID_QSYS_0_SPAN 8
-#define SYSID_QSYS_0_TIMESTAMP 1769343049
+#define SYSID_QSYS_0_TIMESTAMP 1769353488
 #define SYSID_QSYS_0_TYPE "altera_avalon_sysid_qsys"
 
 
@@ -359,7 +359,7 @@
 
 #define ALT_MODULE_CLASS_timer_0 altera_avalon_timer
 #define TIMER_0_ALWAYS_RUN 0
-#define TIMER_0_BASE 0x81040
+#define TIMER_0_BASE 0x81060
 #define TIMER_0_COUNTER_SIZE 32
 #define TIMER_0_FIXED_PERIOD 0
 #define TIMER_0_FREQ 50000000

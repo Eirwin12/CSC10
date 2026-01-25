@@ -8,11 +8,11 @@ use IEEE.numeric_std.all;
 
 entity eindopdracht is
 	port (
-		clk_clk                : in  std_logic                     := '0';             --           clk.clk
-		matrix_output_readdata : out std_logic_vector(31 downto 0);                    -- matrix_output.readdata
-		pio_buttons_export     : in  std_logic_vector(3 downto 0)  := (others => '0'); --   pio_buttons.export
-		pio_leds_export        : out std_logic_vector(9 downto 0);                     --      pio_leds.export
-		pio_switches_export    : in  std_logic_vector(9 downto 0)  := (others => '0')  --  pio_switches.export
+		clk_clk             : in  std_logic                     := '0';             --          clk.clk
+		output_data         : out std_logic_vector(31 downto 0);                    --       output.data
+		pio_buttons_export  : in  std_logic_vector(3 downto 0)  := (others => '0'); --  pio_buttons.export
+		pio_leds_export     : out std_logic_vector(9 downto 0);                     --     pio_leds.export
+		pio_switches_export : in  std_logic_vector(9 downto 0)  := (others => '0')  -- pio_switches.export
 	);
 end entity eindopdracht;
 
@@ -79,20 +79,19 @@ architecture rtl of eindopdracht is
 		);
 	end component eindopdracht_RAM;
 
-	component reg32_avalon_interface is
+	component Matrix32_LED_avalon is
 		port (
-			reset      : in  std_logic                     := 'X';             -- reset
-			read       : in  std_logic                     := 'X';             -- read
-			write      : in  std_logic                     := 'X';             -- write
-			chipselect : in  std_logic                     := 'X';             -- chipselect
-			readdata   : out std_logic_vector(31 downto 0);                    -- readdata
-			writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
-			byteenable : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
-			address    : in  std_logic_vector(2 downto 0)  := (others => 'X'); -- address
-			Q_export   : out std_logic_vector(31 downto 0);                    -- readdata
-			clock      : in  std_logic                     := 'X'              -- clk
+			csi_clk           : in  std_logic                     := 'X';             -- clk
+			rsi_reset_n       : in  std_logic                     := 'X';             -- reset_n
+			avs_s0_address    : in  std_logic_vector(2 downto 0)  := (others => 'X'); -- address
+			avs_s0_write      : in  std_logic                     := 'X';             -- write
+			avs_s0_writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			avs_s0_read       : in  std_logic                     := 'X';             -- read
+			avs_s0_readdata   : out std_logic_vector(31 downto 0);                    -- readdata
+			avs_s0_chipselect : in  std_logic                     := 'X';             -- chipselect
+			q_export          : out std_logic_vector(31 downto 0)                     -- data
 		);
-	end component reg32_avalon_interface;
+	end component Matrix32_LED_avalon;
 
 	component eindopdracht_performance_checker_0 is
 		port (
@@ -192,13 +191,12 @@ architecture rtl of eindopdracht is
 			JTAG_DEBUG_avalon_jtag_slave_writedata             : out std_logic_vector(31 downto 0);                    -- writedata
 			JTAG_DEBUG_avalon_jtag_slave_waitrequest           : in  std_logic                     := 'X';             -- waitrequest
 			JTAG_DEBUG_avalon_jtag_slave_chipselect            : out std_logic;                                        -- chipselect
-			led_matrix_0_avalon_slave_0_address                : out std_logic_vector(2 downto 0);                     -- address
-			led_matrix_0_avalon_slave_0_write                  : out std_logic;                                        -- write
-			led_matrix_0_avalon_slave_0_read                   : out std_logic;                                        -- read
-			led_matrix_0_avalon_slave_0_readdata               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			led_matrix_0_avalon_slave_0_writedata              : out std_logic_vector(31 downto 0);                    -- writedata
-			led_matrix_0_avalon_slave_0_byteenable             : out std_logic_vector(3 downto 0);                     -- byteenable
-			led_matrix_0_avalon_slave_0_chipselect             : out std_logic;                                        -- chipselect
+			matrix_framebuffer_ai_0_s0_address                 : out std_logic_vector(2 downto 0);                     -- address
+			matrix_framebuffer_ai_0_s0_write                   : out std_logic;                                        -- write
+			matrix_framebuffer_ai_0_s0_read                    : out std_logic;                                        -- read
+			matrix_framebuffer_ai_0_s0_readdata                : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			matrix_framebuffer_ai_0_s0_writedata               : out std_logic_vector(31 downto 0);                    -- writedata
+			matrix_framebuffer_ai_0_s0_chipselect              : out std_logic;                                        -- chipselect
 			performance_checker_0_control_slave_address        : out std_logic_vector(3 downto 0);                     -- address
 			performance_checker_0_control_slave_write          : out std_logic;                                        -- write
 			performance_checker_0_control_slave_readdata       : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
@@ -342,13 +340,6 @@ architecture rtl of eindopdracht is
 	signal mm_interconnect_0_jtag_debug_avalon_jtag_slave_read                 : std_logic;                     -- mm_interconnect_0:JTAG_DEBUG_avalon_jtag_slave_read -> mm_interconnect_0_jtag_debug_avalon_jtag_slave_read:in
 	signal mm_interconnect_0_jtag_debug_avalon_jtag_slave_write                : std_logic;                     -- mm_interconnect_0:JTAG_DEBUG_avalon_jtag_slave_write -> mm_interconnect_0_jtag_debug_avalon_jtag_slave_write:in
 	signal mm_interconnect_0_jtag_debug_avalon_jtag_slave_writedata            : std_logic_vector(31 downto 0); -- mm_interconnect_0:JTAG_DEBUG_avalon_jtag_slave_writedata -> JTAG_DEBUG:av_writedata
-	signal mm_interconnect_0_led_matrix_0_avalon_slave_0_chipselect            : std_logic;                     -- mm_interconnect_0:led_matrix_0_avalon_slave_0_chipselect -> led_matrix_0:chipselect
-	signal mm_interconnect_0_led_matrix_0_avalon_slave_0_readdata              : std_logic_vector(31 downto 0); -- led_matrix_0:readdata -> mm_interconnect_0:led_matrix_0_avalon_slave_0_readdata
-	signal mm_interconnect_0_led_matrix_0_avalon_slave_0_address               : std_logic_vector(2 downto 0);  -- mm_interconnect_0:led_matrix_0_avalon_slave_0_address -> led_matrix_0:address
-	signal mm_interconnect_0_led_matrix_0_avalon_slave_0_read                  : std_logic;                     -- mm_interconnect_0:led_matrix_0_avalon_slave_0_read -> led_matrix_0:read
-	signal mm_interconnect_0_led_matrix_0_avalon_slave_0_byteenable            : std_logic_vector(3 downto 0);  -- mm_interconnect_0:led_matrix_0_avalon_slave_0_byteenable -> led_matrix_0:byteenable
-	signal mm_interconnect_0_led_matrix_0_avalon_slave_0_write                 : std_logic;                     -- mm_interconnect_0:led_matrix_0_avalon_slave_0_write -> led_matrix_0:write
-	signal mm_interconnect_0_led_matrix_0_avalon_slave_0_writedata             : std_logic_vector(31 downto 0); -- mm_interconnect_0:led_matrix_0_avalon_slave_0_writedata -> led_matrix_0:writedata
 	signal mm_interconnect_0_sysid_qsys_0_control_slave_readdata               : std_logic_vector(31 downto 0); -- sysid_qsys_0:readdata -> mm_interconnect_0:sysid_qsys_0_control_slave_readdata
 	signal mm_interconnect_0_sysid_qsys_0_control_slave_address                : std_logic_vector(0 downto 0);  -- mm_interconnect_0:sysid_qsys_0_control_slave_address -> sysid_qsys_0:address
 	signal mm_interconnect_0_performance_checker_0_control_slave_readdata      : std_logic_vector(31 downto 0); -- performance_checker_0:readdata -> mm_interconnect_0:performance_checker_0_control_slave_readdata
@@ -364,6 +355,12 @@ architecture rtl of eindopdracht is
 	signal mm_interconnect_0_processor_nios_jtag_debug_module_byteenable       : std_logic_vector(3 downto 0);  -- mm_interconnect_0:Processor_Nios_jtag_debug_module_byteenable -> Processor_Nios:jtag_debug_module_byteenable
 	signal mm_interconnect_0_processor_nios_jtag_debug_module_write            : std_logic;                     -- mm_interconnect_0:Processor_Nios_jtag_debug_module_write -> Processor_Nios:jtag_debug_module_write
 	signal mm_interconnect_0_processor_nios_jtag_debug_module_writedata        : std_logic_vector(31 downto 0); -- mm_interconnect_0:Processor_Nios_jtag_debug_module_writedata -> Processor_Nios:jtag_debug_module_writedata
+	signal mm_interconnect_0_matrix_framebuffer_ai_0_s0_chipselect             : std_logic;                     -- mm_interconnect_0:matrix_framebuffer_ai_0_s0_chipselect -> matrix_framebuffer_ai_0:avs_s0_chipselect
+	signal mm_interconnect_0_matrix_framebuffer_ai_0_s0_readdata               : std_logic_vector(31 downto 0); -- matrix_framebuffer_ai_0:avs_s0_readdata -> mm_interconnect_0:matrix_framebuffer_ai_0_s0_readdata
+	signal mm_interconnect_0_matrix_framebuffer_ai_0_s0_address                : std_logic_vector(2 downto 0);  -- mm_interconnect_0:matrix_framebuffer_ai_0_s0_address -> matrix_framebuffer_ai_0:avs_s0_address
+	signal mm_interconnect_0_matrix_framebuffer_ai_0_s0_read                   : std_logic;                     -- mm_interconnect_0:matrix_framebuffer_ai_0_s0_read -> matrix_framebuffer_ai_0:avs_s0_read
+	signal mm_interconnect_0_matrix_framebuffer_ai_0_s0_write                  : std_logic;                     -- mm_interconnect_0:matrix_framebuffer_ai_0_s0_write -> matrix_framebuffer_ai_0:avs_s0_write
+	signal mm_interconnect_0_matrix_framebuffer_ai_0_s0_writedata              : std_logic_vector(31 downto 0); -- mm_interconnect_0:matrix_framebuffer_ai_0_s0_writedata -> matrix_framebuffer_ai_0:avs_s0_writedata
 	signal mm_interconnect_0_ram_s1_chipselect                                 : std_logic;                     -- mm_interconnect_0:RAM_s1_chipselect -> RAM:chipselect
 	signal mm_interconnect_0_ram_s1_readdata                                   : std_logic_vector(31 downto 0); -- RAM:readdata -> mm_interconnect_0:RAM_s1_readdata
 	signal mm_interconnect_0_ram_s1_address                                    : std_logic_vector(15 downto 0); -- mm_interconnect_0:RAM_s1_address -> RAM:address
@@ -396,7 +393,7 @@ architecture rtl of eindopdracht is
 	signal irq_mapper_receiver2_irq                                            : std_logic;                     -- pio_buttons:irq -> irq_mapper:receiver2_irq
 	signal irq_mapper_receiver3_irq                                            : std_logic;                     -- pio_switches:irq -> irq_mapper:receiver3_irq
 	signal processor_nios_d_irq_irq                                            : std_logic_vector(31 downto 0); -- irq_mapper:sender_irq -> Processor_Nios:d_irq
-	signal rst_controller_reset_out_reset                                      : std_logic;                     -- rst_controller:reset_out -> [RAM:reset, irq_mapper:reset, led_matrix_0:reset, mm_interconnect_0:Processor_Nios_reset_n_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
+	signal rst_controller_reset_out_reset                                      : std_logic;                     -- rst_controller:reset_out -> [RAM:reset, irq_mapper:reset, mm_interconnect_0:Processor_Nios_reset_n_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset]
 	signal rst_controller_reset_out_reset_req                                  : std_logic;                     -- rst_controller:reset_req -> [Processor_Nios:reset_req, RAM:reset_req, rst_translator:reset_req_in]
 	signal mm_interconnect_0_jtag_debug_avalon_jtag_slave_read_ports_inv       : std_logic;                     -- mm_interconnect_0_jtag_debug_avalon_jtag_slave_read:inv -> JTAG_DEBUG:av_read_n
 	signal mm_interconnect_0_jtag_debug_avalon_jtag_slave_write_ports_inv      : std_logic;                     -- mm_interconnect_0_jtag_debug_avalon_jtag_slave_write:inv -> JTAG_DEBUG:av_write_n
@@ -404,7 +401,7 @@ architecture rtl of eindopdracht is
 	signal mm_interconnect_0_pio_switches_s1_write_ports_inv                   : std_logic;                     -- mm_interconnect_0_pio_switches_s1_write:inv -> pio_switches:write_n
 	signal mm_interconnect_0_timer_0_s1_write_ports_inv                        : std_logic;                     -- mm_interconnect_0_timer_0_s1_write:inv -> timer_0:write_n
 	signal mm_interconnect_0_pio_leds_s1_write_ports_inv                       : std_logic;                     -- mm_interconnect_0_pio_leds_s1_write:inv -> pio_leds:write_n
-	signal rst_controller_reset_out_reset_ports_inv                            : std_logic;                     -- rst_controller_reset_out_reset:inv -> [JTAG_DEBUG:rst_n, Processor_Nios:reset_n, performance_checker_0:reset_n, pio_buttons:reset_n, pio_leds:reset_n, pio_switches:reset_n, sysid_qsys_0:reset_n, timer_0:reset_n]
+	signal rst_controller_reset_out_reset_ports_inv                            : std_logic;                     -- rst_controller_reset_out_reset:inv -> [JTAG_DEBUG:rst_n, Processor_Nios:reset_n, matrix_framebuffer_ai_0:rsi_reset_n, performance_checker_0:reset_n, pio_buttons:reset_n, pio_leds:reset_n, pio_switches:reset_n, sysid_qsys_0:reset_n, timer_0:reset_n]
 
 begin
 
@@ -467,18 +464,17 @@ begin
 			freeze     => '0'                                  -- (terminated)
 		);
 
-	led_matrix_0 : component reg32_avalon_interface
+	matrix_framebuffer_ai_0 : component Matrix32_LED_avalon
 		port map (
-			reset      => rst_controller_reset_out_reset,                           --    clock_reset.reset
-			read       => mm_interconnect_0_led_matrix_0_avalon_slave_0_read,       -- avalon_slave_0.read
-			write      => mm_interconnect_0_led_matrix_0_avalon_slave_0_write,      --               .write
-			chipselect => mm_interconnect_0_led_matrix_0_avalon_slave_0_chipselect, --               .chipselect
-			readdata   => mm_interconnect_0_led_matrix_0_avalon_slave_0_readdata,   --               .readdata
-			writedata  => mm_interconnect_0_led_matrix_0_avalon_slave_0_writedata,  --               .writedata
-			byteenable => mm_interconnect_0_led_matrix_0_avalon_slave_0_byteenable, --               .byteenable
-			address    => mm_interconnect_0_led_matrix_0_avalon_slave_0_address,    --               .address
-			Q_export   => matrix_output_readdata,                                   --    conduit_end.readdata
-			clock      => clk_clk                                                   --     clock_sink.clk
+			csi_clk           => clk_clk,                                                 --         clock.clk
+			rsi_reset_n       => rst_controller_reset_out_reset_ports_inv,                --         reset.reset_n
+			avs_s0_address    => mm_interconnect_0_matrix_framebuffer_ai_0_s0_address,    --            s0.address
+			avs_s0_write      => mm_interconnect_0_matrix_framebuffer_ai_0_s0_write,      --              .write
+			avs_s0_writedata  => mm_interconnect_0_matrix_framebuffer_ai_0_s0_writedata,  --              .writedata
+			avs_s0_read       => mm_interconnect_0_matrix_framebuffer_ai_0_s0_read,       --              .read
+			avs_s0_readdata   => mm_interconnect_0_matrix_framebuffer_ai_0_s0_readdata,   --              .readdata
+			avs_s0_chipselect => mm_interconnect_0_matrix_framebuffer_ai_0_s0_chipselect, --              .chipselect
+			q_export          => output_data                                              -- conduit_end_0.data
 		);
 
 	performance_checker_0 : component eindopdracht_performance_checker_0
@@ -573,13 +569,12 @@ begin
 			JTAG_DEBUG_avalon_jtag_slave_writedata             => mm_interconnect_0_jtag_debug_avalon_jtag_slave_writedata,            --                                             .writedata
 			JTAG_DEBUG_avalon_jtag_slave_waitrequest           => mm_interconnect_0_jtag_debug_avalon_jtag_slave_waitrequest,          --                                             .waitrequest
 			JTAG_DEBUG_avalon_jtag_slave_chipselect            => mm_interconnect_0_jtag_debug_avalon_jtag_slave_chipselect,           --                                             .chipselect
-			led_matrix_0_avalon_slave_0_address                => mm_interconnect_0_led_matrix_0_avalon_slave_0_address,               --                  led_matrix_0_avalon_slave_0.address
-			led_matrix_0_avalon_slave_0_write                  => mm_interconnect_0_led_matrix_0_avalon_slave_0_write,                 --                                             .write
-			led_matrix_0_avalon_slave_0_read                   => mm_interconnect_0_led_matrix_0_avalon_slave_0_read,                  --                                             .read
-			led_matrix_0_avalon_slave_0_readdata               => mm_interconnect_0_led_matrix_0_avalon_slave_0_readdata,              --                                             .readdata
-			led_matrix_0_avalon_slave_0_writedata              => mm_interconnect_0_led_matrix_0_avalon_slave_0_writedata,             --                                             .writedata
-			led_matrix_0_avalon_slave_0_byteenable             => mm_interconnect_0_led_matrix_0_avalon_slave_0_byteenable,            --                                             .byteenable
-			led_matrix_0_avalon_slave_0_chipselect             => mm_interconnect_0_led_matrix_0_avalon_slave_0_chipselect,            --                                             .chipselect
+			matrix_framebuffer_ai_0_s0_address                 => mm_interconnect_0_matrix_framebuffer_ai_0_s0_address,                --                   matrix_framebuffer_ai_0_s0.address
+			matrix_framebuffer_ai_0_s0_write                   => mm_interconnect_0_matrix_framebuffer_ai_0_s0_write,                  --                                             .write
+			matrix_framebuffer_ai_0_s0_read                    => mm_interconnect_0_matrix_framebuffer_ai_0_s0_read,                   --                                             .read
+			matrix_framebuffer_ai_0_s0_readdata                => mm_interconnect_0_matrix_framebuffer_ai_0_s0_readdata,               --                                             .readdata
+			matrix_framebuffer_ai_0_s0_writedata               => mm_interconnect_0_matrix_framebuffer_ai_0_s0_writedata,              --                                             .writedata
+			matrix_framebuffer_ai_0_s0_chipselect              => mm_interconnect_0_matrix_framebuffer_ai_0_s0_chipselect,             --                                             .chipselect
 			performance_checker_0_control_slave_address        => mm_interconnect_0_performance_checker_0_control_slave_address,       --          performance_checker_0_control_slave.address
 			performance_checker_0_control_slave_write          => mm_interconnect_0_performance_checker_0_control_slave_write,         --                                             .write
 			performance_checker_0_control_slave_readdata       => mm_interconnect_0_performance_checker_0_control_slave_readdata,      --                                             .readdata

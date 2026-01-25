@@ -210,26 +210,26 @@ module eindopdracht_mm_interconnect_0_router
 
     // ( 0x80800 .. 0x81000 )
     if ( {address[RG:PAD1],{PAD1{1'b0}}} == 20'h80800   ) begin
-            src_channel = 10'b0000010000;
+            src_channel = 10'b0000001000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 1;
     end
 
     // ( 0x81000 .. 0x81040 )
     if ( {address[RG:PAD2],{PAD2{1'b0}}} == 20'h81000   ) begin
-            src_channel = 10'b0000001000;
+            src_channel = 10'b0000000100;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 4;
     end
 
     // ( 0x81040 .. 0x81060 )
     if ( {address[RG:PAD3],{PAD3{1'b0}}} == 20'h81040   ) begin
-            src_channel = 10'b0100000000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 9;
+            src_channel = 10'b0000010000;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 3;
     end
 
     // ( 0x81060 .. 0x81080 )
     if ( {address[RG:PAD4],{PAD4{1'b0}}} == 20'h81060   ) begin
-            src_channel = 10'b0000000010;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 3;
+            src_channel = 10'b0100000000;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 9;
     end
 
     // ( 0x81080 .. 0x81090 )
@@ -252,7 +252,7 @@ module eindopdracht_mm_interconnect_0_router
 
     // ( 0x810b0 .. 0x810b8 )
     if ( {address[RG:PAD8],{PAD8{1'b0}}} == 20'h810b0  && read_transaction  ) begin
-            src_channel = 10'b0000000100;
+            src_channel = 10'b0000000010;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 8;
     end
 

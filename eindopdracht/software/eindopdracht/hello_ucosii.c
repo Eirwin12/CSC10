@@ -32,33 +32,88 @@
 #include <stdbool.h>
 #include "includes.h"
 #include "system.h"
+#include "alt_types.h"
+
 
 /* Definition of Task Stacks */
 #define   TASK_STACKSIZE       2048
 OS_STK    task1_stk[TASK_STACKSIZE];
 OS_STK    task2_stk[TASK_STACKSIZE];
+OS_STK    task3_stk[TASK_STACKSIZE];
 
 /* Definition of Task Priorities */
 
-#define TASK1_PRIORITY      1
-#define TASK2_PRIORITY      2
+#define TASK1_PRIORITY      2
+#define TASK2_PRIORITY      3
+#define TASK3_PRIORITY      1
 
+// Matrix dimensions
+#define MATRIX32_WIDTH                 32
+#define MATRIX32_HEIGHT                32
+#define MATRIX32_FRAMEBUFFER_SIZE      384  // 32x32x3 bits / 8 = 384 bytes
+static alt_u8 fb_cache[MATRIX32_FRAMEBUFFER_SIZE];
+
+#define CONTROL_REG 0
+#define ADDR_REG 2
+#define DATA_REG 3
+#define STATUS_REG 4
+
+void matrix32_write_fb_byte(alt_u32 *base_address, alt_u16 byte_addr, alt_u8 data) {
+	*(base_address+ADDR_REG) = byte_addr;
+	*(base_address+DATA_REG) = data;
+}
+
+void matrix32_set_pixel(alt_u32 base_address, alt_u8 x, alt_u8 y,
+                        alt_u8 r, alt_u8 g, alt_u8 b) {
+    if (x >= MATRIX32_WIDTH || y >= MATRIX32_HEIGHT) {
+        return;
+    }
+
+    alt_u16 pixel_index = y * MATRIX32_WIDTH + x;
+    alt_u16 byte_addr = pixel_index / 8;
+    alt_u8 bit_offset = pixel_index % 8;
+    alt_u8 bit_mask = 1 << bit_offset;
+
+    // R channel
+    alt_u8 r_byte = fb_cache[byte_addr];
+    if (r) {
+        r_byte |= bit_mask;
+    } else {
+        r_byte &= ~bit_mask;
+    }
+    matrix32_write_fb_byte((alt_u32 *)base_address, byte_addr, r_byte);
+    fb_cache[byte_addr] = r_byte;
+
+    // G channel
+    alt_u8 g_byte = fb_cache[128 + byte_addr];
+    if (g) {
+        g_byte |= bit_mask;
+    } else {
+        g_byte &= ~bit_mask;
+    }
+    matrix32_write_fb_byte((alt_u32 *)base_address, 128 + byte_addr, g_byte);
+    fb_cache[128 + byte_addr] = g_byte;
+
+    // B channel
+    alt_u8 b_byte = fb_cache[256 + byte_addr];
+    if (b) {
+        b_byte |= bit_mask;
+    } else {
+        b_byte &= ~bit_mask;
+    }
+    matrix32_write_fb_byte((alt_u32 *)base_address, 256 + byte_addr, b_byte);
+    fb_cache[256 + byte_addr] = b_byte;
+
+}
 
 bool links_button;
 bool rechts_button;
 bool boven_button;
 bool onder_button;
-#define CONTROL_REGISTER 0
-#define RED_VECTOR_REGISTER 1
-#define BLUE_VECTOR_REGISTER 2
-#define GREEN_VECTOR_REGISTER 3
-#define STATUS_REGISTER 4
 //handle all the inputs
 void input_handler(void* pdata)
 {
 	volatile int *button_base = (int *) PIO_BUTTONS_BASE;
-	volatile int *leds_base = (int *) PIO_LEDS_BASE;
-	volatile int *switch_base = (int *) PIO_SWITCHES_BASE;
 	while(1)
 	{
 	int values = *button_base;
@@ -66,94 +121,109 @@ void input_handler(void* pdata)
 		rechts_button = values & 1<<1;
 		boven_button = values & 1<<2;
 		onder_button = values & 1<<3;
-		*leds_base = *switch_base;
-		OSTimeDlyHMSM(0, 0, 1, 0);
+		OSTimeDlyHMSM(0, 0, 0, 500);
 	}
 }
 
 typedef enum kleuren {
 	zwart = 0,
-	rood,
-	groen,
-	blauw,
+	rood = 0x1,
+	groen = 0x2,
+	blauw = 0x4,
 	//secundaire kleuren (combi van 2 van de 3 kleuren
-	magenta,//rood + blauw
-	geel, //groen + blauw
-	cyaan, //groen + blauw
-	wit,
+	magenta = 0x5,//rood + blauw
+	geel = 0x3, //groen + blauw
+	cyaan = 0x6, //groen + blauw
+	wit = 0x7,
 }kleuren_matrix_e;
 
+kleuren_matrix_e figuurKleur = blauw;
+
 //eerst testen of de matrix werkt of niet
-/*
- * LED_MATRIX_0_BASE
- * register 1: control
- * register 2: red
- * register 3: green
- * register 4: blue
- */
+
 void matrix_handler(void* pdata)
 {
-	volatile int* matrixRegister = (int *)LED_MATRIX_0_BASE;
-	*matrixRegister = 0b10;//reset fpga
-    OSTimeDlyHMSM(0, 0, 0, 500);
-	*matrixRegister = 1;//zet het fpga aan.
-	OSTimeDlyHMSM(0, 0, 0, 10);
-	if((*(matrixRegister+4) & 0b01) != 1) {
-		printf("matrix isn't on yet!\n");
-	}
+	alt_u8 rijLinks = 16;
+	alt_u8 rijRechts = 17;
+	alt_u8 collumnBoven = 16;
+	alt_u8 collumnOnder = 17;
 //	kleuren_matrix_e matrix_buf[32][32];
+	matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnBoven, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+	matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnOnder, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+	matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnBoven, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+	matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnOnder, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
 	while(1)
 	{
-		for(int i=0; i<32; i++){
-//			for (int j=0; i<32; j++){
-//				matrix_buf[i][j] = rood;
-//			}
-//			if(i%2 == 0) {
-				*matrixRegister = i<<16 | 0b100;
-				*(matrixRegister+1) = 0xffffffff;
-				*(matrixRegister+2) = 0;
-				*(matrixRegister+3) = 0xffffffff;
-			    while(!(*(matrixRegister +4)& 0b10)) {
-			    	OSTimeDlyHMSM(0, 0, 0, 1);
-			    }
-				*matrixRegister &= ~0b100;
-//			}
+		if(!links_button) {
+			if(rijLinks > 0) {
+				//pixel uit
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnBoven, 0, 0, 0);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnOnder, 0, 0, 0);
+				//pixel aan
+				rijLinks--;
+				rijRechts--;
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnBoven, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnOnder, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+			}
 		}
-	    OSTimeDlyHMSM(0, 0, 1, 0);
-		for(int i=0; i<32; i++){
-//			for (int j=0; i<32; j++){
-//				matrix_buf[i][j] = groen;
-//			}
-//			if(i%8 == 0) {
-				*matrixRegister = (i)<<16 | 0b100;
-				*(matrixRegister+1) = 0x0;
-				*(matrixRegister+2) = 0xffffffff;
-				*(matrixRegister+3) = 0x0;
-			    while(!(*(matrixRegister +4)& 0b10)) {
-			    	OSTimeDlyHMSM(0, 0, 0, 1);
-			    }
-				*matrixRegister &= ~0b100;
-//			}
+		else if(!rechts_button) {
+			if(rijRechts <32){
+			//pixel uit
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnBoven, 0, 0, 0);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnOnder, 0, 0, 0);
+				//pixel aan
+				rijLinks++;
+				rijRechts++;
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnBoven, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnOnder, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+			}
 		}
-	    OSTimeDlyHMSM(0, 0, 1, 0);
-		for(int i=0; i<32; i++){
-//			for (int j=0; i<32; j++){
-//				matrix_buf[i][j] = blauw;
-//			}
-//			if(i%8 == 0) {
-				*matrixRegister = (i)<<16 | 0b100;
-				*(matrixRegister+1) = 0x0;
-				*(matrixRegister+2) = 0x0;
-				*(matrixRegister+3) = 0xffffffff;
-			    while(!(*(matrixRegister +4)& 0b10)) {
-			    	OSTimeDlyHMSM(0, 0, 0, 1);
-			    }
-				*matrixRegister &= ~0b100;
-//			}
+		if(!boven_button) {
+			if(collumnBoven >0) {
+				//pixel uit
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnOnder, 0, 0, 0);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnOnder, 0, 0, 0);
+				//pixel aan
+				collumnBoven--;
+				collumnOnder--;
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnBoven, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnBoven, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+			}
+		}
+		else if (!onder_button){
+			if(collumnOnder < 32) {
+				//pixel uit
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnBoven, 0, 0, 0);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnBoven, 0, 0, 0);
+				//pixel aan
+				collumnBoven++;
+				collumnOnder++;
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijLinks, collumnOnder, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+				matrix32_set_pixel(MATRIX_FRAMEBUFFER_AI_0_BASE, rijRechts, collumnOnder, figuurKleur & 0x1, figuurKleur & 0x2, figuurKleur & 0x4);
+			}
 		}
 	    OSTimeDlyHMSM(0, 0, 1, 0);
 	}
 }
+
+void kleur_handler(void* pdata)
+{
+	volatile int *switch_base = (int *) PIO_SWITCHES_BASE;
+	volatile int *leds_base = (int *) PIO_LEDS_BASE;
+	figuurKleur = zwart;
+	while(1)
+	{
+		int values = *switch_base;
+		if(values == zwart) {
+			figuurKleur = wit;
+			continue;
+		}
+		figuurKleur = values;
+		*leds_base = *switch_base;
+		OSTimeDlyHMSM(0, 0, 5, 0);
+	}
+}
+
 /* The main function creates two task and starts multi-tasking */
 int main(void)
 {
@@ -172,23 +242,32 @@ int main(void)
   printf("Email: sales@micrium.com\n");
   printf("URL: www.micrium.com\n\n\n");  
 
-//  OSTaskCreateExt(input_handler,
-//                  NULL,
-//                  (void *)&task1_stk[TASK_STACKSIZE-1],
-//                  TASK1_PRIORITY,
-//                  TASK1_PRIORITY,
-//                  task1_stk,
-//                  TASK_STACKSIZE,
-//                  NULL,
-//                  0);
+  OSTaskCreateExt(input_handler,
+                  NULL,
+                  (void *)&task1_stk[TASK_STACKSIZE-1],
+                  TASK1_PRIORITY,
+                  TASK1_PRIORITY,
+                  task1_stk,
+                  TASK_STACKSIZE,
+                  NULL,
+                  0);
               
-               
+
   OSTaskCreateExt(matrix_handler,
                   NULL,
                   (void *)&task2_stk[TASK_STACKSIZE-1],
                   TASK2_PRIORITY,
                   TASK2_PRIORITY,
                   task2_stk,
+                  TASK_STACKSIZE,
+                  NULL,
+                  0);
+  OSTaskCreateExt(kleur_handler,
+                  NULL,
+                  (void *)&task3_stk[TASK_STACKSIZE-1],
+                  TASK3_PRIORITY,
+                  TASK3_PRIORITY,
+                  task3_stk,
                   TASK_STACKSIZE,
                   NULL,
                   0);

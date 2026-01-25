@@ -3,55 +3,37 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity matrix_top is
-	port (
-        clk, rst: in std_ulogic;
-		  control_register	: in std_logic_vector(31 downto 0);
-		  red_vector_write	: in std_logic_vector(31 downto 0);
-		  blue_vector_write	: in std_logic_vector(31 downto 0);
-		  green_vector_write	: in std_logic_vector(31 downto 0);
-		  status_register    : out std_logic_vector(31 downto 0);
-		  
-		  matrix_r1     : out std_logic;
-		  matrix_g1     : out std_logic;
-		  matrix_b1     : out std_logic;
-		  matrix_r2     : out std_logic;
-		  matrix_g2     : out std_logic;
-		  matrix_b2     : out std_logic;
-		  matrix_addr_a : out std_logic;
-		  matrix_addr_b : out std_logic;
-		  matrix_addr_c : out std_logic;
-		  matrix_addr_d : out std_logic;
-		  matrix_clk    : out std_logic;
-		  matrix_lat    : out std_logic;
-		  matrix_oe     : out std_logic
-		);
-end;
+   Port (
+        clk             : in  std_logic;
+        reset           : in  std_logic;
+        R1, G1, B1      : out std_logic;
+        R2, G2, B2      : out std_logic;
+        A, B, C, D      : out std_logic;
+        CLK_out         : out std_logic;
+        LAT             : out std_logic;
+        OE              : out std_logic;
+        fb_write_enable : in  std_logic;
+        fb_write_addr   : in  std_logic_vector(11 downto 0);
+        fb_write_data   : in  std_logic_vector(7 downto 0);
+        mode            : in  std_logic;
+        test_pattern    : in  std_logic_vector(2 downto 0)
+        );
+end entity;
 
 architecture imp of matrix_top is
 	component rgb_framebuffer is
-		port (
-			clock, reset      : in  std_logic;	  
-			red_vector_write	: in std_logic_vector(31 downto 0);
-			blue_vector_write	: in std_logic_vector(31 downto 0);
-			green_vector_write	: in std_logic_vector(31 downto 0);
-			address			: in std_logic_vector(4 downto 0);
-		   write           : in std_logic;
-		   write_done      : out std_logic;
-			collumn_filled  : out std_ulogic;
-			change_row      : in std_ulogic;
-			enable_matrix   : in std_ulogic;
-			-- RGB Matrix Output Conduit
-			matrix_r1     : out std_logic;
-			matrix_g1     : out std_logic;
-			matrix_b1     : out std_logic;
-			matrix_r2     : out std_logic;
-			matrix_g2     : out std_logic;
-			matrix_b2     : out std_logic;
-			matrix_addr_a : out std_logic;
-			matrix_addr_b : out std_logic;
-			matrix_addr_c : out std_logic;
-			matrix_addr_d : out std_logic
-		);
+        Port (
+            clk             : in  std_logic;
+            reset           : in  std_logic;
+            R1, G1, B1      : out std_logic;
+            R2, G2, B2      : out std_logic;
+            A, B, C, D      : out std_logic;
+            fb_write_enable : in  std_logic;
+            fb_write_addr   : in  std_logic_vector(11 downto 0);
+            fb_write_data   : in  std_logic_vector(7 downto 0);
+            mode            : in  std_logic;
+            test_pattern    : in  std_logic_vector(2 downto 0)
+        );
 	end component;
 	
 	component fsm_display is
@@ -86,36 +68,31 @@ architecture imp of matrix_top is
 begin
 	reset <= rst or control_register(CONTROL_RESET_BIT);
 	matrix_com: rgb_framebuffer
-	port map(
-		clock => clk,
-		reset => reset_matrix_s,
-	  red_vector_write => red_vector_write,
-	  blue_vector_write => blue_vector_write,
-	  green_vector_write => green_vector_write,
-	  address => control_register(ADDRESS_UPPER_BOUND downto ADDRESS_LOWER_BOUND),
-	  write => control_register(CONTROL_WRITE_BIT),
-	  write_done => write_done_s,
-	  collumn_filled => collumn_filled_s,
-	  change_row => row_changed,
-	  enable_matrix => enable_matrix_s,
-	  
-		matrix_r1 => matrix_r1,
-		matrix_g1 => matrix_g1,
-		matrix_b1 => matrix_b1,
-		matrix_r2 => matrix_r2,
-		matrix_g2 => matrix_g2,
-		matrix_b2 => matrix_b2,
-		matrix_addr_a => matrix_addr_a,
-		matrix_addr_b => matrix_addr_b,
-		matrix_addr_c => matrix_addr_c,
-		matrix_addr_d => matrix_addr_d
-	);
+        port map (
+            clk             => clk,
+            reset           => reset,
+            R1              => R1,
+            G1              => G1,
+            B1              => B1,
+            R2              => R2,
+            G2              => G2,
+            B2              => B2,
+            A               => A,
+            B               => B,
+            C               => C,
+            D               => D,
+            fb_write_enable => fb_write_enable,
+            fb_write_addr   => reg_fb_addr(11 downto 0),
+            fb_write_data   => reg_fb_data(7 downto 0),
+            mode            => mode,
+            test_pattern    => test_pattern_int
+        );
 	
 	fsm: fsm_display
 	port map (
 		clk => clk,
 		rst => reset,
-		start_button => control_register(CONTROL_START_BIT),
+		start_button => '1',
 		collumn_filled => collumn_filled_s,
 		write => control_register(CONTROL_WRITE_BIT),
 		write_done => write_done_s,
@@ -127,8 +104,8 @@ begin
 		row_change => row_changed
 	);
 
-	matrix_oe <= not enable_matrix_s;--its active low
-	matrix_lat <= enable_latch_s;
-	matrix_clk <= clk;
+	OE <= not enable_matrix_s;--its active low
+	LAT <= enable_latch_s;
+	CLK_out <= clk;
 	status_register <= (0 => enable_matrix_s, 1 => write_done_s, others => '0');
 end architecture;

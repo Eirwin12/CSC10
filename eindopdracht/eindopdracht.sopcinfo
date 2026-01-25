@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="eindopdracht" kind="eindopdracht" version="1.0" fabric="QSYS">
  <!-- Format version 18.1 625 (Future versions may contain additional information.) -->
- <!-- 2026.01.25.13:10:49 -->
+ <!-- 2026.01.25.16:04:48 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1769343049</value>
+  <value>1769353488</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -2009,7 +2009,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="dataSlaveMapParam">
    <type>java.lang.String</type>
-   <value><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='performance_checker_0.control_slave' start='0x81000' end='0x81040' /><slave name='timer_0.s1' start='0x81040' end='0x81060' /><slave name='led_matrix_0.avalon_slave_0' start='0x81060' end='0x81080' /><slave name='pio_leds.s1' start='0x81080' end='0x81090' /><slave name='pio_switches.s1' start='0x81090' end='0x810A0' /><slave name='pio_buttons.s1' start='0x810A0' end='0x810B0' /><slave name='sysid_qsys_0.control_slave' start='0x810B0' end='0x810B8' /><slave name='JTAG_DEBUG.avalon_jtag_slave' start='0x810B8' end='0x810C0' /></address-map>]]></value>
+   <value><![CDATA[<address-map><slave name='RAM.s1' start='0x40000' end='0x7E800' /><slave name='Processor_Nios.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='performance_checker_0.control_slave' start='0x81000' end='0x81040' /><slave name='matrix_framebuffer_ai_0.s0' start='0x81040' end='0x81060' /><slave name='timer_0.s1' start='0x81060' end='0x81080' /><slave name='pio_leds.s1' start='0x81080' end='0x81090' /><slave name='pio_switches.s1' start='0x81090' end='0x810A0' /><slave name='pio_buttons.s1' start='0x810A0' end='0x810B0' /><slave name='sysid_qsys_0.control_slave' start='0x810B0' end='0x810B8' /><slave name='JTAG_DEBUG.avalon_jtag_slave' start='0x810B8' end='0x810C0' /></address-map>]]></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -2597,14 +2597,6 @@ parameters are a RESULT of the module parameters. -->
    </memoryBlock>
    <memoryBlock>
     <isBridge>false</isBridge>
-    <moduleName>led_matrix_0</moduleName>
-    <slaveName>avalon_slave_0</slaveName>
-    <name>led_matrix_0.avalon_slave_0</name>
-    <baseAddress>528480</baseAddress>
-    <span>32</span>
-   </memoryBlock>
-   <memoryBlock>
-    <isBridge>false</isBridge>
     <moduleName>sysid_qsys_0</moduleName>
     <slaveName>control_slave</slaveName>
     <name>sysid_qsys_0.control_slave</name>
@@ -2626,6 +2618,14 @@ parameters are a RESULT of the module parameters. -->
     <name>Processor_Nios.jtag_debug_module</name>
     <baseAddress>526336</baseAddress>
     <span>2048</span>
+   </memoryBlock>
+   <memoryBlock>
+    <isBridge>false</isBridge>
+    <moduleName>matrix_framebuffer_ai_0</moduleName>
+    <slaveName>s0</slaveName>
+    <name>matrix_framebuffer_ai_0.s0</name>
+    <baseAddress>528448</baseAddress>
+    <span>32</span>
    </memoryBlock>
    <memoryBlock>
     <isBridge>false</isBridge>
@@ -2656,7 +2656,7 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>timer_0</moduleName>
     <slaveName>s1</slaveName>
     <name>timer_0.s1</name>
-    <baseAddress>528448</baseAddress>
+    <baseAddress>528480</baseAddress>
     <span>32</span>
    </memoryBlock>
    <memoryBlock>
@@ -4756,9 +4756,9 @@ parameters are a RESULT of the module parameters. -->
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
-    <moduleName>led_matrix_0</moduleName>
-    <slaveName>clock_sink</slaveName>
-    <name>led_matrix_0.clock_sink</name>
+    <moduleName>matrix_framebuffer_ai_0</moduleName>
+    <slaveName>clock</slaveName>
+    <name>matrix_framebuffer_ai_0.clock</name>
    </clockDomainMember>
   </interface>
   <interface name="clk_reset" kind="reset_source" version="18.1">
@@ -4824,10 +4824,10 @@ parameters are a RESULT of the module parameters. -->
   </interface>
  </module>
  <module
-   name="led_matrix_0"
-   kind="32x32_led_matrix"
-   version="1.2"
-   path="led_matrix_0">
+   name="matrix_framebuffer_ai_0"
+   kind="matrix_framebuffer_ai"
+   version="1.0"
+   path="matrix_framebuffer_ai_0">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
   <parameter name="deviceFamily">
@@ -4846,13 +4846,58 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <interface name="clock_reset" kind="reset_sink" version="18.1">
+  <interface name="clock" kind="clock_sink" version="18.1">
+   <!-- The connection points exposed by a module instance for the
+particular module parameters. Connection points and their
+parameters are a RESULT of the module parameters. -->
+   <parameter name="externallyDriven">
+    <type>boolean</type>
+    <value>false</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="ptfSchematicName">
+    <type>java.lang.String</type>
+    <value></value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="deviceFamily">
+    <type>java.lang.String</type>
+    <value>UNKNOWN</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="generateLegacySim">
+    <type>boolean</type>
+    <value>false</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <type>clock</type>
+   <isStart>false</isStart>
+   <port>
+    <name>csi_clk</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>clk</role>
+   </port>
+  </interface>
+  <interface name="reset" kind="reset_sink" version="18.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>clock_sink</value>
+    <value>clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -4885,13 +4930,13 @@ parameters are a RESULT of the module parameters. -->
    <type>reset</type>
    <isStart>false</isStart>
    <port>
-    <name>reset</name>
+    <name>rsi_reset_n</name>
     <direction>Input</direction>
     <width>1</width>
-    <role>reset</role>
+    <role>reset_n</role>
    </port>
   </interface>
-  <interface name="avalon_slave_0" kind="avalon_slave" version="18.1">
+  <interface name="s0" kind="avalon_slave" version="18.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -4953,7 +4998,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>clock_sink</value>
+    <value>clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -4961,7 +5006,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedReset">
     <type>java.lang.String</type>
-    <value>clock_reset</value>
+    <value>reset</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -5226,55 +5271,49 @@ parameters are a RESULT of the module parameters. -->
    <type>avalon</type>
    <isStart>false</isStart>
    <port>
-    <name>read</name>
+    <name>avs_s0_address</name>
     <direction>Input</direction>
-    <width>1</width>
-    <role>read</role>
+    <width>3</width>
+    <role>address</role>
    </port>
    <port>
-    <name>write</name>
+    <name>avs_s0_write</name>
     <direction>Input</direction>
     <width>1</width>
     <role>write</role>
    </port>
    <port>
-    <name>chipselect</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>chipselect</role>
-   </port>
-   <port>
-    <name>readdata</name>
-    <direction>Output</direction>
-    <width>32</width>
-    <role>readdata</role>
-   </port>
-   <port>
-    <name>writedata</name>
+    <name>avs_s0_writedata</name>
     <direction>Input</direction>
     <width>32</width>
     <role>writedata</role>
    </port>
    <port>
-    <name>byteenable</name>
+    <name>avs_s0_read</name>
     <direction>Input</direction>
-    <width>4</width>
-    <role>byteenable</role>
+    <width>1</width>
+    <role>read</role>
    </port>
    <port>
-    <name>address</name>
+    <name>avs_s0_readdata</name>
+    <direction>Output</direction>
+    <width>32</width>
+    <role>readdata</role>
+   </port>
+   <port>
+    <name>avs_s0_chipselect</name>
     <direction>Input</direction>
-    <width>3</width>
-    <role>address</role>
+    <width>1</width>
+    <role>chipselect</role>
    </port>
   </interface>
-  <interface name="conduit_end" kind="conduit_end" version="18.1">
+  <interface name="conduit_end_0" kind="conduit_end" version="18.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value></value>
+    <value>clock</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -5307,55 +5346,10 @@ parameters are a RESULT of the module parameters. -->
    <type>conduit</type>
    <isStart>false</isStart>
    <port>
-    <name>Q_export</name>
+    <name>q_export</name>
     <direction>Output</direction>
     <width>32</width>
-    <role>readdata</role>
-   </port>
-  </interface>
-  <interface name="clock_sink" kind="clock_sink" version="18.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="externallyDriven">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="ptfSchematicName">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>clock</type>
-   <isStart>false</isStart>
-   <port>
-    <name>clock</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>clk</role>
+    <role>data</role>
    </port>
   </interface>
  </module>
@@ -8395,7 +8389,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1769343049</value>
+   <value>1769353488</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
@@ -8415,7 +8409,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.params.timestamp</name>
-   <value>1769343049</value>
+   <value>1769353488</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
@@ -8431,7 +8425,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1769343049</value>
+   <value>1769353488</value>
    <derived>true</derived>
    <enabled>false</enabled>
    <visible>false</visible>
@@ -9722,57 +9716,6 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>avalon_jtag_slave</endConnectionPoint>
  </connection>
  <connection
-   name="Processor_Nios.data_master/led_matrix_0.avalon_slave_0"
-   kind="avalon"
-   version="18.1"
-   start="Processor_Nios.data_master"
-   end="led_matrix_0.avalon_slave_0">
-  <parameter name="arbitrationPriority">
-   <type>int</type>
-   <value>1</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="baseAddress">
-   <type>java.math.BigInteger</type>
-   <value>0x00081060</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="defaultConnection">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>Processor_Nios</startModule>
-  <startConnectionPoint>data_master</startConnectionPoint>
-  <endModule>led_matrix_0</endModule>
-  <endConnectionPoint>avalon_slave_0</endConnectionPoint>
- </connection>
- <connection
    name="Processor_Nios.data_master/sysid_qsys_0.control_slave"
    kind="avalon"
    version="18.1"
@@ -9924,6 +9867,57 @@ parameters are a RESULT of the module parameters. -->
   <startConnectionPoint>data_master</startConnectionPoint>
   <endModule>Processor_Nios</endModule>
   <endConnectionPoint>jtag_debug_module</endConnectionPoint>
+ </connection>
+ <connection
+   name="Processor_Nios.data_master/matrix_framebuffer_ai_0.s0"
+   kind="avalon"
+   version="18.1"
+   start="Processor_Nios.data_master"
+   end="matrix_framebuffer_ai_0.s0">
+  <parameter name="arbitrationPriority">
+   <type>int</type>
+   <value>1</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="baseAddress">
+   <type>java.math.BigInteger</type>
+   <value>0x00081040</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="defaultConnection">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>Processor_Nios</startModule>
+  <startConnectionPoint>data_master</startConnectionPoint>
+  <endModule>matrix_framebuffer_ai_0</endModule>
+  <endConnectionPoint>s0</endConnectionPoint>
  </connection>
  <connection
    name="Processor_Nios.data_master/RAM.s1"
@@ -10094,7 +10088,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x00081040</value>
+   <value>0x00081060</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -10526,11 +10520,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clk1</endConnectionPoint>
  </connection>
  <connection
-   name="clk_0.clk/led_matrix_0.clock_sink"
+   name="clk_0.clk/matrix_framebuffer_ai_0.clock"
    kind="clock"
    version="18.1"
    start="clk_0.clk"
-   end="led_matrix_0.clock_sink">
+   end="matrix_framebuffer_ai_0.clock">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -10549,8 +10543,8 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>clk_0</startModule>
   <startConnectionPoint>clk</startConnectionPoint>
-  <endModule>led_matrix_0</endModule>
-  <endConnectionPoint>clock_sink</endConnectionPoint>
+  <endModule>matrix_framebuffer_ai_0</endModule>
+  <endConnectionPoint>clock</endConnectionPoint>
  </connection>
  <connection
    name="Processor_Nios.d_irq/JTAG_DEBUG.irq"
@@ -10691,33 +10685,6 @@ parameters are a RESULT of the module parameters. -->
   <startConnectionPoint>d_irq</startConnectionPoint>
   <endModule>pio_switches</endModule>
   <endConnectionPoint>irq</endConnectionPoint>
- </connection>
- <connection
-   name="clk_0.clk_reset/led_matrix_0.clock_reset"
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="led_matrix_0.clock_reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>clk_0</startModule>
-  <startConnectionPoint>clk_reset</startConnectionPoint>
-  <endModule>led_matrix_0</endModule>
-  <endConnectionPoint>clock_reset</endConnectionPoint>
  </connection>
  <connection
    name="clk_0.clk_reset/JTAG_DEBUG.reset"
@@ -10906,6 +10873,33 @@ parameters are a RESULT of the module parameters. -->
   <startModule>clk_0</startModule>
   <startConnectionPoint>clk_reset</startConnectionPoint>
   <endModule>pio_leds</endModule>
+  <endConnectionPoint>reset</endConnectionPoint>
+ </connection>
+ <connection
+   name="clk_0.clk_reset/matrix_framebuffer_ai_0.reset"
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="matrix_framebuffer_ai_0.reset">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>clk_0</startModule>
+  <startConnectionPoint>clk_reset</startConnectionPoint>
+  <endModule>matrix_framebuffer_ai_0</endModule>
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
@@ -11119,11 +11113,11 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>32x32_led_matrix</name>
+  <name>matrix_framebuffer_ai</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>matrix_buffer</displayName>
-  <version>1.2</version>
+  <displayName>matrix_framebuffer_ai</displayName>
+  <version>1.0</version>
  </plugin>
  <plugin>
   <instanceCount>4</instanceCount>

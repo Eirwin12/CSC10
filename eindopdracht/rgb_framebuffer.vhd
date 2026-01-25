@@ -1,143 +1,283 @@
 library IEEE;
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
-entity rgb_framebuffer is
-	port (
-		clock           : in  std_logic;
-		reset           : in  std_logic;
-	  
-	  red_vector_write	: in std_logic_vector(31 downto 0);
-	  blue_vector_write	: in std_logic_vector(31 downto 0);
-	  green_vector_write	: in std_logic_vector(31 downto 0);
-	  address			: in std_logic_vector(4 downto 0);
-	  write           : in std_logic;
-	  write_done      : out std_logic;
-	  collumn_filled  : out std_ulogic;
-	  change_row      : in std_ulogic;
-	  enable_matrix   : in std_ulogic;
-	  -- RGB Matrix Output Conduit
-	  matrix_r1     : out std_logic;
-	  matrix_g1     : out std_logic;
-	  matrix_b1     : out std_logic;
-	  matrix_r2     : out std_logic;
-	  matrix_g2     : out std_logic;
-	  matrix_b2     : out std_logic;
-	  matrix_addr_a : out std_logic;
-	  matrix_addr_b : out std_logic;
-	  matrix_addr_c : out std_logic;
-	  matrix_addr_d : out std_logic
-	);
-end entity rgb_framebuffer;
+entity Matrix32_LED is
+    Port (
+        -- Clock en reset
+        clk         : in  std_logic;
+        reset       : in  std_logic;
+        
+        -- LED matrix control signalen
+        R1, G1, B1  : out std_logic;  -- RGB data voor upper half (lijn 1-16)
+        R2, G2, B2  : out std_logic;  -- RGB data voor lower half (lijn 17-32)
+        A, B, C, D  : out std_logic;  -- Row address (4 bits = 16 rijen)
+        CLK_out     : out std_logic;  -- Shift clock voor LED drivers
+        LAT         : out std_logic;  -- Latch signal
+        OE          : out std_logic;  -- Output Enable (active low)
+        
+        -- Framebuffer interface
+        fb_write_enable : in  std_logic;
+        fb_write_addr   : in  std_logic_vector(11 downto 0);  -- 4096 adressen (max 384 bytes)
+        fb_write_data   : in  std_logic_vector(7 downto 0);   -- 8 pixels per write
+        
+        -- Mode select: 0=framebuffer, 1=test pattern
+        mode            : in  std_logic;
+        test_pattern    : in  std_logic_vector(2 downto 0)
+    );
+end Matrix32_LED;
 
-architecture rtl of rgb_framebuffer is
-
-	--matrix heeft 32x32 leds. elke led heeft 3 bits nodig: 1 bit rood, 1 bit groen en 1 bit blauw. 
-	--elke led is een logic_vector, waarbij rood bit 0, groen bit 2 en blauw bit 2 is. 
-	--i.p.v. vector van vectoren maken (type row, type grid) zoals AI eerst heeft gedaan om alle leds te onthouden
-	--is een 2D matrix overzichtelijker.
-	--zie 8.3.4 van circuit design with vhdl hoe dit er ong. eruit ziet. 
-
-	subtype color_vector is std_ulogic_vector(31 downto 0);--3 bit rgb-->1bit red, 1 bit green, 1 bit blue
-	type rgb is array(2 downto 0) of color_vector;
-	type matrix_grid2 is array(31 downto 0) of rgb;
---	sybtype rgb is std_ulogic_vector(2 downto 0);
---	type matrix_grid is array(31 downto 0, 31 downto 0) of rgb;
-	signal framebuffer: matrix_grid2 := (others => (others => (others => '0')));
-
-	-- Scanning signals
-	signal row_addr : unsigned(3 downto 0) := (others => '0');  -- 0-15 voor 16 rij-paren
-	signal col_count : unsigned(4 downto 0) := (others => '0'); -- 0-31 voor 32 kolommen
- 
+architecture Behavioral of Matrix32_LED is
+    -- Constants
+    constant MATRIX_WIDTH  : integer := 32;
+    constant MATRIX_HEIGHT : integer := 32;
+    constant NUM_ROWS      : integer := 16;  -- Aantal multiplexed rijen (32/2)
+    
+    -- Framebuffer: 3072 bits (32x32 pixels × 3 colors)
+    -- Georganiseerd als 384 bytes × 8 bits
+    -- Layout: R bits [0-127], G bits [128-255], B bits [256-383]
+    type framebuffer_type is array (0 to 383) of std_logic_vector(7 downto 0);
+    signal framebuffer : framebuffer_type := (others => (others => '0'));
+    
+    -- Internal signals
+    signal row_counter     : unsigned(3 downto 0) := (others => '0');
+    signal col_counter     : unsigned(5 downto 0) := (others => '0');
+    signal refresh_counter : unsigned(15 downto 0) := (others => '0');
+    
+    -- State machine
+    type state_type is (IDLE, SHIFT_DATA, LATCH_DATA, DISPLAY);
+    signal current_state : state_type := IDLE;
+    
+    -- Clock divider voor display refresh
+    signal clk_divider : unsigned(7 downto 0) := (others => '0');
+    signal refresh_clk : std_logic := '0';
+    
+    -- Internal clock signal (output ports kunnen niet gelezen worden)
+    signal clk_out_internal : std_logic := '0';
+    
+    -- Pixel data van framebuffer
+    signal pixel_r1, pixel_g1, pixel_b1 : std_logic;
+    signal pixel_r2, pixel_g2, pixel_b2 : std_logic;
+    
 begin
+    -- ========================================================================
+    -- Framebuffer Write Process
+    -- ========================================================================
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if fb_write_enable = '1' then
+                -- Write 8 pixels (bits) naar framebuffer
+                if unsigned(fb_write_addr) < 384 then
+                    framebuffer(to_integer(unsigned(fb_write_addr))) <= fb_write_data;
+                end if;
+            end if;
+        end if;
+    end process;
     
-	--alvast invullen zodat het voor mij duidelijk is. 
-	process(reset, clock, enable_matrix, change_row)
-		variable upper_row : integer range 0 to 31;
-		variable lower_row : integer range 0 to 31;
-
-		variable row_index: integer range 0 to 15;
-		variable collumn_index: integer range 0 to 31;
-
-		constant LOWER_ROW_OFFSET: natural := 16;
-		
-		type pixel_adress is array(0 to 1) of integer range 0 to 31;
-		variable pixel_addr1 : pixel_adress;
-		variable pixel_addr2 : pixel_adress;
-	begin
-		if reset then 
-			row_addr <= (others => '0');
-			col_count <= (others => '0');
-			matrix_r1 <= '0';
-			matrix_g1 <= '0';
-			matrix_b1 <= '0';
-
-			matrix_r2 <= '0';
-			matrix_g2 <= '0';
-			matrix_b2 <= '0';
-			collumn_filled <= '0';
-		elsif rising_edge(clock) then
-			if change_row then
-				row_addr <= row_addr+1;
-				collumn_filled <= '0';
-			elsif enable_matrix then
-				-- Calculate addresses voor current column en row
-				upper_row := to_integer(row_addr);              -- 0-7
-				lower_row := to_integer(row_addr) + LOWER_ROW_OFFSET;         -- 16-23
-
-				--vind de adressen van de pixel
-				pixel_addr1 := (upper_row, to_integer(col_count));
-				pixel_addr2 := (lower_row, to_integer(col_count));
-
-				--verstuur de pixels naar de matrix toe. 
-				matrix_r1 <= framebuffer(pixel_addr1(0))(0)(pixel_addr1(1));
-				matrix_g1 <= framebuffer(pixel_addr1(0))(1)(pixel_addr1(1));
-				matrix_b1 <= framebuffer(pixel_addr1(0))(2)(pixel_addr1(1));
-
-				matrix_r2 <= framebuffer(pixel_addr2(0))(0)(pixel_addr2(1));
-				matrix_g2 <= framebuffer(pixel_addr2(0))(1)(pixel_addr2(1));
-				matrix_b2 <= framebuffer(pixel_addr2(0))(2)(pixel_addr2(1));
-
-				-- Next column
-				if col_count >= 31 then
-					--last written value is valid for signals in process
-					--only set collumn_filled high when this condition is met
-					collumn_filled <= '1';
-				end if;
-				col_count <= col_count + 1;
-			end if;
-		end if;
-	end process;
-	
-   process(reset, clock, write, address)
-		variable row: integer range 0 to 31;
-		variable col: integer range 0 to 31;
-	begin
-	
-		row := to_integer(unsigned(address));
-		--read verstuurd data naar master
-		if reset then
-			framebuffer <= (others => (others => (others => '0')));
-			write_done <= '0';
---		elsif rising_edge(clock) then
---		elsif write = '1' then
-		else
-			framebuffer(row)(0) <= std_ulogic_vector(red_vector_write);
-			framebuffer(row)(1) <= std_ulogic_vector(green_vector_write);
-			framebuffer(row)(2) <= std_ulogic_vector(blue_vector_write);
---		else
---			for collumn in 0 to 31 loop
---				framebuffer(row)(collumn) <= (red_vector_write(collumn), green_vector_write(collumn), blue_vector_write(collumn));
---			end loop;
-			write_done <= '1';
---		else
---			write_done <= '0';
-		end if;
-	end process;
-    -- Output assignments
-    matrix_addr_a <= std_logic(row_addr(0));
-    matrix_addr_b <= std_logic(row_addr(1));
-    matrix_addr_c <= std_logic(row_addr(2));
-    matrix_addr_d <= std_logic(row_addr(3));
+    -- ========================================================================
+    -- Output Port Assignments
+    -- ========================================================================
+    -- Assign internal clock signal naar output port
+    CLK_out <= clk_out_internal;
     
-end architecture rtl;
+    -- ========================================================================
+    -- Framebuffer Read Process - haal pixel data op voor huidige positie
+    -- ========================================================================
+    process(row_counter, col_counter, framebuffer)
+        variable pixel_index : integer range 0 to 1023;
+        variable byte_addr   : integer range 0 to 127;
+        variable bit_offset  : integer range 0 to 7;
+    begin
+        -- Bereken pixel index voor upper half: row * 32 + col
+        pixel_index := to_integer(row_counter) * 32 + to_integer(col_counter);
+        
+        -- Bereken byte address en bit offset
+        byte_addr := pixel_index / 8;
+        bit_offset := pixel_index mod 8;
+        
+        -- R1: bytes 0-127 (alle R pixels upper half)
+        if byte_addr < 128 then
+            pixel_r1 <= framebuffer(byte_addr)(bit_offset);
+        else
+            pixel_r1 <= '0';
+        end if;
+        
+        -- G1: bytes 128-255
+        if byte_addr < 128 then
+            pixel_g1 <= framebuffer(128 + byte_addr)(bit_offset);
+        else
+            pixel_g1 <= '0';
+        end if;
+        
+        -- B1: bytes 256-383
+        if byte_addr < 128 then
+            pixel_b1 <= framebuffer(256 + byte_addr)(bit_offset);
+        else
+            pixel_b1 <= '0';
+        end if;
+        
+        -- R2, G2, B2: zelfde pixel maar voor lower half (row + 16)
+        pixel_index := (to_integer(row_counter) + 16) * 32 + to_integer(col_counter);
+        byte_addr := pixel_index / 8;
+        bit_offset := pixel_index mod 8;
+        
+        if byte_addr < 128 then
+            pixel_r2 <= framebuffer(byte_addr)(bit_offset);
+            pixel_g2 <= framebuffer(128 + byte_addr)(bit_offset);
+            pixel_b2 <= framebuffer(256 + byte_addr)(bit_offset);
+        else
+            pixel_r2 <= '0';
+            pixel_g2 <= '0';
+            pixel_b2 <= '0';
+        end if;
+    end process;
+    
+    -- ========================================================================
+    -- Hoofdproces voor matrix aansturen
+    -- ========================================================================
+    process(clk, reset)
+    begin
+        if reset = '1' then
+            row_counter <= (others => '0');
+            col_counter <= (others => '0');
+            current_state <= IDLE;
+            LAT <= '0';
+            OE <= '1';  -- Output disabled
+            clk_out_internal <= '0';
+            
+        elsif rising_edge(clk) then
+            case current_state is
+                when IDLE =>
+                    OE <= '1';  -- Disable output tijdens data load
+                    LAT <= '0';
+                    col_counter <= (others => '0');
+                    current_state <= SHIFT_DATA;
+                    
+                when SHIFT_DATA =>
+                    -- Shift data uit voor huidige kolom en rij
+                    clk_out_internal <= not clk_out_internal;  -- Toggle clock
+                    
+                    if clk_out_internal = '1' then  -- Op dalende flank, volgende kolom
+                        if col_counter < MATRIX_WIDTH - 1 then
+                            col_counter <= col_counter + 1;
+                        else
+                            current_state <= LATCH_DATA;
+                        end if;
+                    end if;
+                    
+                    -- Kies data source: framebuffer of test pattern
+                    if mode = '0' then
+                        -- Framebuffer mode
+                        R1 <= pixel_r1;
+                        G1 <= pixel_g1;
+                        B1 <= pixel_b1;
+                        R2 <= pixel_r2;
+                        G2 <= pixel_g2;
+                        B2 <= pixel_b2;
+                    else
+                        -- Test pattern mode
+                        case test_pattern is
+                            when "000" =>  -- Checkerboard
+                                if (to_integer(row_counter) + to_integer(col_counter)) mod 2 = 0 then
+                                    R1 <= '1';
+                                    G2 <= '1';
+                                else
+                                    R1 <= '0';
+                                    G2 <= '0';
+                                end if;
+                                G1 <= '0';
+                                B1 <= '0';
+                                R2 <= '0';
+                                B2 <= '0';
+                                
+                            when "001" =>  -- Horizontal lines
+                                R1 <= '1';
+                                G1 <= '0';
+                                B1 <= '0';
+                                R2 <= '0';
+                                G2 <= '0';
+                                B2 <= '1';
+                                
+                            when "010" =>  -- Vertical lines
+                                if col_counter(0) = '0' then
+                                    R1 <= '1';
+                                    G1 <= '1';
+                                    B1 <= '1';
+                                    R2 <= '0';
+                                    G2 <= '0';
+                                    B2 <= '0';
+                                else
+                                    R1 <= '0';
+                                    G1 <= '0';
+                                    B1 <= '0';
+                                    R2 <= '1';
+                                    G2 <= '1';
+                                    B2 <= '1';
+                                end if;
+                                
+                            when "011" =>  -- Alle LEDs aan (wit)
+                                R1 <= '1';
+                                G1 <= '1';
+                                B1 <= '1';
+                                R2 <= '1';
+                                G2 <= '1';
+                                B2 <= '1';
+                                
+                            when "100" =>  -- Rood gradient
+                                if col_counter < 16 then
+                                    R1 <= '1';
+                                    R2 <= '0';
+                                else
+                                    R1 <= '0';
+                                    R2 <= '1';
+                                end if;
+                                G1 <= '0';
+                                B1 <= '0';
+                                G2 <= '0';
+                                B2 <= '0';
+                                
+                            when others =>  -- Uit
+                                R1 <= '0';
+                                G1 <= '0';
+                                B1 <= '0';
+                                R2 <= '0';
+                                G2 <= '0';
+                                B2 <= '0';
+                        end case;
+                    end if;
+                    
+                when LATCH_DATA =>
+                    clk_out_internal <= '0';
+                    LAT <= '1';  -- Latch data naar outputs
+                    current_state <= DISPLAY;
+                    
+                when DISPLAY =>
+                    LAT <= '0';
+                    OE <= '0';  -- Enable output
+                    
+                    -- Refresh delay
+                    refresh_counter <= refresh_counter + 1;
+                    if refresh_counter = 1000 then  -- Korte display tijd
+                        refresh_counter <= (others => '0');
+                        
+                        -- Ga naar volgende rij
+                        if row_counter < NUM_ROWS - 1 then
+                            row_counter <= row_counter + 1;
+                        else
+                            row_counter <= (others => '0');
+                        end if;
+                        
+                        current_state <= IDLE;
+                    end if;
+            end case;
+        end if;
+    end process;
+    
+    -- Row address outputs (interleaved: 0=rij1+17, 1=rij2+18, etc.)
+    A <= row_counter(0);
+    B <= row_counter(1);
+    C <= row_counter(2);
+    D <= row_counter(3);
+
+end Behavioral;
