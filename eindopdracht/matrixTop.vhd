@@ -93,7 +93,7 @@ begin
 	  blue_vector_write => blue_vector_write,
 	  green_vector_write => green_vector_write,
 	  address => control_register(ADDRESS_UPPER_BOUND downto ADDRESS_LOWER_BOUND),
-	  write => write_matrix_s,
+	  write => control_register(CONTROL_WRITE_BIT),
 	  write_done => write_done_s,
 	  collumn_filled => collumn_filled_s,
 	  change_row => row_changed,

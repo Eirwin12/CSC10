@@ -116,11 +116,8 @@ begin
 		elsif rising_edge(clock) then
 			if write then
 				for collumn in 0 to 31 loop
-					framebuffer(row, collumn)(0) <= red_vector_write(collumn);
-					framebuffer(row, collumn)(1) <= green_vector_write(collumn);
-					framebuffer(row, collumn)(2) <= blue_vector_write(collumn);
+					framebuffer(row, collumn) <= (red_vector_write(collumn), green_vector_write(collumn), blue_vector_write(collumn));
 				end loop;
-				--let FSM know write is done. 
 				write_done <= '1';
 			else
 				write_done <= '0';
@@ -134,5 +131,3 @@ begin
     matrix_addr_d <= std_logic(row_addr(3));
     
 end architecture rtl;
-
---software en hardware houden state van matrix bij (software mis. simpeler dan hardware)
